@@ -428,6 +428,7 @@ namespace mylibais {
 		int message_id;
 		int repeat_indicator;
 		int mmsi;
+		
 
 		// TODO(schwehr): make status private and have accessors.
 		bool had_error() const { return status != AIS_OK; }
@@ -465,26 +466,29 @@ namespace mylibais {
 	};
 
 
+	// ISRS Signal Station
 	class Ais8_200_41 : public Ais8 {
 
 	public:
-
-	 int version;
-	 string country;
+		int version;
+		string country;
 		
-	 int section;
-	 int type;
-	 int objectnumber;
-	 int hectometre;
-	 int signal;
-	 int orientation;
-	 int impact;
-	 int light_status;
+		int section;
+		int	objectType;
+		int objectNumber;
+		int hectometre;
+		int signalForm;
+		int orientation;
+		int impact;
+		int lightStatus;
+
 	 int spare;
    
 		Ais8_200_41(const char *nmea_payload, const size_t pad);
 	};
 
+
+	// ISRS Text Message
 	class Ais8_200_44 : public Ais8 {
 
 	public:
@@ -501,6 +505,69 @@ namespace mylibais {
    
 		Ais8_200_44(const char *nmea_payload, const size_t pad);
 	};
+
+	// ISRS Bridge Clearance
+	class Ais8_200_25 : public Ais8 {
+
+	public:
+
+		int version;
+		string country;
+		
+	 int sectionNumber;
+	 string objectCode;
+	 int hectometre;
+	 int bridgeClearance;
+	 int time;
+	 int accuracy;
+	 int spare;
+   
+		Ais8_200_25(const char *nmea_payload, const size_t pad);
+	};
+
+	// ISRS Water Level
+	class Ais8_200_26 : public Ais8 {
+
+	 public:  
+	  
+	  int version;
+
+	  string country;         // UN country code         0 = not available = default
+
+	  // Gauge ID             11 bits
+	  int gaugeID_1;
+
+	  // Water Level Ref                3 bits
+	  int waterLevelRef_1;
+
+	  // Water Level Value                17 bits
+	  int waterLevelValue_1;
+
+	  // Gauge ID             11 bits
+	  int gaugeID_2;
+
+	  // Water Level Ref                3 bits
+	  int waterLevelRef_2;
+
+	  // Water Level Value                17 bits
+	  int waterLevelValue_2;
+
+	  // Gauge ID             11 bits
+	  int gaugeID_3;
+
+	  // Water Level Ref                3 bits
+	  int waterLevelRef_3;
+
+	  // Water Level Value                17 bits
+	  int waterLevelValue_3;
+  
+	  // Spare                               1 bits
+	  int spare;
+	 
+	  Ais8_200_26(const char *nmea_payload, const size_t pad);
+	};
+
+
 } //mylibais
 
 #endif  // LIBAIS_AIS_H_

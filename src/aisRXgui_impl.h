@@ -212,11 +212,6 @@ public:
 
     AIS_Target_Data* m_pLatestTargetData;
 
-	
-	
-	
-
-
 protected:
     bool m_bNeedsGrib;
 
@@ -241,14 +236,19 @@ private:
 
     void OnClose(wxCloseEvent& event);
 
-
+	void OnAuto(wxCommandEvent& event);
     void OnTest(wxCommandEvent& event);
+	wxString parseNMEASentence(wxString& sentence);
+	void getAis8_200_25(string rawPayload);
+	void getAis8_200_26(string rawPayload);
+	void getAis8_200_41(string rawPayload);
+	void getAis8_200_44(string rawPayload);
     // void SendAIS(double cse, double spd, double lat, double lon);
 
     void OnStandby(wxCommandEvent& event);
     void GoToStandby();
 
-    void OnAuto(wxCommandEvent& event);
+    
 
     long m_iMMSI;
 

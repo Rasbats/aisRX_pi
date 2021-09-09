@@ -137,6 +137,7 @@ public:
 
     wxString StandardPath();
     wxBitmap m_panelBitmap;
+    Dlg* m_pDialog;
 
 private:
     double m_cursor_lat;
@@ -148,7 +149,7 @@ private:
 
     aisRX_pi* plugin;
 
-    Dlg* m_pDialog;
+
 
     wxFileConfig* m_pconfig;
     wxWindow* m_parent_window;
