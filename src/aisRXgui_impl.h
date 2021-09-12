@@ -50,7 +50,8 @@
 #include <wx/utils.h>
 
 #include "ais2.h"
-
+#include "signal.h"
+#include "widget.h"
 #include "AIS_Bitstring.h"
 
 #include <wx/hashmap.h>
@@ -69,6 +70,7 @@ class aisRX_pi;
 class AisMaker;
 class AISdisplay;
 class AIS_Target_Data;
+class Signalling;
 
 // lass rtept;
 class AIS_Target_Data
@@ -238,6 +240,7 @@ private:
 
 	void OnAuto(wxCommandEvent& event);
     void OnTest(wxCommandEvent& event);
+	void OnSignalShow(wxCommandEvent& event);
 	wxString parseNMEASentence(wxString& sentence);
 	void getAis8_200_25(string rawPayload);
 	void getAis8_200_26(string rawPayload);

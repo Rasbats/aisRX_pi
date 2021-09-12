@@ -371,13 +371,13 @@ aisRXBase::aisRXBase( wxWindow* parent, wxWindowID id, const wxString& title, co
 
 	fgSizer82->Add( m_button7, 1, wxALL|wxEXPAND, 2 );
 
-	m_buttonWind = new wxButton( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	m_buttonWind->SetFont( wxFont( 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Arial") ) );
-	m_buttonWind->SetBackgroundColour( wxColour( 0, 255, 0 ) );
-	m_buttonWind->SetToolTip( _("Using Sail") );
-	m_buttonWind->SetMinSize( wxSize( 50,-1 ) );
+	m_buttonSignal = new wxButton( this, wxID_ANY, _("Signal"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonSignal->SetFont( wxFont( 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Arial") ) );
+	m_buttonSignal->SetBackgroundColour( wxColour( 0, 255, 0 ) );
+	m_buttonSignal->SetToolTip( _("Using Sail") );
+	m_buttonSignal->SetMinSize( wxSize( 50,-1 ) );
 
-	fgSizer82->Add( m_buttonWind, 1, wxALL|wxEXPAND, 2 );
+	fgSizer82->Add( m_buttonSignal, 1, wxALL|wxEXPAND, 2 );
 
 
 	bSizer10->Add( fgSizer82, 0, wxEXPAND, 5 );
@@ -394,7 +394,7 @@ aisRXBase::aisRXBase( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_buttonStandby->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnStandby ), NULL, this );
 	m_buttonAuto->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnAuto ), NULL, this );
 	m_button7->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnTest ), NULL, this );
-	m_buttonWind->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnWind ), NULL, this );
+	m_buttonSignal->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnSignalShow ), NULL, this );
 	this->Connect( wxID_ANY, wxEVT_TIMER, wxTimerEventHandler( aisRXBase::OnTimer ) );
 }
 
@@ -405,7 +405,7 @@ aisRXBase::~aisRXBase()
 	m_buttonStandby->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnStandby ), NULL, this );
 	m_buttonAuto->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnAuto ), NULL, this );
 	m_button7->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnTest ), NULL, this );
-	m_buttonWind->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnWind ), NULL, this );
+	m_buttonSignal->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnSignalShow ), NULL, this );
 	this->Disconnect( wxID_ANY, wxEVT_TIMER, wxTimerEventHandler( aisRXBase::OnTimer ) );
 
 }

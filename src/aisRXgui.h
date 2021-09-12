@@ -121,14 +121,14 @@ class aisRXBase : public wxDialog
 		wxButton* m_buttonStandby;
 		wxButton* m_buttonAuto;
 		wxButton* m_button7;
-		wxButton* m_buttonWind;
+		wxButton* m_buttonSignal;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
 		virtual void OnStandby( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAuto( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTest( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnWind( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSignalShow( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTimer( wxTimerEvent& event ) { event.Skip(); }
 
 

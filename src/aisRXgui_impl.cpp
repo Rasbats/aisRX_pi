@@ -33,10 +33,9 @@
 #include "wx/textfile.h"
 #include <stdio.h>
 #include <wx/timer.h>
-
+#include "signal.h"
+#include "widget.h"
 #include <memory>
-
-class GribRecordSet;
 
 using mylibais::AisMsg;
 using std::unique_ptr;
@@ -407,6 +406,13 @@ void Dlg::OnTest(wxCommandEvent& event)
 	//string myMessage = "8000h>@j:@2`5K=D1fRS6@00te@0";  //Ais8_200_41 **** ISRS Signal Station
 	//string myMessage = "8000h>@j;02aR`Lt8S60CfI@E=@TpN1@PF15DT<f098uLr0HuR2222222220"; //Ais8_200_44 **** ISRS Text Message
 	//string myMessage = "8000000j;02`004<8tS4`eP85D588DU@Dr04r1=A8tlhDUADpLDp";  // RIS Text Message from manufacturer report
+}
+
+void Dlg::OnSignalShow(wxCommandEvent& event) {
+
+	Signalling *signalling = new Signalling(wxT("The Signal Widget"), 6,  544400000);		
+    signalling->Show(true);
+
 }
 
 wxString Dlg::parseNMEASentence(wxString& sentence)

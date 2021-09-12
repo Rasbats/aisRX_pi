@@ -5198,7 +5198,7 @@
                                 <property name="gripper">0</property>
                                 <property name="hidden">0</property>
                                 <property name="id">wxID_ANY</property>
-                                <property name="label"></property>
+                                <property name="label">Signal</property>
                                 <property name="margins"></property>
                                 <property name="markup">0</property>
                                 <property name="max_size"></property>
@@ -5208,7 +5208,7 @@
                                 <property name="minimize_button">0</property>
                                 <property name="minimum_size">50,-1</property>
                                 <property name="moveable">1</property>
-                                <property name="name">m_buttonWind</property>
+                                <property name="name">m_buttonSignal</property>
                                 <property name="pane_border">1</property>
                                 <property name="pane_position"></property>
                                 <property name="pane_size"></property>
@@ -5231,7 +5231,7 @@
                                 <property name="window_extra_style"></property>
                                 <property name="window_name"></property>
                                 <property name="window_style"></property>
-                                <event name="OnButtonClick">OnWind</event>
+                                <event name="OnButtonClick">OnSignalShow</event>
                             </object>
                         </object>
                     </object>

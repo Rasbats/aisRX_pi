@@ -103,9 +103,6 @@ set(SRC
     src/aisRXgui_impl.h
     src/AisMaker.h
     src/AisMaker.cpp
-    src/GribRecord.cpp
-    src/GribRecordSet.h
-    src/GribRecord.h
 	src/AIS_Bitstring.h
 	src/AIS_Bitstring.cpp
 	src/ais2.h
@@ -113,6 +110,10 @@ set(SRC
 	src/ais.cpp
 	src/ais8.cpp
 	src/ais8_200.cpp
+	src/signal.cpp
+	src/signal.h
+	src/widget.cpp
+	src/widget.h
 )
 
 

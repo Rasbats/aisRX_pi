@@ -1,0 +1,338 @@
+#include <wx/wx.h>
+#include "widget.h"
+#include "signal.h"
+
+int num[] = { 75, 150, 225, 300, 375, 450, 525, 600, 675 };
+int asize = sizeof(num)/sizeof(num[1]);
+
+#define NUM_1 11
+#define NUM_2 11
+#define NUM_6 14
+
+static wxPoint SignalArray_1[NUM_1] = { wxPoint( 40, 100), wxPoint( 40, 95),
+        wxPoint( 30, 95 ), wxPoint( 50, 95 ), wxPoint( 40, 95 ), wxPoint( 40, 70 ), wxPoint( 10, 70 ), 
+	    wxPoint( 10, 10 ), wxPoint( 70, 10 ), wxPoint( 70, 70 ), wxPoint( 40, 70 ) };
+
+static wxPoint SignalArray_2[NUM_2] = { wxPoint( 70, 100), wxPoint( 60, 95),
+        wxPoint( 80, 95 ), wxPoint( 50, 95 ), wxPoint( 40, 95 ), wxPoint( 40, 70 ), wxPoint( 10, 70 ), 
+	    wxPoint( 10, 10 ), wxPoint( 70, 10 ), wxPoint( 70, 70 ), wxPoint( 40, 70 ) };
+
+static wxPoint SignalArray_6[NUM_6] = { wxPoint( 90, 160), wxPoint( 90, 155),
+        wxPoint( 80, 155 ), wxPoint( 100, 155 ), wxPoint( 90, 155 ), wxPoint( 90, 130 ), wxPoint( 10, 130 ), 
+	    wxPoint( 10, 10 ), wxPoint( 70, 10 ), wxPoint( 70, 70 ), wxPoint( 10, 70),
+	    wxPoint( 190, 70 ), wxPoint( 190, 130 ), wxPoint( 90, 130 ) };
+
+
+
+Widget::Widget(wxPanel *parent, int id, int signalForm, int signalLights)
+      : wxPanel(parent, id, wxDefaultPosition, wxSize(-1, 300), wxSUNKEN_BORDER)
+{
+ 
+  m_parent = parent;
+
+  Connect(wxEVT_PAINT, wxPaintEventHandler(Widget::OnPaint));
+  Connect(wxEVT_SIZE, wxSizeEventHandler(Widget::OnSize));
+
+  int mySignalForm = signalForm;
+  wxString msg = wxString::Format("%i", mySignalForm);
+  wxMessageBox(msg);
+
+  SetupSignal(signalForm, signalLights);
+
+}
+
+void Widget::SetupSignal(int signalForm, int signalLights) {
+
+	signalForm = 6;
+	switch (signalForm) {
+		case 1: {
+			signal_1 = new Signal;
+			//Usage
+
+			for (int i = 0; i < NUM_1; i++) {
+				points.push_back(SignalArray_1[i]);
+			}
+
+			wxRect rect = wxRect(10, 10, 70, 70);
+			wxPoint lightCentre(40, 40);
+
+			signal_1->myPointList = points;
+			signal_1->myRectangleList.push_back(rect);
+			signal_1->myLightList.push_back(lightCentre);
+
+			signal_1->mySignalForm = signalForm;
+			signal_1->mySignalLights = signalLights;
+			break;
+		}
+		case 6: {
+			signal_6 = new Signal;
+			//Usage
+
+			for (int i = 0; i < NUM_6; i++) {
+				points.push_back(SignalArray_6[i]);
+			}
+			signal_6->myPointList = points;
+
+			wxRect rect1 = wxRect(10, 10, 70, 70);
+			signal_6->myRectangleList.push_back(rect1);
+			wxRect rect2 = wxRect(10, 70, 180, 60);
+			signal_6->myRectangleList.push_back(rect2);
+
+			wxPoint lightCentre1(40, 40);
+			signal_6->myLightList.push_back(lightCentre1);
+			wxPoint lc2(40, 100);
+			signal_6->myLightList.push_back(lc2);
+			wxPoint lc3(100, 100);
+			signal_6->myLightList.push_back(lc3);
+			wxPoint lc4(160, 100);
+			signal_6->myLightList.push_back(lc4);
+
+			signal_6->mySignalForm = signalForm;
+			signal_6->mySignalLights = signalLights;
+			break;
+		}
+	}
+
+	mySignalLights = signalLights;
+	mySignalForm = signalForm;
+
+}
+
+void Widget::OnSignal(int signalForm) {	
+	signalForm = 6;
+	switch (signalForm) {
+		case 1: {
+		
+		wxVector<wxPoint>myPoints = signal_1->myPointList;
+		int numPoints = myPoints.size();
+
+
+		wxPaintDC dc(this);
+		wxPen signalPen;
+		signalPen.SetWidth(2);
+		signalPen.SetColour(90, 80, 60);
+		dc.SetPen(signalPen);
+
+		float xt = myPoints[0].x;
+		float yt = myPoints[0].y;
+
+		int x1 = xt;
+		int y1 = yt;
+
+		int x2, y2;
+
+		x2 = x1;
+		y2 = y1;
+
+		x2 = myPoints[1].x;
+		y2 = myPoints[1].y;
+
+		dc.DrawLine(x1, y1, x2, y2);
+
+		// Walk thru the point list
+		for (int ip = 1; ip < numPoints; ip++) {
+			x2 = myPoints[ip].x;
+			y2 = myPoints[ip].y;
+
+			dc.DrawLine(x1, y1, x2, y2);
+
+			x1 = x2;
+			y1 = y2;
+		}
+
+		wxPoint circleCentre = signal_1->myLightList.at(0);
+		// draw light
+		dc.DrawCircle(circleCentre, 20);
+
+
+		wxRect myRect = signal_1->myRectangleList.at(0);
+		// fill rectangle of light
+		dc.SetBrush(wxBrush(wxColour("LIGHT GREY")));
+		dc.DrawRectangle(myRect);
+
+
+		// draw light circle
+		dc.SetPen(wxPen(wxColour("BLACK")));
+		dc.DrawCircle(circleCentre, 20);
+
+		dc.SetBrush(wxBrush(wxColour("RED")));
+		dc.DrawCircle(circleCentre, 20);
+		break;
+		}
+
+		case 6: {
+		
+		wxVector<wxPoint>myPoints = signal_6->myPointList;
+		int numPoints = myPoints.size();
+
+
+		wxPaintDC dc(this);
+		wxPen signalPen;
+		signalPen.SetWidth(2);
+		signalPen.SetColour(90, 80, 60);
+		dc.SetPen(signalPen);
+
+		float xt = myPoints[0].x;
+		float yt = myPoints[0].y;
+
+		int x1 = xt;
+		int y1 = yt;
+
+		int x2, y2;
+
+		x2 = x1;
+		y2 = y1;
+
+		x2 = myPoints[1].x;
+		y2 = myPoints[1].y;
+
+		dc.DrawLine(x1, y1, x2, y2);
+
+		// Walk thru the point list
+		for (int ip = 1; ip < numPoints; ip++) {
+			x2 = myPoints[ip].x;
+			y2 = myPoints[ip].y;
+
+			dc.DrawLine(x1, y1, x2, y2);
+
+			x1 = x2;
+			y1 = y2;
+		}
+
+		wxRect myRect;
+		wxPoint circleCentre;  // = signal_6->myLightList.at(0);
+		// draw light
+		//dc.DrawCircle(circleCentre, 20);
+
+		int rlz = signal_6->myRectangleList.size();
+		for (int ir = 0; ir < rlz; ir++) {
+			myRect = signal_6->myRectangleList.at(ir);
+			// fill rectangle of light
+			dc.SetBrush(wxBrush(wxColour("LIGHT GREY")));
+			dc.DrawRectangle(myRect);
+		}
+
+		int lz = signal_6->myLightList.size();
+		for (int lr = 0; lr < lz; lr++) {
+			// draw light circle
+			circleCentre = signal_6->myLightList.at(lr); 
+
+			dc.SetPen(wxPen(wxColour("BLACK")));
+			dc.DrawCircle(circleCentre, 20);
+
+			wxString myStringLights = wxString::Format(wxT("%i"), mySignalLights);
+			myStringLights.Mid(1, 1);
+
+
+			dc.SetBrush(wxBrush(wxColour("RED")));
+			dc.DrawCircle(circleCentre, 20);
+		}
+		break;
+		}
+
+	}
+}
+
+
+void Widget::OnPaint(wxPaintEvent& event)
+{
+  wxFont font(9, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL,
+            wxFONTWEIGHT_NORMAL, false, wxT("Courier 10 Pitch"));
+
+
+  OnSignal(mySignalForm);
+  return;
+
+  wxPaintDC dc(this);
+  dc.SetFont(font);
+  wxSize size = GetSize();
+  int width = size.GetWidth();
+  int height = size.GetHeight();
+
+  Signalling *signalling = (Signalling *) m_parent->GetParent();
+
+  int cur_width = signalling->cur_width;
+  int cur_height = height;
+
+  //int step = (int) round(width / 10.0);
+
+
+  //int till = (int) ((width / 750.0) * cur_width);
+  //int full = (int) ((width / 750.0) * 700);
+
+  /*
+  dc.SetPen(wxPen(wxColour(255, 255, 184)));
+  dc.SetBrush(wxBrush(wxColour(255, 255, 184)));
+ // dc.DrawCircle(30, 30, 30);
+
+  dc.SetPen(wxPen(wxColour(90, 80, 60)));
+ // dc.DrawLine(30, 30, 60, 30);
+
+      // Move to the first point
+
+    float xt = SignalArray_1[0].x;
+    float yt = SignalArray_1[0].y;
+
+	int x1 = xt;
+	int y1 = yt;
+
+	int x2, y2;
+
+	x2 = x1;
+	y2 = y1;
+
+	 x2 = SignalArray_1[1].x;
+     y2 = SignalArray_1[1].y;
+
+	 dc.DrawLine( x1 , y1, x2, y2);	
+
+    // Walk thru the point list
+    for( int ip = 1; ip < NUM_SIGNAL_POINTS; ip++ ) {
+        x2 = SignalArray_1[ip].x;
+        y2 = SignalArray_1[ip].y;
+		
+		dc.DrawLine( x1, y1, x2, y2 );		
+
+		x1 = x2;
+        y1 = y2;            			
+     }
+
+	dc.DrawCircle(27, 27, 20);
+	dc.SetBrush(wxBrush(wxColour("LIGHT GREY")));
+	wxRect myRect = wxRect(5, 5, 50, 50);
+	dc.DrawRectangle(myRect);
+	dc.SetBrush(wxBrush(wxColour("RED")));
+    dc.DrawCircle(27, 27, 20);
+
+/*
+  if (cur_width >= 700) {
+
+      dc.SetPen(wxPen(wxColour(255, 255, 184))); 
+      dc.SetBrush(wxBrush(wxColour(255, 255, 184)));
+      dc.DrawRectangle(0, 0, full, cur_height);
+      dc.SetPen(wxPen(wxColour(255, 175, 175)));
+      dc.SetBrush(wxBrush(wxColour(255, 175, 175)));
+      dc.DrawRectangle(full, 0, till-full, cur_height);
+
+  } else { 
+
+      dc.SetPen(wxPen(wxColour(255, 255, 184)));
+      dc.SetBrush(wxBrush(wxColour(255, 255, 184)));
+      dc.DrawRectangle(0, 0, 90, cur_height);
+
+  }
+*/
+  //dc.SetPen(wxPen(wxColour(90, 80, 60)));
+ // for ( int i=1; i <= asize; i++ ) {
+
+ // dc.DrawLine(i*step, 0, i*step, 6);
+ // wxSize size = dc.GetTextExtent(wxString::Format(wxT("%d"), num[i-1]));
+ // dc.DrawText(wxString::Format(wxT("%d"), num[i-1]), 
+ //     i*step-size.GetWidth()/2, 8);
+ //  }
+}
+
+void Widget::OnSize(wxSizeEvent& event)
+{
+  Refresh();
+}
