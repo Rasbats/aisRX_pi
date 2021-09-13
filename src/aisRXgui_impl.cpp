@@ -365,7 +365,7 @@ void Dlg::OnTest(wxCommandEvent& event)
 	//string myMsg = "8000h>@j:@2`5K=D1fRS6@00te@0";
 
 	//wxString mySentence = "!AIVDM,1,1,,A,8000000j:@2`004dBhpb0WVGsP00,0*61";
-	string myMsg = parseNMEASentence(mySentence);
+	string myMsg = parseNMEASentence(mySentence).ToStdString();
 
 	const char* payload1 =  myMsg.c_str();
 	mylibais::Ais8 myDacFi(payload1, 0);
