@@ -115,8 +115,6 @@ set(SRC
 	src/widget.cpp
 	src/widget.h
 	wxsqlite3-3.5.9/src/wxsqlite3.cpp
-    sqlite-amalgamation-3260000/sqlite3.c
-
 )
 
 INCLUDE_DIRECTORIES(wxsqlite3-3.5.9/include sqlite-amalgamation-3260000)
@@ -177,6 +175,10 @@ if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
   
   add_subdirectory("libs/wxJSON")
   target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
+
+  add_subdirectory("libs/sqlite")
+  target_link_libraries(${PACKAGE_NAME} sqlite::sqlite)
+
 endif ()
 
 configure_file(
