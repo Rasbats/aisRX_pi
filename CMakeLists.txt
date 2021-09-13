@@ -114,7 +114,6 @@ set(SRC
 		src/signal.h
 		src/widget.cpp
 		src/widget.h
-	  wxsqlite3-3.5.9/src/wxsqlite3.cpp
 )
 
 INCLUDE_DIRECTORIES(wxsqlite3-3.5.9/include sqlite-amalgamation-3260000)
@@ -179,6 +178,8 @@ if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
   add_subdirectory("libs/sqlite")
   target_link_libraries(${PACKAGE_NAME} sqlite::sqlite)
 
+  add_subdirectory("libs/wxsqlite")
+  target_link_libraries(${PACKAGE_NAME} wxsqlite::wxsqlite)
 endif ()
 
 configure_file(
