@@ -56,6 +56,7 @@
 
 #include <wx/hashmap.h>
 #include <memory>
+#include <wx/wxsqlite3.h>
 
 #ifdef __WXOSX__
 #define aisRX_DLG_STYLE                                                   \
@@ -170,6 +171,8 @@ std::unique_ptr<mylibais::AisMsg> CreateAisMsg(const string &body,
 }  // namespace mylibais
 
 
+
+
 class Dlg : public aisRXBase {
 public:
     Dlg(wxWindow* parent, wxWindowID id = wxID_ANY,
@@ -214,15 +217,14 @@ public:
 
     AIS_Target_Data* m_pLatestTargetData;
 
+	
+
 protected:
     bool m_bNeedsGrib;
 
 private:
-    wxString AIVDM;
-
-    double followDir;
-
-    wxDateTime dt;
+	wxString AIVDM;
+	
 
 	string m_sPayload;
 

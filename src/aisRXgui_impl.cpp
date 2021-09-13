@@ -37,6 +37,8 @@
 #include "widget.h"
 #include <memory>
 
+#include "wx/wxsqlite3.h"
+
 using mylibais::AisMsg;
 using std::unique_ptr;
 using namespace mylibais;
@@ -74,7 +76,7 @@ Dlg::Dlg(wxWindow* parent, wxWindowID id, const wxString& title,
 	AISTargetNamesC = new AIS_Target_Name_Hash;
     AISTargetNamesNC = new AIS_Target_Name_Hash;
 	pTargetData = new AIS_Target_Data;
-	
+		
 }
 
 namespace mylibais {
@@ -665,6 +667,5 @@ void Dlg::getAis8_200_26(string rawPayload) {
 	m_textValue3->SetValue(outvalue3);
 	
 	Refresh();
-
 }
 
