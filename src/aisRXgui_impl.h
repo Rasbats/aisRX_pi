@@ -182,7 +182,7 @@ public:
     wxString DateTimeToDateString(wxDateTime myDT);
 
     wxString makeCheckSum(wxString mySentence);
-
+	Signalling *signalling;
 
     AisMaker* myAIS;
 	AisMaker* myaisRX;

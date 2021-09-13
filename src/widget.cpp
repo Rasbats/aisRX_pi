@@ -22,9 +22,9 @@ static wxPoint SignalArray_6[NUM_6] = { wxPoint( 90, 160), wxPoint( 90, 155),
 	    wxPoint( 10, 10 ), wxPoint( 70, 10 ), wxPoint( 70, 70 ), wxPoint( 10, 70),
 	    wxPoint( 190, 70 ), wxPoint( 190, 130 ), wxPoint( 90, 130 ) };
 
+static wxColour ColourArray[8] = {"LIGHT GREY", "LIGHT GREY", "WHITE", "YELLOW", "GREEN", "RED", "FLW", "FLY" };
 
-
-Widget::Widget(wxPanel *parent, int id, int signalForm, int signalLights)
+Widget::Widget(wxPanel *parent, int id, int signalForm, wxString signalLights)
       : wxPanel(parent, id, wxDefaultPosition, wxSize(-1, 300), wxSUNKEN_BORDER)
 {
  
@@ -33,7 +33,7 @@ Widget::Widget(wxPanel *parent, int id, int signalForm, int signalLights)
   Connect(wxEVT_PAINT, wxPaintEventHandler(Widget::OnPaint));
   Connect(wxEVT_SIZE, wxSizeEventHandler(Widget::OnSize));
 
-  int mySignalForm = signalForm;
+  mySignalForm = signalForm;
   wxString msg = wxString::Format("%i", mySignalForm);
   wxMessageBox(msg);
 
@@ -41,9 +41,10 @@ Widget::Widget(wxPanel *parent, int id, int signalForm, int signalLights)
 
 }
 
-void Widget::SetupSignal(int signalForm, int signalLights) {
+void Widget::SetupSignal(int signalForm, wxString signalLights) {
 
-	signalForm = 6;
+	
+	//signalForm = 6;
 	switch (signalForm) {
 		case 1: {
 			signal_1 = new Signal;
@@ -61,7 +62,18 @@ void Widget::SetupSignal(int signalForm, int signalLights) {
 			signal_1->myLightList.push_back(lightCentre);
 
 			signal_1->mySignalForm = signalForm;
-			signal_1->mySignalLights = signalLights;
+
+			wxString stringLights = signalLights;
+			wxString myLight;
+			int strLength = stringLights.length();
+			for (int ls = 0; ls < strLength ; ls++) {
+				myLight = stringLights.Mid(ls, 1);
+				int myLightNumber = atoi(myLight); // for 0 based array
+				wxColour myC = wxColour(ColourArray[myLightNumber]);
+				signal_1->myColourList.push_back(myC);
+			}
+
+			//signal_1->mySignalLights = signalLights;
 			break;
 		}
 		case 6: {
@@ -88,24 +100,31 @@ void Widget::SetupSignal(int signalForm, int signalLights) {
 			signal_6->myLightList.push_back(lc4);
 
 			signal_6->mySignalForm = signalForm;
-			signal_6->mySignalLights = signalLights;
+
+			
+			wxString stringLights = signalLights;
+			wxString myLight;
+			int strLength = stringLights.length();
+			for (int ls = 0; ls < strLength; ls++) {
+				myLight = stringLights.Mid(ls, 1);
+				int myLightNumber = atoi(myLight);
+				wxColour myC = ColourArray[myLightNumber];
+				signal_6->myColourList.push_back(myC);
+			}
+			
 			break;
 		}
 	}
-
-	mySignalLights = signalLights;
-	mySignalForm = signalForm;
-
+	//wxMessageBox("here");
 }
 
 void Widget::OnSignal(int signalForm) {	
-	signalForm = 6;
-	switch (signalForm) {
+	int Form = signalForm;
+	switch (Form) {
 		case 1: {
 		
 		wxVector<wxPoint>myPoints = signal_1->myPointList;
 		int numPoints = myPoints.size();
-
 
 		wxPaintDC dc(this);
 		wxPen signalPen;
@@ -151,11 +170,15 @@ void Widget::OnSignal(int signalForm) {
 		dc.DrawRectangle(myRect);
 
 
+
 		// draw light circle
 		dc.SetPen(wxPen(wxColour("BLACK")));
 		dc.DrawCircle(circleCentre, 20);
 
-		dc.SetBrush(wxBrush(wxColour("RED")));
+		wxVector<wxColour>myColours = signal_1->myColourList;
+		wxColour lightColour = myColours.at(0);
+		
+		dc.SetBrush(wxBrush(lightColour));
 		dc.DrawCircle(circleCentre, 20);
 		break;
 		}
@@ -208,7 +231,7 @@ void Widget::OnSignal(int signalForm) {
 		for (int ir = 0; ir < rlz; ir++) {
 			myRect = signal_6->myRectangleList.at(ir);
 			// fill rectangle of light
-			dc.SetBrush(wxBrush(wxColour("LIGHT GREY")));
+			dc.SetBrush(wxBrush(ColourArray[1]));
 			dc.DrawRectangle(myRect);
 		}
 
@@ -220,11 +243,10 @@ void Widget::OnSignal(int signalForm) {
 			dc.SetPen(wxPen(wxColour("BLACK")));
 			dc.DrawCircle(circleCentre, 20);
 
-			wxString myStringLights = wxString::Format(wxT("%i"), mySignalLights);
-			myStringLights.Mid(1, 1);
+			wxVector<wxColour>myColours = signal_6->myColourList;
+		    wxColour lightColour = myColours.at(lr);
 
-
-			dc.SetBrush(wxBrush(wxColour("RED")));
+			dc.SetBrush(wxBrush(lightColour));
 			dc.DrawCircle(circleCentre, 20);
 		}
 		break;
@@ -334,5 +356,5 @@ void Widget::OnPaint(wxPaintEvent& event)
 
 void Widget::OnSize(wxSizeEvent& event)
 {
-  Refresh();
+ // Refresh();
 }

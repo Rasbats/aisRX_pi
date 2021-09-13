@@ -3,15 +3,14 @@
 
 int ID_SLIDER = 1;
 
-Signalling::Signalling(const wxString& title, int signalForm, int signalLights)
+Signalling::Signalling(const wxString& title, int signalForm, wxString signalLights)
        : wxFrame(NULL, wxID_ANY, title, wxDefaultPosition, wxSize(400, 400))
 {
 
   int newSignalForm = signalForm;
   wxString mySignalForm = wxString::Format("%i", newSignalForm);
 
-  int newSignalLights = signalLights;
-  wxString mySignalLights = wxString::Format("%i", newSignalLights);
+  wxString mySignalLights = signalLights;
 
   cur_width = 75;
 

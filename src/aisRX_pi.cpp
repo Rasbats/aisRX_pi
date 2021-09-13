@@ -356,6 +356,9 @@ void aisRX_pi::OnaisRXDialogClose()
     m_bShowaisRX = false;
     SetToolbarItemState(m_leftclick_tool_id, m_bShowaisRX);
     m_pDialog->Hide();
+	if (m_pDialog->signalling != NULL) {
+		m_pDialog->signalling->Close();
+	}
     SaveConfig();
 
     RequestRefresh(m_parent_window); // refresh main window

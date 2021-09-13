@@ -305,7 +305,7 @@ void Dlg::GoToStandby()
 
 void Dlg::OnClose(wxCloseEvent& event)
 {
-
+	
     plugin->OnaisRXDialogClose();
 }
 
@@ -410,7 +410,12 @@ void Dlg::OnTest(wxCommandEvent& event)
 
 void Dlg::OnSignalShow(wxCommandEvent& event) {
 
-	Signalling *signalling = new Signalling(wxT("The Signal Widget"), 6,  544400000);		
+	plugin->m_pDialog->m_notebookMessage->SetSelection(0);
+	wxString form = plugin->m_pDialog->m_textSignalForm->GetValue();
+	int m_form = atoi(form);
+	wxString m_lights = plugin->m_pDialog->m_textLightStatus->GetValue();
+	
+	signalling = new Signalling(wxT("Signal Display"), m_form,  m_lights);		
     signalling->Show(true);
 
 }

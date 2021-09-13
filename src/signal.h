@@ -7,9 +7,9 @@
 class Signalling : public wxFrame
 {
 public:
-  Signalling(const wxString& title, int signalForm, int signalLights);
+  Signalling(const wxString& title, int signalForm, wxString signalLights);
   int signalForm;
-  int signalLights;
+  //int signalLights;
   void OnScroll(wxScrollEvent& event);
   int GetCurWidth();
 
