@@ -21,7 +21,7 @@ if (NOT SQLITE_FOUND OR NOT USE_SYSTEM_SQLITE)
   )
   target_link_libraries(_SQLITE INTERFACE SQLITE3)
   target_include_directories(
-    _SQLITE INTERFACE ${CMAKE_CURRENT_LIST_DIR}/include
+    SQLITE3 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include
   )
 
   # We do not need extensions, and using them in a static library
