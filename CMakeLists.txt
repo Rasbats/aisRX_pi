@@ -116,7 +116,6 @@ set(SRC
 		src/widget.h
 )
 
-INCLUDE_DIRECTORIES(wxsqlite3-3.5.9/include sqlite-amalgamation-3260000)
 # -------- Setup completed, build the plugin --------
 #
 add_library(${CMAKE_PROJECT_NAME} SHARED ${SRC})
