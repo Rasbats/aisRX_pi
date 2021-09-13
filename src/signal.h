@@ -9,7 +9,6 @@ class Signalling : public wxFrame
 public:
   Signalling(const wxString& title, int signalForm, wxString signalLights);
   int signalForm;
-  //int signalLights;
   void OnScroll(wxScrollEvent& event);
   int GetCurWidth();
 

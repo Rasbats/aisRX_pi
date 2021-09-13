@@ -114,9 +114,12 @@ set(SRC
 	src/signal.h
 	src/widget.cpp
 	src/widget.h
+	wxsqlite3-3.5.9/src/wxsqlite3.cpp
+    sqlite-amalgamation-3260000/sqlite3.c
+
 )
 
-
+INCLUDE_DIRECTORIES(wxsqlite3-3.5.9/include sqlite-amalgamation-3260000)
 # -------- Setup completed, build the plugin --------
 #
 add_library(${CMAKE_PROJECT_NAME} SHARED ${SRC})

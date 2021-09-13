@@ -11,7 +11,6 @@ public:
 	wxVector<wxPoint> myLightList;
 	wxVector<wxRect> myRectangleList;
 	wxVector<int> mySignalColours;
-	//int mySignalLights;
 	int mySignalForm;
 	wxVector<wxColour> myColourList;
 
@@ -27,11 +26,8 @@ public:
   Signal *signal_1;
   Signal *signal_6;
 
-  //int mySignalLights;
   int mySignalForm;
   
-
-  void OnSize(wxSizeEvent& event);
   void OnPaint(wxPaintEvent& event);  
   void SetupSignal(int signalForm, wxString signalLights);
   void OnSignal(int signalForm);

@@ -31,7 +31,6 @@ Widget::Widget(wxPanel *parent, int id, int signalForm, wxString signalLights)
   m_parent = parent;
 
   Connect(wxEVT_PAINT, wxPaintEventHandler(Widget::OnPaint));
-  Connect(wxEVT_SIZE, wxSizeEventHandler(Widget::OnSize));
 
   mySignalForm = signalForm;
   wxString msg = wxString::Format("%i", mySignalForm);
@@ -263,98 +262,4 @@ void Widget::OnPaint(wxPaintEvent& event)
 
 
   OnSignal(mySignalForm);
-  return;
-
-  wxPaintDC dc(this);
-  dc.SetFont(font);
-  wxSize size = GetSize();
-  int width = size.GetWidth();
-  int height = size.GetHeight();
-
-  Signalling *signalling = (Signalling *) m_parent->GetParent();
-
-  int cur_width = signalling->cur_width;
-  int cur_height = height;
-
-  //int step = (int) round(width / 10.0);
-
-
-  //int till = (int) ((width / 750.0) * cur_width);
-  //int full = (int) ((width / 750.0) * 700);
-
-  /*
-  dc.SetPen(wxPen(wxColour(255, 255, 184)));
-  dc.SetBrush(wxBrush(wxColour(255, 255, 184)));
- // dc.DrawCircle(30, 30, 30);
-
-  dc.SetPen(wxPen(wxColour(90, 80, 60)));
- // dc.DrawLine(30, 30, 60, 30);
-
-      // Move to the first point
-
-    float xt = SignalArray_1[0].x;
-    float yt = SignalArray_1[0].y;
-
-	int x1 = xt;
-	int y1 = yt;
-
-	int x2, y2;
-
-	x2 = x1;
-	y2 = y1;
-
-	 x2 = SignalArray_1[1].x;
-     y2 = SignalArray_1[1].y;
-
-	 dc.DrawLine( x1 , y1, x2, y2);	
-
-    // Walk thru the point list
-    for( int ip = 1; ip < NUM_SIGNAL_POINTS; ip++ ) {
-        x2 = SignalArray_1[ip].x;
-        y2 = SignalArray_1[ip].y;
-		
-		dc.DrawLine( x1, y1, x2, y2 );		
-
-		x1 = x2;
-        y1 = y2;            			
-     }
-
-	dc.DrawCircle(27, 27, 20);
-	dc.SetBrush(wxBrush(wxColour("LIGHT GREY")));
-	wxRect myRect = wxRect(5, 5, 50, 50);
-	dc.DrawRectangle(myRect);
-	dc.SetBrush(wxBrush(wxColour("RED")));
-    dc.DrawCircle(27, 27, 20);
-
-/*
-  if (cur_width >= 700) {
-
-      dc.SetPen(wxPen(wxColour(255, 255, 184))); 
-      dc.SetBrush(wxBrush(wxColour(255, 255, 184)));
-      dc.DrawRectangle(0, 0, full, cur_height);
-      dc.SetPen(wxPen(wxColour(255, 175, 175)));
-      dc.SetBrush(wxBrush(wxColour(255, 175, 175)));
-      dc.DrawRectangle(full, 0, till-full, cur_height);
-
-  } else { 
-
-      dc.SetPen(wxPen(wxColour(255, 255, 184)));
-      dc.SetBrush(wxBrush(wxColour(255, 255, 184)));
-      dc.DrawRectangle(0, 0, 90, cur_height);
-
-  }
-*/
-  //dc.SetPen(wxPen(wxColour(90, 80, 60)));
- // for ( int i=1; i <= asize; i++ ) {
-
- // dc.DrawLine(i*step, 0, i*step, 6);
- // wxSize size = dc.GetTextExtent(wxString::Format(wxT("%d"), num[i-1]));
- // dc.DrawText(wxString::Format(wxT("%d"), num[i-1]), 
- //     i*step-size.GetWidth()/2, 8);
- //  }
-}
-
-void Widget::OnSize(wxSizeEvent& event)
-{
- // Refresh();
 }

@@ -304,8 +304,7 @@ void Dlg::GoToStandby()
 }
 
 void Dlg::OnClose(wxCloseEvent& event)
-{
-	
+{	
     plugin->OnaisRXDialogClose();
 }
 

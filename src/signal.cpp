@@ -18,11 +18,7 @@ Signalling::Signalling(const wxString& title, int signalForm, wxString signalLig
   wxPanel *centerPanel = new wxPanel(panel, wxID_ANY);
 
   m_textCtrl1 = new wxTextCtrl( centerPanel, wxID_ANY, mySignalForm, wxDefaultPosition, wxDefaultSize, 0 );
-  m_textCtrl2 = new wxTextCtrl( centerPanel, wxID_ANY, mySignalLights, wxDefaultPosition, wxDefaultSize, 0 );
-  
- // m_slider = new wxSlider(centerPanel, ID_SLIDER, mySignal, 0, 750, wxPoint(-1, -1), 
- //     wxSize(150, -1), wxSL_LABELS);
-  
+  m_textCtrl2 = new wxTextCtrl( centerPanel, wxID_ANY, mySignalLights, wxDefaultPosition, wxDefaultSize, 0 );  
   
 wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
@@ -42,13 +38,8 @@ wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   vbox->Add(hbox, 0, wxEXPAND);
 
   panel->SetSizer(vbox);
- // m_slider->SetFocus();
-
- // Connect(ID_SLIDER, wxEVT_COMMAND_SLIDER_UPDATED, 
- //     wxScrollEventHandler(Burning::OnScroll)); 
 
   Centre();
-
 }
 
 void Signalling::OnScroll(wxScrollEvent& WXUNUSED(event))
