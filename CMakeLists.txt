@@ -93,30 +93,28 @@ set(CPACK_PACKAGE_HOMEPAGE_URL https://github.com/Rasbats/aisRX_pi)
 set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/aisRX.html)
 
 set(SRC
-    src/aisRX_pi.h
-    src/aisRX_pi.cpp
-    src/icons.h
-    src/icons.cpp
-    src/aisRXgui.h
+		src/ais2.h
+		src/ais8_200.cpp
+		src/ais8.cpp
+		src/ais_bitset2.cpp
+		src/AIS_Bitstring.cpp
+		src/AIS_Bitstring.h
+		src/ais.cpp
+    src/AisMaker.cpp
+    src/AisMaker.h
     src/aisRXgui.cpp
+    src/aisRXgui.h
     src/aisRXgui_impl.cpp
     src/aisRXgui_impl.h
-    src/AisMaker.h
-    src/AisMaker.cpp
-	src/AIS_Bitstring.h
-	src/AIS_Bitstring.cpp
-	src/ais2.h
-	src/ais_bitset2.cpp
-	src/ais.cpp
-	src/ais8.cpp
-	src/ais8_200.cpp
-	src/signal.cpp
-	src/signal.h
-	src/widget.cpp
-	src/widget.h
-	wxsqlite3-3.5.9/src/wxsqlite3.cpp
-    sqlite-amalgamation-3260000/sqlite3.c
-
+    src/aisRX_pi.cpp
+    src/aisRX_pi.h
+    src/icons.cpp
+    src/icons.h
+		src/signal.cpp
+		src/signal.h
+		src/widget.cpp
+		src/widget.h
+	  wxsqlite3-3.5.9/src/wxsqlite3.cpp
 )
 
 INCLUDE_DIRECTORIES(wxsqlite3-3.5.9/include sqlite-amalgamation-3260000)
@@ -177,6 +175,10 @@ if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
   
   add_subdirectory("libs/wxJSON")
   target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
+
+  add_subdirectory("libs/sqlite")
+  target_link_libraries(${PACKAGE_NAME} sqlite::sqlite)
+
 endif ()
 
 configure_file(
