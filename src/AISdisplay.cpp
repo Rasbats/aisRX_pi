@@ -65,5 +65,6 @@ void AISdisplay::OnHideDisplay(wxCommandEvent& event) {
 void AISdisplay::OnList(wxCommandEvent& event) {
 
 	//
+	//
 
 }
