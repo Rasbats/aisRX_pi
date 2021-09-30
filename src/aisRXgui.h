@@ -28,7 +28,6 @@
 #include <wx/dialog.h>
 #include <wx/checkbox.h>
 #include <wx/statbox.h>
-#include <wx/tglbtn.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -119,23 +118,28 @@ class aisRXBase : public wxDialog
 		wxStaticText* m_staticText511;
 		wxTextCtrl* m_textValue3;
 		wxButton* m_buttonStandby;
-		wxButton* m_buttonAuto;
+		wxButton* m_buttonMessages;
 		wxButton* m_button7;
 		wxButton* m_buttonSignal;
+		wxButton* m_button71;
+		wxButton* m_button72;
+		wxButton* m_button73;
+		wxButton* m_button74;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
-		virtual void OnStandby( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAuto( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnData( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnLogging( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTest( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSignalShow( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMessageList( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTimer( wxTimerEvent& event ) { event.Skip(); }
 
 
 	public:
 		wxTimer m_timer1;
 
-		aisRXBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AIS Rx"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 401,591 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		aisRXBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AIS Rx"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 401,591 ), long style = wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX|wxRESIZE_BORDER );
 		~aisRXBase();
 
 };
@@ -159,28 +163,6 @@ class aisRXPreferences : public wxDialog
 
 		aisRXPreferences( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxCAPTION|wxRESIZE_BORDER );
 		~aisRXPreferences();
-
-};
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class AISdisplay
-///////////////////////////////////////////////////////////////////////////////
-class AISdisplay : public wxDialog
-{
-	private:
-
-	protected:
-		wxNotebook* m_notebook1;
-		wxPanel* m_panelAIS;
-		wxStdDialogButtonSizer* m_sdbSizer1;
-		wxButton* m_sdbSizer1OK;
-
-	public:
-		wxTextCtrl* m_tcAIS;
-		wxToggleButton* m_tbAISPause;
-
-		AISdisplay( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AIS Log"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 701,370 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
-		~AISdisplay();
 
 };
 

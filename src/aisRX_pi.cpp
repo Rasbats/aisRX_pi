@@ -39,6 +39,8 @@
 class aisRX_pi;
 class Dlg;
 
+#define DATABASE_NAME "RIS.db"
+
 using namespace std;
 
 // the class factories, used to create and destroy instances of the PlugIn
@@ -102,7 +104,6 @@ aisRX_pi::~aisRX_pi(void)
     if (m_pDialog) {
 
         wxFileConfig* pConf = GetOCPNConfigObject();
-        ;
 
         if (pConf) {
 
@@ -112,6 +113,8 @@ aisRX_pi::~aisRX_pi(void)
             pConf->Write(_T("aisRXUseFile"), m_bCopyUseFile);
             pConf->Write(_T("aisRXMMSI"), m_tCopyMMSI);
         }
+
+
     }
 }
 
@@ -119,17 +122,9 @@ int aisRX_pi::Init(void)
 {
     AddLocaleCatalog(_T("opencpn-aisRX_pi"));
 
-	m_db_thread_running = false;
+	      //      Establish the location of the database file
+     
 
-    m_bDBUsable = true;
-
-    m_bWaitForDB = true;
-
-    finishing = false;
-
-    m_db = initDB();
-
-    wxSQLite3ResultSet set;
 
     // Set some default private member parameters
     m_hr_dialog_x = 40;
@@ -147,6 +142,31 @@ int aisRX_pi::Init(void)
 
     //    And load the configuration items
     LoadConfig();
+
+	wxString dbpath;
+
+	wxFileName fn;
+    wxString tmp_path;
+
+    tmp_path = GetPluginDataDir("aisRX_pi");
+    fn.SetPath(tmp_path);
+    fn.AppendDir(_T("data"));
+
+    fn.SetFullName(_T("RIS.db"));
+	dbpath = fn.GetFullPath();
+
+      bool newDB = !wxFileExists(dbpath);
+      b_dbUsable = true;
+
+	  void* cache; // SOLUTION
+
+	ret = sqlite3_open_v2(dbpath.mb_str(), &m_database, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL);
+      if (ret != SQLITE_OK)
+      {
+          wxLogMessage (_T("AISRX_PI: cannot open '%s': %s\n"), DATABASE_NAME, sqlite3_errmsg (m_database));
+	      sqlite3_close (m_database);
+	      b_dbUsable = false;
+      }
 
     //    This PlugIn needs a toolbar icon, so request its insertion
     if (m_baisRXShowIcon) {
@@ -173,8 +193,16 @@ int aisRX_pi::Init(void)
 
 bool aisRX_pi::DeInit(void)
 {
-    //    Record the dialog position
-    if (NULL != m_pDialog) {
+   
+	
+
+		//    Record the dialog position
+	if (NULL != m_pDialog) {
+
+		if (m_pDialog->m_timer1.IsRunning()) { // need to stop the timer or crash on exit
+            m_pDialog->m_timer1.Stop();
+        }
+
         // Capture dialog position
         wxPoint p = m_pDialog->GetPosition();
         wxRect r = m_pDialog->GetRect();
@@ -183,16 +211,32 @@ bool aisRX_pi::DeInit(void)
         SetaisRXDialogSizeX(r.GetWidth());
         SetaisRXDialogSizeY(r.GetHeight());
 
-        
-        m_pDialog->Close();
-        delete m_pDialog;
-        m_pDialog = NULL;
+		
 
-        m_bShowaisRX = false;
-        SetToolbarItemState(m_leftclick_tool_id, m_bShowaisRX);
-    }
+		if(m_pDialog) {
+			m_pDialog->Close();
+			delete m_pDialog;
+			m_pDialog = NULL;
+		}
 
-    SaveConfig();
+    
+	if (m_paisRXOverlayFactory) {
+			delete m_paisRXOverlayFactory;
+			m_paisRXOverlayFactory = NULL;
+	}		
+
+    m_bShowaisRX = false;
+    SetToolbarItemState(m_leftclick_tool_id, m_bShowaisRX);
+
+	}
+    		
+	
+	SaveConfig();
+    
+	
+	int m = sqlite3_close(m_database);
+
+	wxLogMessage (_T("AISRX_PI: Close Msg: %i\n"), m);
 
     RequestRefresh(m_parent_window); // refresh main window
 
@@ -278,6 +322,8 @@ void aisRX_pi::OnToolbarToolCallback(int id)
         
         m_pDialog->Move(wxPoint(m_hr_dialog_x, m_hr_dialog_y));
         m_pDialog->SetSize(m_hr_dialog_sx, m_hr_dialog_sy);
+
+
     }
 
     // m_pDialog->Fit();
@@ -289,6 +335,12 @@ void aisRX_pi::OnToolbarToolCallback(int id)
         m_pDialog->Move(wxPoint(m_hr_dialog_x, m_hr_dialog_y));
         m_pDialog->SetSize(m_hr_dialog_sx, m_hr_dialog_sy);
         m_pDialog->Show();
+
+        // Create the drawing factory
+        m_paisRXOverlayFactory = new aisRXOverlayFactory(*m_pDialog );
+        m_paisRXOverlayFactory->SetParentSize( m_display_width, m_display_height);		
+        
+ 
 
     } else {
         m_pDialog->Hide();
@@ -308,6 +360,35 @@ void aisRX_pi::OnToolbarToolCallback(int id)
 
     RequestRefresh(m_parent_window); // refresh main window
 }
+
+bool aisRX_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
+{
+	
+	if(!m_pDialog ||
+       !m_pDialog->IsShown() ||
+       !m_paisRXOverlayFactory)
+        return false;
+
+    m_pDialog->SetViewPort( vp );
+    m_paisRXOverlayFactory->RenderaisRXOverlay ( dc, vp );
+    return true;
+}
+
+bool aisRX_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
+{
+	
+
+	if(!m_pDialog ||
+       !m_pDialog->IsShown() ||
+       !m_paisRXOverlayFactory)
+        return false;
+
+    m_pDialog->SetViewPort( vp );
+    m_paisRXOverlayFactory->RenderGLaisRXOverlay ( pcontext, vp );
+    return true;
+}
+
+
 
 void aisRX_pi::SetAISSentence(wxString &sentence) {
     if (NULL != m_pDialog) m_pDialog->SetAISMessage(sentence);
@@ -368,12 +449,8 @@ void aisRX_pi::OnaisRXDialogClose()
     m_bShowaisRX = false;
     SetToolbarItemState(m_leftclick_tool_id, m_bShowaisRX);
     m_pDialog->Hide();
-	if (m_pDialog->signalling != NULL) {
-		m_pDialog->signalling->Close();
-	}
-    SaveConfig();
-
-    RequestRefresh(m_parent_window); // refresh main window
+	
+    SaveConfig();   
 }
 
 void aisRX_pi::SetNMEASentence(wxString& sentence)
@@ -414,110 +491,18 @@ void aisRX_pi::SetNMEASentence(wxString& sentence)
     }
 }
 
-wxSQLite3Database* aisRX_pi::initDB() {
-    bool have_to_create = false;
-    wxString sDBName = *GetpPrivateApplicationDataLocation() + wxFileName::GetPathSeparator() + wxT("RIS.db");
-
-    wxLogMessage(_T("OBJSEARCH_PI: Database file to be used: %s"), sDBName.c_str());
-    if (!wxFileExists(sDBName)) {
-        have_to_create = true;
-    }
-    wxSQLite3Database* db = new wxSQLite3Database();
-    try {
-        db->Open(sDBName);
-    } catch (wxSQLite3Exception& e) {
-        wxLogMessage(_T("OBJSEARCH_PI: DB Exception: %i : %s"), e.GetErrorCode(), e.GetMessage().c_str());
-        m_bDBUsable = false;
-    } catch (...) {
-        wxLogMessage(_T("OBJSEARCH_PI: Unknown exception"));
-        m_bDBUsable = false;
-    }
-
-    if (have_to_create && m_bDBUsable) {
-        QueryDB(db,
-                wxT("CREATE TABLE chart (id INTEGER PRIMARY KEY AUTOINCREMENT, chartname TEXT, scale REAL, nativescale INTEGER)"));
-        QueryDB(db, wxT("CREATE TABLE feature (id INTEGER PRIMARY KEY AUTOINCREMENT, featurename TEXT)"));
-        QueryDB(db, wxT("CREATE TABLE object (chart_id INTEGER, feature_id INTEGER, objname TEXT, lat REAL, lon REAL)"));
-    }
-
-    if (m_bDBUsable) {
-       // db->CreateFunction(_T("distanceMercator"), 4, distMercFunc, true);
-        // sqlite3_create_function(db, "distanceMercator", 4, SQLITE_UTF8, NULL, &distanceMercatorFunc, NULL, NULL));
-        QueryDB(db, _T("PRAGMA synchronous=OFF"));
-        QueryDB(db, _T("PRAGMA count_changes=OFF"));
-        QueryDB(db, _T("PRAGMA journal_mode=MEMORY"));
-        QueryDB(db, _T("PRAGMA temp_store=MEMORY"));
-
-        // Fix the broken objects created by v 0.1 and 0.2
-        QueryDB(db, _T("UPDATE object SET lon = lon - 360 WHERE lon > 180"));
-        QueryDB(db, _T("UPDATE object SET lon = lon + 360 WHERE lon < - 180"));
-        QueryDB(db, _T("DELETE FROM object WHERE lon < - 180 OR lon > 180 OR lat < -90 OR lat > 90"));
-    }
-
-    return db;
+void aisRX_pi::dbGetTable(wxString sql, char ***results, int &n_rows, int &n_columns)
+{
+      ret = sqlite3_get_table (m_database, sql.mb_str(), results, &n_rows, &n_columns, &err_msg);
+      if (ret != SQLITE_OK)
+      {
+            wxLogMessage (_T("Database error: %s in query: %s\n"), *err_msg, sql.c_str());
+	      sqlite3_free (err_msg);
+            b_dbUsable = false;
+      }
 }
 
-int aisRX_pi::QueryDB(wxSQLite3Database* db, const wxString& sql) {
-    int ret = -1;
-    try {
-        ret = db->ExecuteUpdate(sql);
-    } catch (wxSQLite3Exception& e) {
-        wxLogMessage(_T("OBJSEARCH_PI: DB Exception: %i : %s"), e.GetErrorCode(), e.GetMessage().c_str());
-        m_bDBUsable = false;
-    } catch (...) {
-        wxLogMessage(_T("OBJSEARCH_PI: Unknown exception during '%s'"), sql.c_str());
-        m_bDBUsable = false;
-    }
-
-    return ret;
+void aisRX_pi::dbFreeResults(char **results)
+{
+      sqlite3_free_table (results);
 }
-
-wxSQLite3ResultSet aisRX_pi::SelectFromDB(wxSQLite3Database* db, const wxString& sql) {
-    if (!m_bDBUsable) return wxSQLite3ResultSet();
-    try {
-        return db->ExecuteQuery(sql);
-    } catch (wxSQLite3Exception& e) {
-        wxLogMessage(_T("OBJSEARCH_PI: DB Exception: %i : %s"), e.GetErrorCode(), e.GetMessage().c_str());
-        m_bDBUsable = false;
-    } catch (...) {
-        wxLogMessage(_T("OBJSEARCH_PI: Unknown exception during '%s'"), sql.c_str());
-        m_bDBUsable = false;
-    }
-    return wxSQLite3ResultSet();
-}
-
-void* DbThread::Entry() {
-    m_pHandler->SetDBThreadRunning(true);
-    while (!TestDestroy()) {
-        m_pHandler->QueryDB(_T("BEGIN TRANSACTION"));
-        m_bIsWriting = true;
-        while (m_pHandler->HasQueries()) {
-            m_pHandler->QueryDB(m_pHandler->GetQuery());
-        }
-        m_pHandler->QueryDB(_T("COMMIT TRANSACTION"));
-        m_bIsWriting = false;
-        Sleep(500);
-        // wxQueueEvent(m_pHandler, new wxThreadEvent(wxEVT_COMMAND_DBTHREAD_UPDATE));
-    }
-    // signal the event handler that this thread is going to be destroyed
-    // NOTE: here we assume that using the m_pHandler pointer is safe,
-    // (in this case this is assured by the MyFrame destructor)
-    //    wxQueueEvent(m_pHandler, new wxThreadEvent(wxEVT_COMMAND_DBTHREAD_COMPLETED));
-    // return (wxThread::ExitCode)0; // success
-
-    return 0;
-}
-
-DbThread::~DbThread() {
-    wxCriticalSectionLocker enter(m_pHandler->m_pThreadCS);
-    m_pHandler->m_pThread = NULL;
-    m_pHandler->SetDBThreadRunning(false);
-}
-
-wxString aisRX_pi::GetQuery() {
-    wxString query = query_queue.front();
-    query_queue.pop();
-    return query;
-}
-
-bool aisRX_pi::HasQueries() { return !query_queue.empty(); }

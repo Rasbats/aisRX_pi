@@ -265,7 +265,7 @@ wxString AisMaker::makeCheckSum(wxString mySentence)
     return mystr;
 }
 
-wxString AisMaker::nmeaEncode(wxString type, int iMMSI, wxString status,
+wxString AisMaker::nmeaEncode(wxString type, int iHECT, wxString status,
     double spd, double ilat, double ilon, double crse, double hdg,
     wxString channel, wxString timestamp)
 {
@@ -274,10 +274,10 @@ wxString AisMaker::nmeaEncode(wxString type, int iMMSI, wxString status,
 
     string RepeatIndicator = Int2BString(0, 2);
 
-    wxString MMSI = wxString::Format(_T("%i"), iMMSI);
-    string sMMSI = (const char*)MMSI.mb_str();
+    wxString HECT = wxString::Format(_T("%i"), iHECT);
+    string sHECT = (const char*)HECT.mb_str();
 
-    string oMMSI = Int2BString(Str2Int(sMMSI, ""), 30);
+    string oHECT = Int2BString(Str2Int(sHECT, ""), 30);
 
     string Spare1 = Int2BString(0, 8);
 
@@ -324,7 +324,7 @@ wxString AisMaker::nmeaEncode(wxString type, int iMMSI, wxString status,
 
     string BigString = MessageID;
     BigString = BigString + RepeatIndicator;
-    BigString = BigString + oMMSI + Spare1 + SOG + PosAccuracy + Longitude
+    BigString = BigString + oHECT + Spare1 + SOG + PosAccuracy + Longitude
         + Latitude + COG + Heading + TimeStamp + Spare2;
     BigString = BigString + State;
 
@@ -338,7 +338,7 @@ wxString AisMaker::nmeaEncode(wxString type, int iMMSI, wxString status,
     return myNMEA;
 }
 
-wxString AisMaker::nmeaEncode24(int iMMSI,
+wxString AisMaker::nmeaEncode24(int iHECT,
     wxString name, wxString channel)
 {
 
@@ -346,10 +346,10 @@ wxString AisMaker::nmeaEncode24(int iMMSI,
 
     string RepeatIndicator = Int2BString(0, 2);
 
-    wxString MMSI = wxString::Format(_T("%i"), iMMSI);
-    string sMMSI = (const char*)MMSI.mb_str();
+    wxString HECT = wxString::Format(_T("%i"), iHECT);
+    string sHECT = (const char*)HECT.mb_str();
 
-    string oMMSI = Int2BString(Str2Int(sMMSI, ""), 30);
+    string oHECT = Int2BString(Str2Int(sHECT, ""), 30);
 
 	string oPartNum = Int2BString(0, 2);
 
@@ -359,7 +359,7 @@ wxString AisMaker::nmeaEncode24(int iMMSI,
 
     string BigString = MessageID;
     BigString = BigString + RepeatIndicator;
-    BigString = BigString + oMMSI + oPartNum + oName;
+    BigString = BigString + oHECT + oPartNum + oName;
 
 	wxString sChannel;
     string Channel = (const char*)sChannel.mb_str();
@@ -378,7 +378,7 @@ wxString AisMaker::nmeaEncode24(int iMMSI,
 }
 
 
-wxString AisMaker::nmeaEncodeaisRX(wxString type, int iMMSI, wxString status,
+wxString AisMaker::nmeaEncodeaisRX(wxString type, int iHECT, wxString status,
     double ilat, double ilon, wxString channel, wxString timestamp)
 {
 
@@ -388,9 +388,9 @@ wxString AisMaker::nmeaEncodeaisRX(wxString type, int iMMSI, wxString status,
 
     string RepeatIndicator = Int2BString(0, 2);
 
-    wxString MMSI = wxString::Format(_T("%i"), iMMSI);
-    string sMMSI = (const char*)MMSI.mb_str();
-    string oMMSI = Int2BString(Str2Int(sMMSI, ""), 30);
+    wxString HECT = wxString::Format(_T("%i"), iHECT);
+    string sHECT = (const char*)HECT.mb_str();
+    string oHECT = Int2BString(Str2Int(sHECT, ""), 30);
 
     string aisRXtype = Int2BString(0, 5);
 
@@ -442,7 +442,7 @@ wxString AisMaker::nmeaEncodeaisRX(wxString type, int iMMSI, wxString status,
     BigString = BigString + RepeatIndicator;
 	
 
-    BigString = BigString + oMMSI +  aisRXtype + oName + PosAccuracy + Longitude
+    BigString = BigString + oHECT +  aisRXtype + oName + PosAccuracy + Longitude
         + Latitude + oDim + aisRXpositiondevice + TimeStamp + offPosition + sstatus + raim + flag + mode + Spare2;
 
 	int sz = BigString.size();

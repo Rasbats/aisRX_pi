@@ -115,7 +115,7 @@ aisRXBase::aisRXBase( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_panelSignal->SetSizer( gSizer1 );
 	m_panelSignal->Layout();
 	gSizer1->Fit( m_panelSignal );
-	m_notebookMessage->AddPage( m_panelSignal, _("Signal"), false );
+	m_notebookMessage->AddPage( m_panelSignal, _("Signal"), true );
 	m_panel3 = new wxPanel( m_notebookMessage, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer131;
 	bSizer131 = new wxBoxSizer( wxVERTICAL );
@@ -331,7 +331,7 @@ aisRXBase::aisRXBase( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_panel5->SetSizer( gSizer11 );
 	m_panel5->Layout();
 	gSizer11->Fit( m_panel5 );
-	m_notebookMessage->AddPage( m_panel5, _("Water_level"), true );
+	m_notebookMessage->AddPage( m_panel5, _("Water_level"), false );
 
 	bSizer122->Add( m_notebookMessage, 1, wxEXPAND | wxALL, 5 );
 
@@ -349,21 +349,17 @@ aisRXBase::aisRXBase( wxWindow* parent, wxWindowID id, const wxString& title, co
 	fgSizer82->SetFlexibleDirection( wxVERTICAL );
 	fgSizer82->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
 
-	m_buttonStandby = new wxButton( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonStandby = new wxButton( this, wxID_ANY, _("Data"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_buttonStandby->SetFont( wxFont( 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Arial") ) );
 	m_buttonStandby->SetBackgroundColour( wxColour( 0, 255, 0 ) );
-	m_buttonStandby->SetToolTip( _("Hand Steering") );
 	m_buttonStandby->SetMinSize( wxSize( 50,-1 ) );
 
 	fgSizer82->Add( m_buttonStandby, 1, wxALL|wxEXPAND, 2 );
 
-	m_buttonAuto = new wxButton( this, wxID_ANY, _("AIS"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_buttonAuto->SetFont( wxFont( 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Arial") ) );
-	m_buttonAuto->SetBackgroundColour( wxColour( 255, 255, 255 ) );
-	m_buttonAuto->SetToolTip( _("Autopilot Control") );
-	m_buttonAuto->SetMinSize( wxSize( 50,-1 ) );
+	m_buttonMessages = new wxButton( this, wxID_ANY, _("Log"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_buttonMessages->SetFont( wxFont( 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Arial") ) );
 
-	fgSizer82->Add( m_buttonAuto, 1, wxALL|wxEXPAND, 2 );
+	fgSizer82->Add( m_buttonMessages, 0, wxALL|wxEXPAND, 5 );
 
 	m_button7 = new wxButton( this, wxID_ANY, _("Test"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_button7->SetFont( wxFont( 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Arial") ) );
@@ -374,10 +370,33 @@ aisRXBase::aisRXBase( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_buttonSignal = new wxButton( this, wxID_ANY, _("Signal"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_buttonSignal->SetFont( wxFont( 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Arial") ) );
 	m_buttonSignal->SetBackgroundColour( wxColour( 0, 255, 0 ) );
-	m_buttonSignal->SetToolTip( _("Using Sail") );
 	m_buttonSignal->SetMinSize( wxSize( 50,-1 ) );
 
 	fgSizer82->Add( m_buttonSignal, 1, wxALL|wxEXPAND, 2 );
+
+	m_button71 = new wxButton( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_button71->SetFont( wxFont( 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Arial") ) );
+	m_button71->SetMinSize( wxSize( 50,-1 ) );
+
+	fgSizer82->Add( m_button71, 0, wxALL|wxEXPAND, 5 );
+
+	m_button72 = new wxButton( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_button72->SetFont( wxFont( 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Arial") ) );
+	m_button72->SetMinSize( wxSize( 50,-1 ) );
+
+	fgSizer82->Add( m_button72, 0, wxALL|wxEXPAND, 5 );
+
+	m_button73 = new wxButton( this, wxID_ANY, _("List"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_button73->SetFont( wxFont( 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Arial") ) );
+	m_button73->SetMinSize( wxSize( 50,-1 ) );
+
+	fgSizer82->Add( m_button73, 0, wxALL|wxEXPAND, 5 );
+
+	m_button74 = new wxButton( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_button74->SetFont( wxFont( 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Arial") ) );
+	m_button74->SetMinSize( wxSize( 50,-1 ) );
+
+	fgSizer82->Add( m_button74, 0, wxALL|wxEXPAND, 5 );
 
 
 	bSizer10->Add( fgSizer82, 0, wxEXPAND, 5 );
@@ -391,10 +410,11 @@ aisRXBase::aisRXBase( wxWindow* parent, wxWindowID id, const wxString& title, co
 
 	// Connect Events
 	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( aisRXBase::OnClose ) );
-	m_buttonStandby->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnStandby ), NULL, this );
-	m_buttonAuto->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnAuto ), NULL, this );
+	m_buttonStandby->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnData ), NULL, this );
+	m_buttonMessages->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnLogging ), NULL, this );
 	m_button7->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnTest ), NULL, this );
 	m_buttonSignal->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnSignalShow ), NULL, this );
+	m_button73->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnMessageList ), NULL, this );
 	this->Connect( wxID_ANY, wxEVT_TIMER, wxTimerEventHandler( aisRXBase::OnTimer ) );
 }
 
@@ -402,10 +422,11 @@ aisRXBase::~aisRXBase()
 {
 	// Disconnect Events
 	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( aisRXBase::OnClose ) );
-	m_buttonStandby->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnStandby ), NULL, this );
-	m_buttonAuto->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnAuto ), NULL, this );
+	m_buttonStandby->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnData ), NULL, this );
+	m_buttonMessages->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnLogging ), NULL, this );
 	m_button7->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnTest ), NULL, this );
 	m_buttonSignal->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnSignalShow ), NULL, this );
+	m_button73->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnMessageList ), NULL, this );
 	this->Disconnect( wxID_ANY, wxEVT_TIMER, wxTimerEventHandler( aisRXBase::OnTimer ) );
 
 }
@@ -458,49 +479,5 @@ aisRXPreferences::aisRXPreferences( wxWindow* parent, wxWindowID id, const wxStr
 }
 
 aisRXPreferences::~aisRXPreferences()
-{
-}
-
-AISdisplay::AISdisplay( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
-{
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
-
-	wxBoxSizer* bSizer1;
-	bSizer1 = new wxBoxSizer( wxVERTICAL );
-
-	m_notebook1 = new wxNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_panelAIS = new wxPanel( m_notebook1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer4;
-	bSizer4 = new wxBoxSizer( wxVERTICAL );
-
-	m_tcAIS = new wxTextCtrl( m_panelAIS, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
-	bSizer4->Add( m_tcAIS, 1, wxALL|wxEXPAND, 5 );
-
-	m_tbAISPause = new wxToggleButton( m_panelAIS, wxID_ANY, _("Pause"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer4->Add( m_tbAISPause, 0, wxALL, 5 );
-
-
-	m_panelAIS->SetSizer( bSizer4 );
-	m_panelAIS->Layout();
-	bSizer4->Fit( m_panelAIS );
-	m_notebook1->AddPage( m_panelAIS, _("AIS"), false );
-
-	bSizer1->Add( m_notebook1, 1, wxEXPAND | wxALL, 5 );
-
-	m_sdbSizer1 = new wxStdDialogButtonSizer();
-	m_sdbSizer1OK = new wxButton( this, wxID_OK );
-	m_sdbSizer1->AddButton( m_sdbSizer1OK );
-	m_sdbSizer1->Realize();
-
-	bSizer1->Add( m_sdbSizer1, 0, wxALL|wxEXPAND, 5 );
-
-
-	this->SetSizer( bSizer1 );
-	this->Layout();
-
-	this->Centre( wxBOTH );
-}
-
-AISdisplay::~AISdisplay()
 {
 }

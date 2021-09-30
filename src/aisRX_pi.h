@@ -46,33 +46,21 @@
 
 #include "ocpn_plugin.h" //Required for OCPN plugin functions
 #include "aisRXgui_impl.h"
-#include "wx/wxsqlite3.h"
+
+#include "aisRXOverlayFactory.h"
+
+#include <sqlite3.h>
 #include <wx/thread.h>
 #include <map>
 #include <queue>
 
+#include "AISdisplay.h"
+#include "ASMmessages.h"
+
 class Dlg;
 class aisRX_pi;
-
-class DbThread : public wxThread {
-   public:
-    DbThread(aisRX_pi* handler) : wxThread() {
-        Create();
-        m_pHandler = handler;
-        m_bIsWriting = false;
-    }
-    ~DbThread();
-    void* Entry();
-    bool IsWriting() { return m_bIsWriting; }
-
-   protected:
-    aisRX_pi* m_pHandler;
-
-   private:
-    bool m_bIsWriting;
-};
-
-
+class AISdisplay;
+class asmMessages;
 
 
 //----------------------------------------------------------------------------------------------------------
@@ -136,48 +124,38 @@ public:
     wxBitmap m_panelBitmap;
     Dlg* m_pDialog;
 
-	// for the database
-	wxSQLite3Database* initDB();
-	int QueryDB(wxSQLite3Database* db, const wxString& sql);
-	wxSQLite3ResultSet SelectFromDB(wxSQLite3Database* db, const wxString& sql);
-	wxSQLite3Database* m_db;
-	bool m_bDBUsable;
-    bool m_bWaitForDB;
-	bool m_db_thread_running;
-    double followDir;
-    wxDateTime dt;
-	bool finishing;
-
-	void SetDBThreadRunning(bool state) { m_db_thread_running = state; }
-    bool IsDBThreadRunning() { return m_db_thread_running; }
 
 	//
     aisRX_pi* plugin;
 
-	DbThread* m_pThread;
-    wxCriticalSection m_pThreadCS;  // protects the m_pThread pointer
-    friend class DbThread;          // allow it to access our m_pThread
+	void    dbGetTable(wxString sql, char ***results, int &n_rows, int &n_columns);
+	void    dbFreeResults(char **results);
+	
+	aisRXOverlayFactory *GetaisRXOverlayFactory(){ return m_paisRXOverlayFactory; }
 
-    std::queue<wxString> query_queue;
+	aisRXOverlayFactory *m_paisRXOverlayFactory;
+	//aisRXOverlayFactory *aisRXUIDialog;
+
+	//The override PlugIn Methods
+    bool RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp);
+	bool RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp);
+
+	// ******** Database stuff ******************************************
+	
+	
+	sqlite3          *m_database;
+	int               ret;
+    char             *err_msg;
+    bool              b_dbUsable;
 
 protected:
-    int QueryDB(const wxString& sql) { return QueryDB(m_db, sql); }
-    wxString GetQuery();
-    bool HasQueries();
-
-
-
+  
 private:
     double m_cursor_lat;
     double m_cursor_lon;
 
     int m_position_menu_id;
     double m_GUIScaleFactor;
-    void OnClose(wxCloseEvent& event);
-
-    
-
-
 
     wxFileConfig* m_pconfig;
     wxWindow* m_parent_window;
@@ -194,6 +172,9 @@ private:
     bool m_bCopyUseAis;
     bool m_bCopyUseFile;
     wxString m_tCopyMMSI;
+
+	
+
 };
 
 

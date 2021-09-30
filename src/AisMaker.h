@@ -25,12 +25,12 @@ public:
     int BString2Int(char* bitlist);
     string NMEAencapsulate(string BigString, int numsixes);
     wxString makeCheckSum(wxString mySentence);
-    wxString nmeaEncode(wxString type, int MMSI, wxString status, double spd,
+    wxString nmeaEncode(wxString type, int HECT, wxString status, double spd,
         double ilat, double ilon, double crse, double hdg, wxString channel,
         wxString timestamp);
-	wxString nmeaEncode24(int iMMSI,
+	wxString nmeaEncode24(int iHECT,
 		wxString name, wxString channel);
-	wxString nmeaEncodeaisRX(wxString type, int iMMSI, wxString status,
+	wxString nmeaEncodeaisRX(wxString type, int iHECT, wxString status,
 		double ilat, double ilon, wxString channel, wxString timestamp);
 
 protected:

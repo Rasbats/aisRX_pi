@@ -24,6 +24,7 @@ public:
   wxPanel *m_parent;
 
   Signal *signal_1;
+  Signal *signal_2;
   Signal *signal_6;
 
   int mySignalForm;

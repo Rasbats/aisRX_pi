@@ -33,7 +33,7 @@
 #endif
 
 #include "AisMaker.h"
-#include "aisRX_pi.h"
+
 #include "aisRXgui.h"
 #include "ocpn_plugin.h"
 #include "tinyxml.h"
@@ -56,7 +56,16 @@
 
 #include <wx/hashmap.h>
 #include <memory>
-#include <wx/wxsqlite3.h>
+
+#include <wx/wxhtml.h>
+#include <wx/html/htmlwin.h>
+#include <wx/dynarray.h>
+#include <wx/tglbtn.h>
+
+#include "AISdisplay.h"
+#include "ASMmessages.h"
+
+
 
 #ifdef __WXOSX__
 #define aisRX_DLG_STYLE                                                   \
@@ -65,11 +74,14 @@
 #define aisRX_DLG_STYLE                                                   \
     wxCLOSE_BOX | wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER
 #endif
+
 using namespace std;
 
 class aisRX_pi;
 class AisMaker;
 class AISdisplay;
+class asmMessages;
+
 class AIS_Target_Data;
 class Signalling;
 
@@ -93,7 +105,7 @@ public:
     */
 
     int                       MID;
-    int                       MMSI;
+    int                       HECT;
     int                       NavStatus;
     int                       SyncState;
     int                       SlotTO;
@@ -127,12 +139,20 @@ public:
     int                       ETA_Day;
     int                       ETA_Hr;
     int                       ETA_Min;
+
+	int						  hect;
+	int                       signalForm;
+	int                       signalStatus;
+	string                    country;
+	string					  RISindex;
+	bool                      b_nameValid;
+	bool                      b_nameFromCache;
+
   
 };
 
 WX_DECLARE_HASH_MAP( int, AIS_Target_Data*, wxIntegerHash, wxIntegerEqual, AIS_Target_Hash );
 WX_DECLARE_HASH_MAP( int, wxString, wxIntegerHash, wxIntegerEqual, AIS_Target_Name_Hash );
-
 
 
 
@@ -170,7 +190,8 @@ std::unique_ptr<mylibais::AisMsg> CreateAisMsg(const string &body,
 
 }  // namespace mylibais
 
-
+class aisRXOverlayFactory;
+class PlugIn_ViewPort;
 
 
 class Dlg : public aisRXBase {
@@ -179,6 +200,7 @@ public:
         const wxString& title = _("aisRX"),
         const wxPoint& pos = wxDefaultPosition,
         const wxSize& size = wxDefaultSize, long style = aisRX_DLG_STYLE);
+
     aisRX_pi* plugin;
 
     wxString DateTimeToTimeString(wxDateTime myDT);
@@ -190,9 +212,14 @@ public:
     AisMaker* myAIS;
 	AisMaker* myaisRX;
 	AISdisplay* m_pAISdialog;
+	
+
 	bool m_bDisplayStarted;
 	void SetAISMessage(wxString &msg);
 	wxString SetaisRXMessage(string &msg);
+	void RenderHTMLQuery(AIS_Target_Data *td);
+	wxString BuildQueryResult(AIS_Target_Data *td);
+	AIS_Target_Data *td;
 
     wxTextFile* nmeafile;
 
@@ -211,20 +238,52 @@ public:
     AIS_Target_Name_Hash* AISTargetNamesNC;
 	AIS_Target_Name_Hash* HashFile;
 
-	AIS_Target_Hash *GetTargetList(void) {return AISTargetList;}
-    //AIS_Target_Hash *GetAreaNoticeSourcesList(void) {return AIS_AreaNotice_Sources;}
-    AIS_Target_Data *Get_Target_Data_From_MMSI(int mmsi);
+	int              m_n_targets;
+
+    AIS_Target_Hash *GetTargetList(void) {return AISTargetList;}
+    AIS_Target_Data *Get_Target_Data_From_HECT(int mmsi);
 
     AIS_Target_Data* m_pLatestTargetData;
 
+	vector<AIS_Target_Data>  FindSignalData(int hect);
+
+	wxString testing;
 	
+    void SetViewPort( PlugIn_ViewPort *vp );
+
+	AIS_Target_Data myTestData;
+	vector<AIS_Target_Data> myTestDataCollection;
+	void UpdateAISTargetList(void);
+
+	void CreateControlsMessageList();
+	void OnTimer(wxTimerEvent& event);
+	int  g_tick;
+
+	wxArrayInt* myHect;
+	
+	bool listYN;
+    PlugIn_ViewPort  *m_vp;
+	bool m_baisRXHasStarted;
+	asmMessages* m_pASMmessages1;
+	AISdisplay* myAISdisplay;
+	bool m_bHaveMessageList;
+	bool m_bHaveDisplay;
+	bool m_bUpdateTarget;
+
+	wxString m_message;
+
+	void OnCloseList(wxCloseEvent& event);
 
 protected:
     bool m_bNeedsGrib;
 
 private:
-	wxString AIVDM;
+
 	
+	
+
+	wxString AIVDM;
+	bool m_bShowaisRX;
 
 	string m_sPayload;
 
@@ -240,7 +299,10 @@ private:
 
     void OnClose(wxCloseEvent& event);
 
-	void OnAuto(wxCommandEvent& event);
+	//void OnAuto(wxCommandEvent& event);
+	void OnMessageList(wxCommandEvent& event);
+	void OnLogging(wxCommandEvent& event);
+	void Decode(wxString sentence);
     void OnTest(wxCommandEvent& event);
 	void OnSignalShow(wxCommandEvent& event);
 	wxString parseNMEASentence(wxString& sentence);
@@ -250,12 +312,14 @@ private:
 	void getAis8_200_44(string rawPayload);
     // void SendAIS(double cse, double spd, double lat, double lon);
 
-    void OnStandby(wxCommandEvent& event);
-    void GoToStandby();
+    void OnData(wxCommandEvent& event);
+	void JumpTo( wxString lat, wxString lon, int scale);
+    //void GoToStandby();
 
-    
+    void OnFactory(wxCommandEvent& event);
+	void OnMessages(wxCommandEvent& event);
 
-    long m_iMMSI;
+    long m_iHECT;
 
     virtual void Lock() { routemutex.Lock(); }
     virtual void Unlock() { routemutex.Unlock(); }
@@ -266,7 +330,7 @@ private:
     bool m_bUsingFollow;
     bool m_bInvalidPolarsFile;
     bool m_bInvalidGribFile;
-    bool m_baisRXHasStarted;
+   
 };
 
 #endif

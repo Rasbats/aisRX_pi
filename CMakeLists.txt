@@ -93,13 +93,13 @@ set(CPACK_PACKAGE_HOMEPAGE_URL https://github.com/Rasbats/aisRX_pi)
 set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/aisRX.html)
 
 set(SRC
-		src/ais2.h
-		src/ais8_200.cpp
-		src/ais8.cpp
-		src/ais_bitset2.cpp
-		src/AIS_Bitstring.cpp
-		src/AIS_Bitstring.h
-		src/ais.cpp
+	src/ais2.h
+	src/ais8_200.cpp
+	src/ais8.cpp
+	src/ais_bitset2.cpp
+	src/AIS_Bitstring.cpp
+	src/AIS_Bitstring.h
+	src/ais.cpp
     src/AisMaker.cpp
     src/AisMaker.h
     src/aisRXgui.cpp
@@ -110,10 +110,18 @@ set(SRC
     src/aisRX_pi.h
     src/icons.cpp
     src/icons.h
-		src/signal.cpp
-		src/signal.h
-		src/widget.cpp
-		src/widget.h
+	src/signal.cpp
+	src/signal.h
+	src/widget.cpp
+	src/widget.h
+	src/bbox.cpp
+    src/bbox.h	
+	src/aisRXOverlayFactory.cpp
+    src/aisRXOverlayFactory.h
+	src/AISdisplay.cpp
+	src/AISdisplay.h
+	src/ASMmessages.cpp
+	src/ASMmessages.h
 )
 
 # -------- Setup completed, build the plugin --------
@@ -177,8 +185,6 @@ if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
   add_subdirectory("libs/sqlite")
   target_link_libraries(${PACKAGE_NAME} sqlite::sqlite)
 
-  add_subdirectory("libs/wxsqlite")
-  target_link_libraries(${PACKAGE_NAME} wxsqlite::wxsqlite)
 endif ()
 
 configure_file(
