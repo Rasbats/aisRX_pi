@@ -246,6 +246,7 @@ public:
     AIS_Target_Data* m_pLatestTargetData;
 
 	vector<AIS_Target_Data>  FindSignalData(int hect);
+	vector<AIS_Target_Data>  FindSignalRISindex(int hect);
 
 	wxString testing;
 	
@@ -253,6 +254,7 @@ public:
 
 	AIS_Target_Data myTestData;
 	vector<AIS_Target_Data> myTestDataCollection;
+	vector<AIS_Target_Data> mySignalCollection;
 	void UpdateAISTargetList(void);
 
 	void CreateControlsMessageList();
