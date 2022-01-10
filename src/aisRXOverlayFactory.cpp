@@ -54,10 +54,9 @@ class PlugIn_ViewPort;
 class wxBoundingBox;
 class AIS_Target_Data;
 
-#define NUM_CURRENT_ARROW_POINTS 9
-static wxPoint CurrentArrowArray[NUM_CURRENT_ARROW_POINTS] = { wxPoint( 0, 0 ), wxPoint( 0, -10 ),
-        wxPoint( 55, -10 ), wxPoint( 55, -25 ), wxPoint( 100, 0 ), wxPoint( 55, 25 ), wxPoint( 55,
-                10 ), wxPoint( 0, 10 ), wxPoint( 0, 0 )
+#define NUM_CURRENT_ARROW_POINTS 5
+static wxPoint CurrentArrowArray[NUM_CURRENT_ARROW_POINTS] = {wxPoint( -30, -10 ),
+        wxPoint( 30, -10 ), wxPoint( 30, 10 ), wxPoint( -30, 10 ), wxPoint( -30, -10)
                                                              };
 
 //----------------------------------------------------------------------------------------------------------
@@ -161,9 +160,9 @@ void aisRXOverlayFactory::DrawMessageWindow( wxString msg, int x, int y , wxFont
 void aisRXOverlayFactory::drawCurrentArrow(int x, int y, double rot_angle, double scale, double rate )
 {   	
 	double m_rate = rate;
-	wxPoint p[9];
+	wxPoint p[5];
 
-    wxColour colour;	
+    wxColour colour("Red");	
 		
 	c_GLcolour = colour;  // for filling GL arrows
 
@@ -228,19 +227,19 @@ void aisRXOverlayFactory::drawCurrentArrow(int x, int y, double rot_angle, doubl
 
 		if( m_bShowFillColour && m_pdc){
 			m_pdc->SetBrush(brush);
-			m_pdc->DrawPolygon(9,p);
+			m_pdc->DrawPolygon(5,p);
 		}
 
     }
 }
 
-wxImage &aisRXOverlayFactory::DrawGLText( double value, int precision ){
+wxImage &aisRXOverlayFactory::DrawGLText( int value, int precision ){
 
 	wxString labels;
 
 	int p = precision;
 
-	labels.Printf( _T("%.*f"), p, value );
+	labels.Printf( _T("%.*i"), p, value );
 	
 	wxMemoryDC mdc(wxNullBitmap);
 
@@ -623,6 +622,10 @@ void aisRXOverlayFactory::drawGLPolygons(aisRXOverlayFactory *pof, wxDC *dc,
 	int xd = (ab.x + cd.x - w) / 2;
 	int yd = (ab.y + cd.y - h) / 2 + offset;
 
+
+	drawCurrentArrow(xd, yd, 0, 1, 5);
+	return;
+
 	if (dc) {
 		/* don't use alpha for isobars, for some reason draw bitmap ignores
 		   the 4th argument (true or false has same result) */
@@ -697,7 +700,7 @@ wxImage &aisRXOverlayFactory::DrawGLPolygon(double depth){
 	int w, h;
 	//mdc.GetTextExtent(labels, &w, &h);
 
-	w = 10;
+	w = 20;
 	h = 10;
 
 	wxBitmap bm(w, h);
@@ -714,7 +717,7 @@ wxImage &aisRXOverlayFactory::DrawGLPolygon(double depth){
 
 	int label_offset = 0;
 
-	int m_iSoundingShape = 1;
+	int m_iSoundingShape = 2;
 
 		switch (m_iSoundingShape)
 		{
@@ -943,6 +946,8 @@ void aisRXOverlayFactory::DrawAllSignalsInViewPort(PlugIn_ViewPort *BBox, bool b
 
 		lat = it->Lat;
 		lon = it->Lon;
+		int hect = it->hect;
+		//double dHect = (double)hect;
 		//wxMessageBox(it->depth);
 		depth = 99.9;
 		sdgid = 0;
@@ -980,23 +985,28 @@ void aisRXOverlayFactory::DrawAllSignalsInViewPort(PlugIn_ViewPort *BBox, bool b
 			
 			if (!m_pdc) {
 
-				if (m_bUseSymbol && (m_iSoundingShape == 1 || m_iSoundingShape == 2)) {
-					drawGLPolygons(this, m_pdc, BBox, DrawGLPolygon(depth), lat, lon, sdgid, surid, pixxc, pixyc, 0);
-				}
-				else {
-					
-					DrawGLSoundingMark(pixxc, pixyc, 0, depth, sdgid, surid, s_Colour);
-				}
+				//if (m_bUseSymbol && (m_iSoundingShape == 1 || m_iSoundingShape == 2)) {
+				//	drawGLPolygons(this, m_pdc, BBox, DrawGLPolygon(depth), lat, lon, sdgid, surid, pixxc, pixyc, 0);
+				//}
+				//else {
+					drawCurrentArrow(pixxc, pixyc, 0, 1, 5);
+					//DrawGLSoundingMark(pixxc, pixyc, 0, depth, sdgid, surid, s_Colour);
+				//}
 				//
+
+					
 				if (m_bRenderSoundingText) {
 					DrawGLLabels(this, m_pdc, BBox,
-						DrawGLText(depth, 1), lat, lon, 5);
+						DrawGLText(hect, 1), lat, lon, 15);
 				}
 			}
 
 			if (m_pdc)
 			{
-				DrawSignal(*m_pdc, pixxc, pixyc, depth, sdgid, surid, 5);
+				
+				drawCurrentArrow(pixxc, pixyc, 0, 1, 5);
+				m_pdc->DrawText(wxString::Format(wxT("%i"), hect), pixxc, pixyc + 15);
+				//DrawSignal(*m_pdc, pixxc, pixyc, depth, sdgid, surid, 5);
 			}
 		}
 	}

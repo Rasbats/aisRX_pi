@@ -918,8 +918,8 @@ void Dlg::getAis8_200_41(string rawPayload) {
 	//  Update the AIS Target information
 	if (bdecode_result) {
 		m_bUpdateTarget = true;
-		signalData.clear();
-		signalData = FindSignalData(pTargetData->hect);
+		//signalData.clear();
+		
 		// **********
 		// signalData is not used but FindSignalData populates myTestDataCollection
 		// This is used by the factory to draw the signal locations
@@ -927,9 +927,11 @@ void Dlg::getAis8_200_41(string rawPayload) {
 		// ***********
 		//AISshipNameCache(pTargetData, AISTargetNamesC, AISTargetNamesNC, hect);
 		(*AISTargetList)[pTargetData->hect] = pTargetData;  // update the hash table entry
+
+		myTestDataCollection.push_back(*pTargetData);
 		
 		//wxString sz = wxString::Format("%i",pTargetData->hect);
-	    //wxMessageBox(sz);
+	   // wxMessageBox(signalData.at(1).RISindex);
 
 	}
 
@@ -1255,6 +1257,43 @@ void Dlg::OnTimer(wxTimerEvent& event)
 			}
 		}
 			g_tick++;
-	}	
+	}
+
+	
 }
 
+
+void Dlg::OnSelectMessage(wxCommandEvent& event) {
+
+	mySignalCollection.clear();
+	long itemIndex = -1;
+	wxString itx;
+
+  while ((itemIndex = m_pASMmessages1->m_pListCtrlAISTargets->GetNextItem(itemIndex,
+          wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != wxNOT_FOUND) {
+    // Got the selected item index
+    itx = m_pASMmessages1->m_pListCtrlAISTargets->GetItemText(itemIndex);
+	//wxMessageBox(itx);
+  }
+
+  long Pesel;
+  itx.ToLong(&Pesel);
+  mySignalCollection = FindSignalRISindex(Pesel);
+  wxString ris = mySignalCollection.at(0).RISindex;
+  double lat = mySignalCollection.at(0).Lat;
+  double lon = mySignalCollection.at(0).Lon;
+
+  m_vpppm = m_vp->view_scale_ppm;
+  JumpToPosition(lat, lon, m_vpppm);
+
+ // m_vpscale = m_vp->chart_scale;
+  
+  
+
+  //wxMessageBox(ris);
+}
+
+double Dlg::CalculatePPM(float scale) {
+    double sc = m_vpscale / scale * m_vpppm;
+    return sc;
+}

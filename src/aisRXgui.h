@@ -133,6 +133,7 @@ class aisRXBase : public wxDialog
 		virtual void OnTest( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnSignalShow( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMessageList( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSelectMessage( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTimer( wxTimerEvent& event ) { event.Skip(); }
 
 

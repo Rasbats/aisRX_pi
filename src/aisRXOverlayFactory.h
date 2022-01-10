@@ -96,7 +96,7 @@ public:
 	void DrawGLSignalMark(int x, int y, double scale, double depth, int sounding_id, int survey_id, wxColour c);
 
     void Reset();
-	wxImage &DrawGLText( double value, int precision);
+	wxImage &DrawGLText( int value, int precision);
 	wxImage &DrawGLTextDir( double value, int precision);
 	wxImage &DrawGLTextString( wxString myText);
 	void drawGLPolygons(aisRXOverlayFactory *pof, wxDC *dc,

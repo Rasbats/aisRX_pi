@@ -392,7 +392,7 @@ aisRXBase::aisRXBase( wxWindow* parent, wxWindowID id, const wxString& title, co
 
 	fgSizer82->Add( m_button73, 0, wxALL|wxEXPAND, 5 );
 
-	m_button74 = new wxButton( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_button74 = new wxButton( this, wxID_ANY, _("Item"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_button74->SetFont( wxFont( 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Arial") ) );
 	m_button74->SetMinSize( wxSize( 50,-1 ) );
 
@@ -415,6 +415,7 @@ aisRXBase::aisRXBase( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_button7->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnTest ), NULL, this );
 	m_buttonSignal->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnSignalShow ), NULL, this );
 	m_button73->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnMessageList ), NULL, this );
+	m_button74->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnSelectMessage ), NULL, this );
 	this->Connect( wxID_ANY, wxEVT_TIMER, wxTimerEventHandler( aisRXBase::OnTimer ) );
 }
 
@@ -427,6 +428,7 @@ aisRXBase::~aisRXBase()
 	m_button7->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnTest ), NULL, this );
 	m_buttonSignal->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnSignalShow ), NULL, this );
 	m_button73->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnMessageList ), NULL, this );
+	m_button74->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnSelectMessage ), NULL, this );
 	this->Disconnect( wxID_ANY, wxEVT_TIMER, wxTimerEventHandler( aisRXBase::OnTimer ) );
 
 }

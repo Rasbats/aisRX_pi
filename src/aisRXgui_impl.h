@@ -261,6 +261,11 @@ public:
 	void OnTimer(wxTimerEvent& event);
 	int  g_tick;
 
+	void OnSelectMessage(wxCommandEvent& event);
+	double CalculatePPM(float scale);
+	double m_vpppm;
+    double m_vpscale;
+
 	wxArrayInt* myHect;
 	
 	bool listYN;
