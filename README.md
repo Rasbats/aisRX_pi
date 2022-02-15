@@ -1,8 +1,5 @@
-# shipdriver\_pi README
+# aisRX_pi README
 
-A plugin for OpenCPN. Almost a simulator or is it a game?
-
-More user info: https://opencpn.org/OpenCPN/plugins/shipdriver.html
 
 Building is documented in INSTALL.md
 
