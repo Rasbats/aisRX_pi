@@ -41,16 +41,16 @@ message(STATUS "Building: ${BUILD_TYPE}")
 # -------- Options ----------
 
 set(OCPN_TEST_REPO
-    "opencpn/aisRX-alpha"
+    "mike-rossiter/aisrx-alpha"
     CACHE STRING "Default repository for untagged builds"
 )
 set(OCPN_BETA_REPO
-    "opencpn/aisRX-beta"
+    "mike-rossiter/aisrx-beta"
     CACHE STRING 
     "Default repository for tagged builds matching 'beta'"
 )
 set(OCPN_RELEASE_REPO
-    "opencpn/aisRX-prod"
+    mike-rossiter/aisrx-prod"
     CACHE STRING 
     "Default repository for tagged builds not matching 'beta'"
 )
