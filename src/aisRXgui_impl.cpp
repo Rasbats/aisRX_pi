@@ -116,6 +116,8 @@ Dlg::Dlg(wxWindow* parent, wxWindowID id, const wxString& title,
 	m_bInvalidGribFile = false;
 	m_baisRXHasStarted = false;
 	m_bDisplayStarted = false;
+	m_bPaused = false;
+	m_bUsingTest = false;
 
 	bool m_bShowaisRX = true;
 	m_bHaveMessageList = false;
@@ -140,6 +142,17 @@ Dlg::Dlg(wxWindow* parent, wxWindowID id, const wxString& title,
 	m_pASMmessages1 = NULL;
 	myAISdisplay = NULL;
 
+	auto path = GetPluginDataDir("aisRX_pi");
+	fn.SetPath(path);
+	fn.AppendDir("data");
+	fn.AppendDir("pins");
+	fn.SetFullName("green-pin.png");
+	path = fn.GetFullPath();
+	wxImage panelIcon(path);
+    wxBitmap* m_panelBitmap = new wxBitmap(panelIcon);
+
+	AddCustomWaypointIcon(m_panelBitmap, "green-pin", "test");
+	
 }
 
 namespace mylibais {
@@ -204,7 +217,7 @@ namespace mylibais {
 
 } // mylibais
 
-
+/*
 AIS_Target_Data* Dlg::Get_Target_Data_From_HECT(int mmsi)
 {
 	int sz = AISTargetList->count(pTargetData->HECT);
@@ -218,6 +231,22 @@ AIS_Target_Data* Dlg::Get_Target_Data_From_HECT(int mmsi)
 	else
 		return (*AISTargetList)[mmsi];          // find current entry
 }
+*/
+
+AIS_Target_Data* Dlg::Get_Target_Data_From_RISindex(string risindex)
+{
+	int sz = AISTargetList->count(pTargetData->RISindex);
+
+	//wxString testCount = wxString::Format("%i", sz);
+	//wxMessageBox(testCount);
+
+
+	if (AISTargetList->find(risindex) == AISTargetList->end())     // if entry does not exist....
+		return NULL;
+	else
+		return (*AISTargetList)[risindex];          // find current entry
+}
+
 
 inline const char * const BoolToString(bool b)
 {
@@ -268,13 +297,23 @@ void Dlg::OnLogging(wxCommandEvent& event) {
 	}
 }
 
+void Dlg::OnToggleButton(wxCommandEvent& event) {
+	m_bPaused = !m_bPaused;
+}
+
 void Dlg::SetAISMessage(wxString &msg)
 {
+	if (m_bPaused) return;
+	
 	m_message = msg;
-	if (m_bHaveMessageList) {
+
+	bool m_bGotDAC = DecodeForDAC(m_message);
+	if (m_bGotDAC) plugin->m_pDialog->m_textCtrlTest->SetValue(m_message);
+	
+	//if (m_bHaveMessageList) {
 		Decode(msg);
 		//UpdateAISTargetList();
-	}
+	//}
 
 	if (m_bHaveDisplay) {
 		if (myAISdisplay->m_tbAISPause->GetValue()) {
@@ -349,22 +388,65 @@ vector<AIS_Target_Data>  Dlg::FindSignalData(int hect) {
 	return myTestDataCollection;
 }
 
-
-vector<AIS_Target_Data>  Dlg::FindSignalRISindex(int hect) {
+vector<AIS_Target_Data>  Dlg::FindBridgeRISindex(int hect, wxString objcode) {
 
 	char **result;
 	int n_rows;
 	int n_columns;
-	mySignalCollection.clear();
+	
 
 	wxString shect = wxString::Format("%i", hect);
+	wxString quote = "\"";
+	wxString andobj = " and objcode = ";
 
-	wxString sql = "SELECT lat,lon,hectomt, risindex FROM RIS where hectomt = " + shect;
+	wxString sql = "SELECT DISTINCT lat,lon,hectomt, risindex FROM RIS where hectomt = " + shect + andobj + quote + objcode + quote;
 
 	plugin->dbGetTable(sql, &result, n_rows, n_columns);
 	wxArrayString objects;
 
 
+
+	for (int i = 1; i <= n_rows; i++)
+	{
+		char *lat = result[(i * n_columns) + 0];
+		char *lon = result[(i * n_columns) + 1];
+		string risindex = result[(i * n_columns) + 3];
+
+		wxString object_lat(lat, wxConvUTF8);
+
+		wxString object_lon(lon, wxConvUTF8);
+
+		//wxMessageBox(object_lat);
+	   // wxMessageBox(object_lon);
+
+		double value;
+		object_lat.ToDouble(&value);
+		myTestData.Lat = value;
+		object_lon.ToDouble(&value);
+		myTestData.Lon = value;
+		myTestData.RISindex = risindex;
+		myBridgeCollection.push_back(myTestData);
+	}
+	plugin->dbFreeResults(result);
+
+	return myBridgeCollection;
+}
+
+vector<AIS_Target_Data>  Dlg::FindSignalRISindex(int hect, wxString objcode) {
+
+	char **result;
+	int n_rows;
+	int n_columns;
+	
+
+	wxString shect = wxString::Format("%i", hect);
+	wxString quote = "\"";
+	wxString andobj = " and objfunc = ";
+
+	wxString sql = "SELECT DISTINCT lat,lon,hectomt, risindex FROM RIS where hectomt = " + shect + andobj + quote + objcode + quote;
+
+	plugin->dbGetTable(sql, &result, n_rows, n_columns);
+	wxArrayString objects;
 
 	for (int i = 1; i <= n_rows; i++)
 	{
@@ -391,153 +473,6 @@ vector<AIS_Target_Data>  Dlg::FindSignalRISindex(int hect) {
 
 	return mySignalCollection;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 void Dlg::OnData(wxCommandEvent& event) {
 
@@ -634,6 +569,43 @@ wxString Dlg::DateTimeToDateString(wxDateTime myDT)
 }
 
 
+bool Dlg::DecodeForDAC(wxString insentence)
+{
+
+	wxString mySentence = insentence;
+
+	if (mySentence.IsEmpty() || mySentence.IsNull()) {
+		//wxMessageBox("No sentence has been entered");
+		return false;
+	}
+
+	if (mySentence.Mid(3, 3) != "VDM") {
+		//wxMessageBox("Invalid sentence");
+		return false;
+	}
+
+	string myMsg = parseNMEASentence(mySentence).ToStdString();
+
+	const char* payload1 = myMsg.c_str();
+	mylibais::Ais8 myDacFi(payload1, 0);
+
+	int dac0 = myDacFi.dac;
+	wxString outdac0 = wxString::Format("%i", dac0);
+	//wxMessageBox(outdac0);
+	
+	int fi0 = myDacFi.fi;
+	wxString outfi0 = wxString::Format("%i", fi0);
+	////wxMessageBox(outfi0);
+
+	if (fi0 == 25 || fi0 == 26 || fi0 == 41) {
+		return true;
+	}
+	else
+		return false;
+
+
+}
+
 void Dlg::Decode(wxString sentence)
 {
 
@@ -644,7 +616,7 @@ void Dlg::Decode(wxString sentence)
 		return;
 	}
 
-	if (mySentence.Mid(0, 6) != "!AIVDM") {
+	if (mySentence.Mid(3, 3) != "VDM") {
 		//wxMessageBox("Invalid sentence");
 		return;
 	}
@@ -657,7 +629,7 @@ void Dlg::Decode(wxString sentence)
 	int dac0 = myDacFi.dac;
 	wxString outdac0 = wxString::Format("%i", dac0);
 	//wxMessageBox(outdac0);
-
+	
 	int fi0 = myDacFi.fi;
 	wxString outfi0 = wxString::Format("%i", fi0);
 	//wxMessageBox(outfi0);
@@ -683,10 +655,9 @@ void Dlg::Decode(wxString sentence)
 	}
 }
 
-
-
 void Dlg::OnTest(wxCommandEvent& event)
 {
+	m_bUsingTest = true;
 
 	wxString mySentence = plugin->m_pDialog->m_textCtrlTest->GetValue();
 
@@ -699,6 +670,7 @@ void Dlg::OnTest(wxCommandEvent& event)
 		wxMessageBox("Invalid sentence");
 		return;
 	}
+
 	string myMsg = parseNMEASentence(mySentence).ToStdString();
 
 	const char* payload1 = myMsg.c_str();
@@ -706,11 +678,11 @@ void Dlg::OnTest(wxCommandEvent& event)
 
 	int dac0 = myDacFi.dac;
 	wxString outdac0 = wxString::Format("%i", dac0);
-	wxMessageBox(outdac0);
+	wxMessageBox(outdac0, "DAC");
 
 	int fi0 = myDacFi.fi;
 	wxString outfi0 = wxString::Format("%i", fi0);
-	wxMessageBox(outfi0);
+	wxMessageBox(outfi0, "FI");
 
 	switch (fi0) {
 	case 25: {
@@ -733,6 +705,43 @@ void Dlg::OnTest(wxCommandEvent& event)
 
 }
 
+void Dlg::OnContextMenu(double m_lat, double m_lon)
+{
+	m_bUsingTest = false;
+	
+	AIS_Target_Data pEmptyTarget;
+
+	initLat = m_lat;
+    initLon = m_lon;
+
+	double myLat = 0;
+	double myLon = 0;
+
+	double diffLat = 100;
+	double diffLon = 100;
+
+	int status;	
+
+	for (vector<AIS_Target_Data>::iterator it = mySignalsFoundCollection.begin(); it != mySignalsFoundCollection.end(); it++) {
+
+		myLat = (*it).Lat;
+		myLon = (*it).Lon;
+
+		diffLat = abs(initLat - myLat);
+		diffLon = abs(initLon - myLon);
+
+        // Dirty way to test whether cursor is close to signal station. 
+		// Should use mercator distance function.
+
+		if (diffLat < 0.00333 && diffLon < 0.00333) {  
+			GetSignal(*it);
+			return;		
+		}
+	}
+    wxMessageBox("No signal found within 0.2nm");
+	return;
+}
+
 void Dlg::OnSignalShow(wxCommandEvent& event) {
 
 	plugin->m_pDialog->m_notebookMessage->SetSelection(0);
@@ -741,6 +750,19 @@ void Dlg::OnSignalShow(wxCommandEvent& event) {
 	wxString m_lights = plugin->m_pDialog->m_textLightStatus->GetValue();
 
 	signalling = new Signalling(wxT("Signal Display"), m_form, m_lights);
+	signalling->Show(true);
+
+}
+
+void Dlg::GetSignal(AIS_Target_Data myTarget) {
+
+	int signalForm = myTarget.signalForm;	
+	int signalLights = myTarget.signalStatus;
+
+	wxString myRisIndex = myTarget.RISindex;
+	wxString m_lights = wxString::Format("%i", signalLights);
+
+	signalling = new Signalling(wxT("Signal Display"), signalForm, m_lights);
 	signalling->Show(true);
 
 }
@@ -832,9 +854,9 @@ void Dlg::UpdateAISTargetList(void)
 // ************ Signal Station **************
 void Dlg::getAis8_200_41(string rawPayload) {
 
-	mySignalCollection.clear();  // This avoids polluting myTestDataCollection
+	//mySignalCollection.clear();  // This avoids polluting myTestDataCollection
 
-	pTargetData = new AIS_Target_Data;
+
 	AIS_Target_Data *pStaleTarget = NULL;
 	bool bnewtarget = false;
 	bool bdecode_result = false;
@@ -883,16 +905,17 @@ void Dlg::getAis8_200_41(string rawPayload) {
 	int stat = myRIS.lightStatus;
 	wxString outstat = wxString::Format("%i", stat);
 	//wxMessageBox(outstat);
+    vector<AIS_Target_Data> signalData;
+	signalData = FindSignalRISindex(hect, "SISTAT_6");	
 
-	//  Search the current AISTargetList for a hect match
-	AIS_Target_Hash::iterator it = AISTargetList->find(hect);
-	vector<AIS_Target_Data> signalData;
+    // Search the current AISTargetList for an RISindex match
+	AIS_Target_Hash::iterator it = AISTargetList->find(signalData.at(0).RISindex);
 	
 
 	if (it == AISTargetList->end())                  // not found
 	{			
-		signalData.clear();
-		signalData = FindSignalRISindex(hect);	
+		//signalData.clear();
+		pTargetData = new AIS_Target_Data;
 		pTargetData->RISindex = signalData.at(0).RISindex;
 		pTargetData->Lat = signalData.at(0).Lat;
 		pTargetData->Lon = signalData.at(0).Lon;
@@ -926,30 +949,40 @@ void Dlg::getAis8_200_41(string rawPayload) {
 		//
 		// ***********
 		//AISshipNameCache(pTargetData, AISTargetNamesC, AISTargetNamesNC, hect);
-		(*AISTargetList)[pTargetData->hect] = pTargetData;  // update the hash table entry
-
-		myTestDataCollection.push_back(*pTargetData);
+		(*AISTargetList)[pTargetData->RISindex] = pTargetData;  // update the hash table entry
+		mySignalsFoundCollection.push_back(*pTargetData);
 		
 		//wxString sz = wxString::Format("%i",pTargetData->hect);
 	   // wxMessageBox(signalData.at(1).RISindex);
+		 wxFileName fn;
+
+		double myLat = pTargetData->Lat;
+		double myLon = pTargetData->Lon;
+
+		PlugIn_Waypoint*  wayPoint = new PlugIn_Waypoint(myLat, myLon, "", "", "") ;
+		wayPoint->m_MarkDescription = pTargetData->RISindex;
+		wayPoint->m_IsVisible = true;
+		wayPoint->m_IconName = "green-pin";
+
+		AddSingleWaypoint(wayPoint, false);
+		GetParent()->Refresh();
 
 	}
+	if (m_bUsingTest) {
 
-	m_notebookMessage->SetSelection(0);
+		m_notebookMessage->SetSelection(0);
 
-	m_textMMSI->SetValue(outmm);
-	m_textCountry->SetValue(outcountry);
-	m_textFairwaySection->SetValue(outsect);
-	m_textStationType->SetValue(outobjtype);
-	m_textStationNumber->SetValue(outobjnum);
-	m_textHectometre->SetValue(outhect);
-	m_textSignalForm->SetValue(outsig);
-	m_textOrientation->SetValue(outorientation);
-	m_textImpact->SetValue(outimp);
-	m_textLightStatus->SetValue(outstat);
-
-	//this->Refresh();
-
+		m_textMMSI->SetValue(outmm);
+		m_textCountry->SetValue(outcountry);
+		m_textFairwaySection->SetValue(outsect);
+		m_textStationType->SetValue(outobjtype);
+		m_textStationNumber->SetValue(outobjnum);
+		m_textHectometre->SetValue(outhect);
+		m_textSignalForm->SetValue(outsig);
+		m_textOrientation->SetValue(outorientation);
+		m_textImpact->SetValue(outimp);
+		m_textLightStatus->SetValue(outstat);
+	}
 }
 
 //  ***** Text Message *******************
@@ -980,22 +1013,29 @@ void Dlg::getAis8_200_44(string rawPayload) {
 	string myText = myRIS.text;
 	//wxMessageBox(myText);
 
-	m_notebookMessage->SetSelection(1);
+	if (m_bUsingTest) {
+		m_notebookMessage->SetSelection(1);
 
-	m_textMMSI1->SetValue(outmm);
-	m_textCountry1->SetValue(myCountry);
-	m_textFairwaySection1->SetValue(outsect);
-	m_textObjectCode1->SetValue(myObj);
-	m_textHectometre1->SetValue(outhect);
-	m_textText1->SetValue(myText);
-
-	Refresh();
+		m_textMMSI1->SetValue(outmm);
+		m_textCountry1->SetValue(myCountry);
+		m_textFairwaySection1->SetValue(outsect);
+		m_textObjectCode1->SetValue(myObj);
+		m_textHectometre1->SetValue(outhect);
+		m_textText1->SetValue(myText);
+	}
+	//Refresh();
 
 }
 
 //  ********** Bridge Clearance *************
 void Dlg::getAis8_200_25(string rawPayload) {
 	// Bridge Clearance
+	pBridgeData = new AIS_Target_Data;
+	AIS_Target_Data *pStaleTarget = NULL;
+	bool bnewtarget = false;
+	bool bdecode_result = false;
+
+
 	const char* payload = rawPayload.c_str();
 
 	mylibais::Ais8_200_25 myRIS(payload, 0);
@@ -1028,20 +1068,87 @@ void Dlg::getAis8_200_25(string rawPayload) {
 	int acc = myRIS.accuracy;
 	wxString outacc = wxString::Format("%i", acc);
 	//wxMessageBox(outacc);	
+    
+	vector<AIS_Target_Data> signalData;
+	signalData = FindBridgeRISindex(hect, outobj);	
+	
+	//  Search the current AISTargetList for an RISindex match
+	AIS_Target_Hash::iterator it = AISTargetList->find(signalData.at(0).RISindex);
+		
 
-	m_notebookMessage->SetSelection(2);
+	if (it == AISTargetList->end())                  // not found
+	{			
+		
+		//wxMessageBox("here");
+		//signalData.clear();
+		
+		//wxString outlat = wxString::Format("%f", signalData.at(0).Lat);
+		//wxMessageBox(outlat);
+		pBridgeData->RISindex = signalData.at(0).RISindex;
+		pBridgeData->Lat = signalData.at(0).Lat;
+		pBridgeData->Lon = signalData.at(0).Lon;
+		pBridgeData->hect = hect;
+		pBridgeData->bridgeClearance = clearance;
+		pBridgeData->country = outcountry;
 
-	m_textMMSI2->SetValue(outmm);
-	m_textCountry2->SetValue(outcountry);
-	m_textFairwaySection2->SetValue(outsect);
-	m_textObjectCode2->SetValue(outobj);
-	m_textHectometre2->SetValue(outhect);
-	m_textBridgeClearance->SetValue(outclear);
-	m_textTime->SetValue(outtime);
-	m_textAccuracy->SetValue(outacc);
+		bdecode_result = true;
+		bnewtarget = true;
+		m_n_targets++;
+	}
+	else {
 
-	Refresh();
+		// Not needed at present
+		//pTargetData = it->second;          // find current entry
+		// save a pointer to stale data
 
+	}
+
+	
+
+	//  If the message was decoded correctly
+	//  Update the AIS Target information
+	if (bdecode_result) {
+		m_bUpdateTarget = true;
+		//signalData.clear();
+		
+		// **********
+		// signalData is not used but FindSignalData populates myTestDataCollection
+		// This is used by the factory to draw the signal locations
+		//
+		// ***********
+		//AISshipNameCache(pTargetData, AISTargetNamesC, AISTargetNamesNC, hect);
+		(*AISTargetList)[pBridgeData->RISindex] = pBridgeData;  // update the hash table entry
+
+		myTestDataCollection.push_back(*pBridgeData);
+		
+		//wxString sz = wxString::Format("%i",pTargetData->hect);
+	   // wxMessageBox(signalData.at(1).RISindex);		
+
+		double myLat = pBridgeData->Lat;
+		double myLon = pBridgeData->Lon;
+
+		PlugIn_Waypoint*  wayPoint1 = new PlugIn_Waypoint(myLat, myLon, "", "", "") ;
+		wxString sz = "\nClearance:\n" + outclear;
+		wayPoint1->m_MarkDescription = pBridgeData->RISindex + sz;
+		wayPoint1->m_IsVisible = true;
+		wayPoint1->m_IconName = "green-pin";
+
+		AddSingleWaypoint(wayPoint1, false);
+		GetParent()->Refresh();
+
+	}
+	if (m_bUsingTest) {
+		m_notebookMessage->SetSelection(2);
+
+		m_textMMSI2->SetValue(outmm);
+		m_textCountry2->SetValue(outcountry);
+		m_textFairwaySection2->SetValue(outsect);
+		m_textObjectCode2->SetValue(outobj);
+		m_textHectometre2->SetValue(outhect);
+		m_textBridgeClearance->SetValue(outclear);
+		m_textTime->SetValue(outtime);
+		m_textAccuracy->SetValue(outacc);
+	}
 }
 
 //  ***** Water Level ************
@@ -1094,21 +1201,21 @@ void Dlg::getAis8_200_26(string rawPayload) {
 	wxString outvalue3 = wxString::Format("%i", value3);
 	//wxMessageBox(outvalue3);
 
-	m_notebookMessage->SetSelection(3);
+	if (m_bUsingTest) {
+		m_notebookMessage->SetSelection(3);
 
-	m_textMMSI3->SetValue(outmm);
-	m_textCountry3->SetValue(outcountry);
-	m_textGauge1->SetValue(outid);
-	m_textWaterRef1->SetValue(outlevel);
-	m_textValue1->SetValue(outvalue);
-	m_textGauge2->SetValue(outid2);
-	m_textWaterRef2->SetValue(outlevel2);
-	m_textValue2->SetValue(outvalue2);
-	m_textGauge3->SetValue(outid3);
-	m_textWaterRef3->SetValue(outlevel3);
-	m_textValue3->SetValue(outvalue3);
-
-	Refresh();
+		m_textMMSI3->SetValue(outmm);
+		m_textCountry3->SetValue(outcountry);
+		m_textGauge1->SetValue(outid);
+		m_textWaterRef1->SetValue(outlevel);
+		m_textValue1->SetValue(outvalue);
+		m_textGauge2->SetValue(outid2);
+		m_textWaterRef2->SetValue(outlevel2);
+		m_textValue2->SetValue(outvalue2);
+		m_textGauge3->SetValue(outid3);
+		m_textWaterRef3->SetValue(outlevel3);
+		m_textValue3->SetValue(outvalue3);
+	}
 }
 
 void Dlg::SetViewPort(PlugIn_ViewPort *vp)
@@ -1268,7 +1375,7 @@ void Dlg::OnSelectMessage(wxCommandEvent& event) {
 	mySignalCollection.clear();
 	long itemIndex = -1;
 	wxString itx;
-
+/*
   while ((itemIndex = m_pASMmessages1->m_pListCtrlAISTargets->GetNextItem(itemIndex,
           wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != wxNOT_FOUND) {
     // Got the selected item index
@@ -1285,7 +1392,7 @@ void Dlg::OnSelectMessage(wxCommandEvent& event) {
 
   m_vpppm = m_vp->view_scale_ppm;
   JumpToPosition(lat, lon, m_vpppm);
-
+*/
  // m_vpscale = m_vp->chart_scale;
   
   
@@ -1297,3 +1404,37 @@ double Dlg::CalculatePPM(float scale) {
     double sc = m_vpscale / scale * m_vpppm;
     return sc;
 }
+
+wxString Dlg::StandardPath()
+{
+    wxString s = wxFileName::GetPathSeparator();
+    wxString stdPath  = *GetpPrivateApplicationDataLocation();
+
+    stdPath += s + _T("plugins");
+    if (!wxDirExists(stdPath))
+      wxMkdir(stdPath);
+
+    stdPath += s + _T("aisRX");
+
+#ifdef __WXOSX__
+    // Compatibility with pre-OCPN-4.2; move config dir to
+    // ~/Library/Preferences/opencpn if it exists
+    {
+        wxStandardPathsBase& std_path = wxStandardPathsBase::Get();
+        wxString s = wxFileName::GetPathSeparator();
+        // should be ~/Library/Preferences/opencpn
+        wxString oldPath = (std_path.GetUserConfigDir() +s + _T("plugins") +s + _T("UKTides"));
+        if (wxDirExists(oldPath) && !wxDirExists(stdPath)) {
+            wxLogMessage("UKTides_pi: moving config dir %s to %s", oldPath, stdPath);
+            wxRenameFile(oldPath, stdPath);
+        }
+    }
+#endif
+
+    if (!wxDirExists(stdPath))
+      wxMkdir(stdPath);
+
+    stdPath += s;
+    return stdPath;
+}
+

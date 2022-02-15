@@ -17,7 +17,6 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/textctrl.h>
-#include <wx/tglbtn.h>
 #include <wx/sizer.h>
 #include <wx/panel.h>
 #include <wx/bitmap.h>
@@ -43,7 +42,6 @@ class aisRXBase : public wxDialog
 	protected:
 		wxStaticText* m_staticText1;
 		wxTextCtrl* m_textCtrlTest;
-		wxToggleButton* m_toggleBtn1;
 		wxNotebook* m_notebookMessage;
 		wxPanel* m_panelSignal;
 		wxStaticText* m_staticText3;
@@ -130,7 +128,6 @@ class aisRXBase : public wxDialog
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
-		virtual void OnToggleButton( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnData( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnLogging( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTest( wxCommandEvent& event ) { event.Skip(); }

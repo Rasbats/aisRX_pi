@@ -116,8 +116,6 @@ set(SRC
 	src/widget.h
 	src/bbox.cpp
     src/bbox.h	
-	src/aisRXOverlayFactory.cpp
-    src/aisRXOverlayFactory.h
 	src/AISdisplay.cpp
 	src/AISdisplay.h
 	src/ASMmessages.cpp

@@ -1,0 +1,1 @@
+SELECT DISTINCT * from RIS where hectomt = "19214" and objcode = "SI061"

@@ -47,8 +47,6 @@
 #include "ocpn_plugin.h" //Required for OCPN plugin functions
 #include "aisRXgui_impl.h"
 
-#include "aisRXOverlayFactory.h"
-
 #include <sqlite3.h>
 #include <wx/thread.h>
 #include <map>
@@ -124,21 +122,13 @@ public:
     wxBitmap m_panelBitmap;
     Dlg* m_pDialog;
 
-
+	
 	//
     aisRX_pi* plugin;
 
 	void    dbGetTable(wxString sql, char ***results, int &n_rows, int &n_columns);
 	void    dbFreeResults(char **results);
 	
-	aisRXOverlayFactory *GetaisRXOverlayFactory(){ return m_paisRXOverlayFactory; }
-
-	aisRXOverlayFactory *m_paisRXOverlayFactory;
-	//aisRXOverlayFactory *aisRXUIDialog;
-
-	//The override PlugIn Methods
-    bool RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp);
-	bool RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp);
 
 	// ******** Database stuff ******************************************
 	
@@ -173,8 +163,8 @@ private:
     bool m_bCopyUseFile;
     wxString m_tCopyMMSI;
 
-	
-
+	void OnContextMenuItemCallback(int id);
+	void SetCursorLatLon(double lat, double lon);
 };
 
 

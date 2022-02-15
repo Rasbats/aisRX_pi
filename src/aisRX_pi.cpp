@@ -185,6 +185,12 @@ int aisRX_pi::Init(void)
 
     m_pDialog = NULL;
 
+	wxMenu dummy_menu;
+    m_position_menu_id = AddCanvasContextMenuItem(
+        new wxMenuItem(&dummy_menu, -1, _("RIS Signal Status")),
+        this);
+    SetCanvasContextMenuItemViz(m_position_menu_id, true);
+
     return (WANTS_OVERLAY_CALLBACK | WANTS_OPENGL_OVERLAY_CALLBACK
         | WANTS_TOOLBAR_CALLBACK | INSTALLS_TOOLBAR_TOOL | WANTS_CURSOR_LATLON
         | WANTS_NMEA_SENTENCES | WANTS_AIS_SENTENCES | WANTS_PREFERENCES
@@ -220,11 +226,6 @@ bool aisRX_pi::DeInit(void)
 		}
 
     
-	if (m_paisRXOverlayFactory) {
-			delete m_paisRXOverlayFactory;
-			m_paisRXOverlayFactory = NULL;
-	}		
-
     m_bShowaisRX = false;
     SetToolbarItemState(m_leftclick_tool_id, m_bShowaisRX);
 
@@ -336,12 +337,6 @@ void aisRX_pi::OnToolbarToolCallback(int id)
         m_pDialog->SetSize(m_hr_dialog_sx, m_hr_dialog_sy);
         m_pDialog->Show();
 
-        // Create the drawing factory
-        m_paisRXOverlayFactory = new aisRXOverlayFactory(*m_pDialog );
-        m_paisRXOverlayFactory->SetParentSize( m_display_width, m_display_height);		
-        
- 
-
     } else {
         m_pDialog->Hide();
     }
@@ -360,34 +355,6 @@ void aisRX_pi::OnToolbarToolCallback(int id)
 
     RequestRefresh(m_parent_window); // refresh main window
 }
-
-bool aisRX_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
-{
-	
-	if(!m_pDialog ||
-       !m_pDialog->IsShown() ||
-       !m_paisRXOverlayFactory)
-        return false;
-
-    m_pDialog->SetViewPort( vp );
-    m_paisRXOverlayFactory->RenderaisRXOverlay ( dc, vp );
-    return true;
-}
-
-bool aisRX_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
-{
-	
-
-	if(!m_pDialog ||
-       !m_pDialog->IsShown() ||
-       !m_paisRXOverlayFactory)
-        return false;
-
-    m_pDialog->SetViewPort( vp );
-    m_paisRXOverlayFactory->RenderGLaisRXOverlay ( pcontext, vp );
-    return true;
-}
-
 
 
 void aisRX_pi::SetAISSentence(wxString &sentence) {
@@ -449,6 +416,8 @@ void aisRX_pi::OnaisRXDialogClose()
     m_bShowaisRX = false;
     SetToolbarItemState(m_leftclick_tool_id, m_bShowaisRX);
     m_pDialog->Hide();
+
+	RequestRefresh(m_parent_window); // refresh main window
 	
     SaveConfig();   
 }
@@ -490,6 +459,28 @@ void aisRX_pi::SetNMEASentence(wxString& sentence)
         */
     }
 }
+
+void aisRX_pi::OnContextMenuItemCallback(int id)
+{
+
+    if (!m_pDialog)
+        return;
+
+    if (id == m_position_menu_id) {
+
+        m_cursor_lat = GetCursorLat();
+        m_cursor_lon = GetCursorLon();
+
+        m_pDialog->OnContextMenu(m_cursor_lat, m_cursor_lon);
+    }
+}
+
+void aisRX_pi::SetCursorLatLon(double lat, double lon)
+{
+    m_cursor_lat = lat;
+    m_cursor_lon = lon;
+}
+
 
 void aisRX_pi::dbGetTable(wxString sql, char ***results, int &n_rows, int &n_columns)
 {

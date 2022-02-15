@@ -20,7 +20,7 @@ Signalling::Signalling(const wxString& title, int signalForm, wxString signalLig
   m_textCtrl1 = new wxTextCtrl( centerPanel, wxID_ANY, mySignalForm, wxDefaultPosition, wxDefaultSize, 0 );
   m_textCtrl2 = new wxTextCtrl( centerPanel, wxID_ANY, mySignalLights, wxDefaultPosition, wxDefaultSize, 0 );  
   
-wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
+  wxBoxSizer *vbox = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *hbox = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer *hbox2 = new wxBoxSizer(wxHORIZONTAL);
   wxBoxSizer *hbox3 = new wxBoxSizer(wxHORIZONTAL);
