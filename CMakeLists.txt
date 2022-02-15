@@ -50,7 +50,7 @@ set(OCPN_BETA_REPO
     "Default repository for tagged builds matching 'beta'"
 )
 set(OCPN_RELEASE_REPO
-    mike-rossiter/aisrx-prod"
+    "mike-rossiter/aisrx-prod"
     CACHE STRING 
     "Default repository for tagged builds not matching 'beta'"
 )
