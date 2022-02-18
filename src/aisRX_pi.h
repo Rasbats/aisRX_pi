@@ -122,6 +122,7 @@ public:
     wxBitmap m_panelBitmap;
     Dlg* m_pDialog;
 
+	wxString s51, s52, s53;
 	
 	//
     aisRX_pi* plugin;
@@ -165,6 +166,8 @@ private:
 
 	void OnContextMenuItemCallback(int id);
 	void SetCursorLatLon(double lat, double lon);
+
+	
 };
 
 

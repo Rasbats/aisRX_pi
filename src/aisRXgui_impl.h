@@ -149,6 +149,9 @@ public:
 	string					  RISindex;
 	bool                      b_nameValid;
 	bool                      b_nameFromCache;
+	/***************** weather obs *****/
+	double					  air_press;
+	string                  MMSI;
 
   
 };
@@ -297,6 +300,7 @@ public:
 	double initLat;
 	double initLon;
 	void GetSignal(AIS_Target_Data myTarget);
+	
 
 protected:
     bool m_bNeedsGrib;
@@ -332,6 +336,7 @@ private:
     void OnTest(wxCommandEvent& event);
 	void OnSignalShow(wxCommandEvent& event);
 	wxString parseNMEASentence(wxString& sentence);
+	void getAis8_1_11(string rawPayload);
 	void getAis8_200_25(string rawPayload);
 	void getAis8_200_26(string rawPayload);
 	void getAis8_200_41(string rawPayload);
@@ -358,6 +363,9 @@ private:
     bool m_bUsingFollow;
     bool m_bInvalidPolarsFile;
     bool m_bInvalidGribFile;
+
+	
+
    
 };
 

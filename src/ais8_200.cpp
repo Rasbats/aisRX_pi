@@ -237,4 +237,5 @@ namespace mylibais {
 		//status = AIS_OK;
 	}
 
+
 } // namespace mylibais

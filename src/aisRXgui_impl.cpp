@@ -303,12 +303,14 @@ void Dlg::OnToggleButton(wxCommandEvent& event) {
 
 void Dlg::SetAISMessage(wxString &msg)
 {
+		
 	if (m_bPaused) return;
 	
 	m_message = msg;
 
-	bool m_bGotDAC = DecodeForDAC(m_message);
-	if (m_bGotDAC) plugin->m_pDialog->m_textCtrlTest->SetValue(m_message);
+	bool m_bGotDAC = DecodeForDAC(msg);
+
+	plugin->m_pDialog->m_textCtrlTest->SetValue(msg);
 	
 	//if (m_bHaveMessageList) {
 		Decode(msg);
@@ -572,22 +574,14 @@ wxString Dlg::DateTimeToDateString(wxDateTime myDT)
 bool Dlg::DecodeForDAC(wxString insentence)
 {
 
-	wxString mySentence = insentence;
-
-	if (mySentence.IsEmpty() || mySentence.IsNull()) {
-		//wxMessageBox("No sentence has been entered");
-		return false;
-	}
-
-	if (mySentence.Mid(3, 3) != "VDM") {
-		//wxMessageBox("Invalid sentence");
-		return false;
-	}
-
-	string myMsg = parseNMEASentence(mySentence).ToStdString();
-
+	string myMsg = insentence;
+    
 	const char* payload1 = myMsg.c_str();
 	mylibais::Ais8 myDacFi(payload1, 0);
+
+	int n = strlen(payload1);
+	wxString len = wxString::Format("%i", n);
+	//wxMessageBox(len);
 
 	int dac0 = myDacFi.dac;
 	wxString outdac0 = wxString::Format("%i", dac0);
@@ -595,7 +589,10 @@ bool Dlg::DecodeForDAC(wxString insentence)
 	
 	int fi0 = myDacFi.fi;
 	wxString outfi0 = wxString::Format("%i", fi0);
-	////wxMessageBox(outfi0);
+   // wxMessageBox(outfi0);
+	if (fi0 == 11) {
+		//wxMessageBox("here");
+	}
 
 	if (fi0 == 25 || fi0 == 26 || fi0 == 41) {
 		return true;
@@ -609,31 +606,25 @@ bool Dlg::DecodeForDAC(wxString insentence)
 void Dlg::Decode(wxString sentence)
 {
 
-	wxString mySentence = sentence;
-
-	if (mySentence.IsEmpty() || mySentence.IsNull()) {
-		//wxMessageBox("No sentence has been entered");
-		return;
-	}
-
-	if (mySentence.Mid(3, 3) != "VDM") {
-		//wxMessageBox("Invalid sentence");
-		return;
-	}
-
-	string myMsg = parseNMEASentence(mySentence).ToStdString();
+	string myMsg = sentence;
 
 	const char* payload1 = myMsg.c_str();
 	mylibais::Ais8 myDacFi(payload1, 0);
 
 	int dac0 = myDacFi.dac;
-	wxString outdac0 = wxString::Format("%i", dac0);
-	//wxMessageBox(outdac0);
-	
-	int fi0 = myDacFi.fi;
-	wxString outfi0 = wxString::Format("%i", fi0);
-	//wxMessageBox(outfi0);
+	if (dac0 == 1) {
+		//wxString outdac0 = wxString::Format("%i", dac0);
+		//wxMessageBox(outdac0);
+	}
 
+	int fi0 = myDacFi.fi;
+	if (fi0 == 11) {
+		//wxString outfi0 = wxString::Format("%i", fi0);
+		//wxMessageBox(outfi0);
+
+		getAis8_1_11(myMsg);
+
+	}
 	switch (fi0) {
 	case 25: {
 		getAis8_200_25(myMsg);
@@ -770,13 +761,12 @@ void Dlg::GetSignal(AIS_Target_Data myTarget) {
 wxString Dlg::parseNMEASentence(wxString& sentence)
 {
 
-	// $GPAPB,A,A,0.10,R,N,V,V,011,M,DEST,011,M,011,M*3C
-
 	wxString token[40];
 	wxString s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11;
 	token[0] = _T("");
 
 	wxStringTokenizer tokenizer(sentence, wxT(","));
+	
 	int i = 0;
 
 	while (tokenizer.HasMoreTokens()) {
@@ -784,12 +774,13 @@ wxString Dlg::parseNMEASentence(wxString& sentence)
 		i++;
 	}
 	if (token[0].Right(3) == _T("VDM")) {
+		
 
-		s5 = token[5];
+		
 
-		return s5;
-
+		
 	}
+	
 	return "999";
 }
 
@@ -851,6 +842,203 @@ void Dlg::UpdateAISTargetList(void)
 
 	}		
 }
+
+// ************ Weather (International) **************
+void Dlg::getAis8_1_11(string rawPayload) {
+
+	//mySignalCollection.clear();  // This avoids polluting myTestDataCollection
+
+
+	AIS_Target_Data *pStaleTarget = NULL;
+    AIS_Target_Data *pWeatherTarget = NULL;
+
+	bool bnewtarget = false;
+	bool bdecode_result = false;
+
+	const char* payload = rawPayload.c_str();
+
+	mylibais::Ais8_1_11 myRIS(payload, 0);
+
+	AisPoint weatherPoint = myRIS.position;
+	wxString outLat = wxString::Format("%f", weatherPoint.lat_deg);
+	//wxMessageBox(outLat);
+
+	wxString outLon = wxString::Format("%f", weatherPoint.lng_deg);
+	//wxMessageBox(outLon);
+
+	int mm = myRIS.mmsi;
+	wxString outmmsi = wxString::Format("%i", mm);
+	string mmsi = outmmsi;
+
+	//wxMessageBox(outmm);
+
+	double air_press = myRIS.air_pres;
+	wxString outpress = wxString::Format("%f", air_press);
+	//wxMessageBox(outpress);
+
+	
+	// Search the current AISTargetList for an RISindex match
+	AIS_Target_Hash::iterator it = AISTargetList->find(mmsi);
+	
+
+	if (it == AISTargetList->end())                  // not found
+	{			
+		pTargetData = new AIS_Target_Data;
+		pTargetData->IMO = mm;
+
+		pTargetData->Lat = weatherPoint.lat_deg;
+		pTargetData->Lon = weatherPoint.lng_deg;
+		pTargetData->air_press = air_press;
+		
+
+		bdecode_result = true;
+		bnewtarget = true;
+		m_n_targets++;
+	}
+	else {
+		
+		// Not needed at present
+		// pTargetData = it->second;          // find current entry
+		// save a pointer to stale data
+	}
+
+	
+
+	//  If the message was decoded correctly
+	//  Update the AIS Target information
+	if (bdecode_result) {
+		m_bUpdateTarget = true;
+		//signalData.clear();
+		
+		// **********
+		// signalData is not used but FindSignalData populates myTestDataCollection
+		// This is used by the factory to draw the signal locations
+		//
+		// ***********
+		//AISshipNameCache(pTargetData, AISTargetNamesC, AISTargetNamesNC, hect);
+		(*AISTargetList)[pTargetData->MMSI] = pTargetData;  // update the hash table entry
+		//mySignalsFoundCollection.push_back(*pTargetData);
+		
+		//wxString sz = wxString::Format("%i",pTargetData->hect);
+	   // wxMessageBox(signalData.at(1).RISindex);
+		 wxFileName fn;
+
+		double myLat = pTargetData->Lat;
+		double myLon = pTargetData->Lon;
+
+		PlugIn_Waypoint*  wayPoint = new PlugIn_Waypoint(myLat, myLon, "", "", "") ;
+		wayPoint->m_MarkDescription = outpress;
+		wayPoint->m_IsVisible = true;
+		wayPoint->m_IconName = "green-pin";
+
+		AddSingleWaypoint(wayPoint, false);
+		GetParent()->Refresh();
+
+	}
+
+	/*
+	int sect = myRIS.section;
+	wxString outsect = wxString::Format("%i", sect);
+	//wxMessageBox(outsect);
+
+	int objtype = myRIS.objectType;
+	wxString outobjtype = wxString::Format("%i", objtype);
+	//wxMessageBox(outtype);
+
+	int objnum = myRIS.objectNumber;
+	wxString outobjnum = wxString::Format("%i", objnum);
+	//wxMessageBox(outobj);
+
+	int hect = 0;
+
+	hect = myRIS.hectometre;
+	wxString outhect = wxString::Format("%i", hect);
+	//wxMessageBox(outhect);
+
+	int sig = myRIS.signalForm;
+	wxString outsig = wxString::Format("%i", sig);
+	//wxMessageBox(outsig);
+
+	int orientation = myRIS.orientation;
+	wxString outorientation = wxString::Format("%i", orientation);
+	//wxMessageBox(outorientation);
+
+	int imp = myRIS.impact;
+	wxString outimp = wxString::Format("%i", imp);
+	//wxMessageBox(outimp);
+
+	int stat = myRIS.lightStatus;
+	wxString outstat = wxString::Format("%i", stat);
+	//wxMessageBox(outstat);
+    vector<AIS_Target_Data> signalData;
+	signalData = FindSignalRISindex(hect, "SISTAT_6");	
+
+    // Search the current AISTargetList for an RISindex match
+	AIS_Target_Hash::iterator it = AISTargetList->find(signalData.at(0).RISindex);
+	
+
+	if (it == AISTargetList->end())                  // not found
+	{			
+		//signalData.clear();
+		pTargetData = new AIS_Target_Data;
+		pTargetData->RISindex = signalData.at(0).RISindex;
+		pTargetData->Lat = signalData.at(0).Lat;
+		pTargetData->Lon = signalData.at(0).Lon;
+		pTargetData->hect = hect;
+		pTargetData->signalForm = sig;
+		pTargetData->signalStatus = stat;
+		pTargetData->country = outcountry;
+
+		bdecode_result = true;
+		bnewtarget = true;
+		m_n_targets++;
+	}
+	else {
+		
+		// Not needed at present
+		// pTargetData = it->second;          // find current entry
+		// save a pointer to stale data
+	}
+
+	
+
+	//  If the message was decoded correctly
+	//  Update the AIS Target information
+	if (bdecode_result) {
+		m_bUpdateTarget = true;
+		//signalData.clear();
+		
+		// **********
+		// signalData is not used but FindSignalData populates myTestDataCollection
+		// This is used by the factory to draw the signal locations
+		//
+		// ***********
+		//AISshipNameCache(pTargetData, AISTargetNamesC, AISTargetNamesNC, hect);
+		(*AISTargetList)[pTargetData->RISindex] = pTargetData;  // update the hash table entry
+		mySignalsFoundCollection.push_back(*pTargetData);
+		
+		//wxString sz = wxString::Format("%i",pTargetData->hect);
+	   // wxMessageBox(signalData.at(1).RISindex);
+		 wxFileName fn;
+
+		double myLat = pTargetData->Lat;
+		double myLon = pTargetData->Lon;
+
+		PlugIn_Waypoint*  wayPoint = new PlugIn_Waypoint(myLat, myLon, "", "", "") ;
+		wayPoint->m_MarkDescription = pTargetData->RISindex;
+		wayPoint->m_IsVisible = true;
+		wayPoint->m_IconName = "green-pin";
+
+		AddSingleWaypoint(wayPoint, false);
+		GetParent()->Refresh();
+
+	}
+	
+
+	*/
+}
+
+
 // ************ Signal Station **************
 void Dlg::getAis8_200_41(string rawPayload) {
 

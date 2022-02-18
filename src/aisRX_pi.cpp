@@ -193,7 +193,7 @@ int aisRX_pi::Init(void)
 
     return (WANTS_OVERLAY_CALLBACK | WANTS_OPENGL_OVERLAY_CALLBACK
         | WANTS_TOOLBAR_CALLBACK | INSTALLS_TOOLBAR_TOOL | WANTS_CURSOR_LATLON
-        | WANTS_NMEA_SENTENCES | WANTS_AIS_SENTENCES | WANTS_PREFERENCES
+         | WANTS_AIS_SENTENCES| WANTS_NMEA_SENTENCES  | WANTS_PREFERENCES
         | WANTS_PLUGIN_MESSAGING | WANTS_CONFIG);
 }
 
@@ -356,11 +356,122 @@ void aisRX_pi::OnToolbarToolCallback(int id)
     RequestRefresh(m_parent_window); // refresh main window
 }
 
-
 void aisRX_pi::SetAISSentence(wxString &sentence) {
-    if (NULL != m_pDialog) m_pDialog->SetAISMessage(sentence);
-}
+		wxString myMsg;// = parseNMEASentence(mySentence).ToStdString();
 
+	wxString token[40];
+	wxString s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11;
+	token[0] = _T("");
+
+	wxStringTokenizer tokenizer(sentence, wxT(","));
+	
+	int i = 0;
+
+	while (tokenizer.HasMoreTokens()) {
+		token[i] = tokenizer.GetNextToken();
+		i++;
+	}
+	if (token[0].Right(3) == _T("VDM")) {
+
+		if (token[1].IsSameAs("2")) {
+			if (token[2].IsSameAs("1")) {
+				s51 = token[5];
+				s52 = "";
+				s53 = "";
+				return;
+			}
+		}
+
+		if (token[1].IsSameAs("2")){
+			if (token[2].IsSameAs("2")) {
+				if (s52.IsSameAs("")) return;
+				if (s51.IsSameAs("")) return;
+
+				s52 = token[5];
+				s53 = s51.append(s52);
+				s51 = "";
+				s52 = "";
+				//wxMessageBox(s53);
+				if (NULL != m_pDialog) m_pDialog->SetAISMessage(s53);
+				return;
+			}
+		}
+		
+		if (token[3].IsSameAs("")) {
+			s5 = token[5];
+			s51 = "";
+			s52 = "";
+			if (NULL != m_pDialog) m_pDialog->SetAISMessage(s5);
+		    return;
+		}
+
+		
+	}
+	
+	return;
+
+}
+/*
+void aisRX_pi::SetAISSentence(wxString &sentence) {
+
+	wxString myMsg;// = parseNMEASentence(mySentence).ToStdString();
+
+	// $GPAPB,A,A,0.10,R,N,V,V,011,M,DEST,011,M,011,M*3C
+
+	wxString token[100];
+	wxString s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11;
+	token[0] = _T("");
+
+	wxMessageBox(myMsg);
+
+	wxStringTokenizer tkz(sentence, wxT(","));
+	int i = 0;
+
+
+   token[0] = tkz.GetNextToken();  // !xxVDx
+
+   token[1] = tkz.GetNextToken();
+   int nsentences = atoi(token[1].mb_str());
+
+  token[2] = tkz.GetNextToken();
+  int iSecond = atoi(token[2].mb_str());
+
+  token[3] = tkz.GetNextToken();
+  int iThird = atoi(token[3].mb_str());
+  // skip 2 fields
+  token[4] = tkz.GetNextToken();
+  token[5] = tkz.GetNextToken();
+
+	if (token[0].Right(3) == _T("VDM")) {
+        
+		s51 = token[5];
+		wxMessageBox(s51);
+
+		if ( iSecond == 1 && iThird == 2) {
+			s51 = token[5];
+			
+			return;
+		}
+
+		if (iSecond == 2 && iThird == 2) {
+			s52 = token[5];
+			s53 = s51 + s52;
+			myMsg = s53;
+			wxMessageBox(s53);
+			
+		}
+		
+		if (token[3] == "") {
+			s5 = token[5];
+			myMsg = s5;
+			
+		}
+
+	}
+
+    if (NULL != m_pDialog) m_pDialog->SetAISMessage(myMsg);
+}
+*/
 bool aisRX_pi::LoadConfig(void)
 {
     wxFileConfig* pConf = (wxFileConfig*)m_pconfig;
@@ -425,39 +536,53 @@ void aisRX_pi::OnaisRXDialogClose()
 void aisRX_pi::SetNMEASentence(wxString& sentence)
 {
 
-    // $GPAPB,A,A,0.10,R,N,V,V,011,M,DEST,011,M,011,M*3C
+ 	wxString myMsg;// = parseNMEASentence(mySentence).ToStdString();
 
-    if (NULL == m_pDialog)
-        return;
+	wxString token[40];
+	wxString s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11;
+	token[0] = _T("");
 
-    wxString token[40];
-    wxString s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11;
-    token[0] = _T("");
+	wxStringTokenizer tokenizer(sentence, wxT(","));
+	
+	int i = 0;
 
-    wxStringTokenizer tokenizer(sentence, wxT(","));
-    int i = 0;
+	while (tokenizer.HasMoreTokens()) {
+		token[i] = tokenizer.GetNextToken();
+		i++;
+	}
+	if (token[0].Right(3) == _T("VDM")) {
+		
 
-    while (tokenizer.HasMoreTokens()) {
-        token[i] = tokenizer.GetNextToken();
-        i++;
-    }
-    if (token[0].Right(3) == _T("APB")) {
+		if (token[1].IsSameAs("2")){
+			if (token[2].IsSameAs("1")) {
+				s51 = token[5];	
+				s52 = "";
+				return;
+			}
+		}
+		
+		if (token[1].IsSameAs("2") && token[2].IsSameAs("2")) {
+				s52 = token[5];
+				s53 = s51.append(s52);
+				s51 = "";
+				//wxMessageBox(s53);
+				if (NULL != m_pDialog) m_pDialog->SetAISMessage(s53);
+				return;
+		}
+		
+		if (token[3].IsSameAs("")) {
+			s5 = token[5];
+			s51 = "";
+			s52 = "";
+			if (NULL != m_pDialog) m_pDialog->SetAISMessage(s5);
+		    return;
+		}
 
-        s11 = token[11];
+		
+	}
+	
+	return;
 
-        if (m_pDialog->m_bAuto) {
-
-            double value;
-            s11.ToDouble(&value);
-            m_pDialog->myDir = value;
-        }
-        /*
-        s6 = token[6];
-        if (s6 == _T("A")) {
-                wxMessageBox(_("Vessel has arrived at the final waypoint"));
-        }
-        */
-    }
 }
 
 void aisRX_pi::OnContextMenuItemCallback(int id)
