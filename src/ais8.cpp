@@ -28,7 +28,7 @@ namespace mylibais {
 		spare = bits.ToUnsignedInt(38, 2);
 		dac = bits.ToUnsignedInt(40, 10);
 		fi = bits.ToUnsignedInt(50, 6);
-		
+		return;
 	}
 
 	// IMO Circ 289 - Meteorological and Hydrographic data
