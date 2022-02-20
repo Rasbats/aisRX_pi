@@ -31,6 +31,78 @@ namespace mylibais {
 		
 	}
 
+	// IMO Circ 289 - Meteorological and Hydrographic data
+// See also Circ 236
+	Ais8_1_31::Ais8_1_31(const char *nmea_payload, const size_t pad)
+		: Ais8(nmea_payload, pad), position_accuracy(0), utc_day(0), utc_hour(0),
+		  utc_min(0), wind_ave(0), wind_gust(0), wind_dir(0), wind_gust_dir(0),
+		  air_temp(0.0), rel_humid(0), dew_point(0.0), air_pres(0.0),
+		  air_pres_trend(0), horz_vis(0.0), water_level(0.0),
+		  water_level_trend(0), surf_cur_speed(0.0), surf_cur_dir(0),
+		  cur_speed_2(0.0), cur_dir_2(0), cur_depth_2(0), cur_speed_3(0.0),
+		  cur_dir_3(0), cur_depth_3(0), wave_height(0.0), wave_period(0),
+		  wave_dir(0), swell_height(0.0), swell_period(0), swell_dir(0),
+		  sea_state(0), water_temp(0.0), precip_type(0), salinity(0.0),
+		  ice(0), spare2(0) {
+	  assert(dac == 1);
+	  assert(fi == 31);
+	  /*
+	  if (!CheckStatus()) {
+		return;
+	  }
+	  if (num_bits != 360) {
+		status = AIS_ERR_BAD_BIT_COUNT;
+		return;
+	  }*/
+
+	  bits.SeekTo(56);
+	  position = bits.ToAisPoint(56, 49);
+	  position_accuracy = bits[105];
+	  utc_day = bits.ToUnsignedInt(106, 5);
+	  utc_hour = bits.ToUnsignedInt(111, 5);
+	  utc_min = bits.ToUnsignedInt(116, 6);
+
+	  wind_ave = bits.ToUnsignedInt(122, 7);  // kts
+	  wind_gust = bits.ToUnsignedInt(129, 7);  // kts
+	  wind_dir = bits.ToUnsignedInt(136, 9);
+	  wind_gust_dir = bits.ToUnsignedInt(145, 9);
+	  air_temp = bits.ToInt(154, 11) / 10.;  // C
+	  rel_humid = bits.ToUnsignedInt(165, 7);
+	  dew_point = bits.ToInt(172, 10)/ 10.;  // TODO(schwehr): How is this mapped?
+	  air_pres = (bits.ToUnsignedInt(182, 9) + 800) / 100.0;  // Pa
+	  air_pres_trend = bits.ToUnsignedInt(191, 2);
+
+	  horz_vis = bits.ToUnsignedInt(193, 8) / 10.;  // NM
+	  water_level = bits.ToUnsignedInt(201, 12) / 100. - 10;  // m
+	  water_level_trend = bits.ToUnsignedInt(213, 2);
+
+	  surf_cur_speed = bits.ToUnsignedInt(215, 8) / 10.;
+	  surf_cur_dir = bits.ToUnsignedInt(223, 9);
+	  cur_speed_2 = bits.ToUnsignedInt(232, 8) / 10.;  // kts
+	  cur_dir_2 = bits.ToUnsignedInt(240, 9);
+	  cur_depth_2 = bits.ToUnsignedInt(249, 5);  // m
+	  cur_speed_3 = bits.ToUnsignedInt(254, 8) / 10.;  // kts
+	  cur_dir_3 = bits.ToUnsignedInt(262, 9);
+	  cur_depth_3 = bits.ToUnsignedInt(271, 5);  // m
+
+	  wave_height = bits.ToUnsignedInt(276, 8);  // m
+
+	  wave_period = bits.ToUnsignedInt(284, 6);
+	  wave_dir = bits.ToUnsignedInt(290, 9);
+	  swell_height = bits.ToUnsignedInt(299, 8) / 10.;
+	  swell_period = bits.ToUnsignedInt(307, 6);
+	  swell_dir = bits.ToUnsignedInt(313, 9);
+	  sea_state = bits.ToUnsignedInt(322, 4);  // beaufort scale - Table 1.2
+	  water_temp = bits.ToInt(326, 10) / 10.;
+	  precip_type = bits.ToUnsignedInt(336, 3);
+	  salinity = bits.ToUnsignedInt(339, 9) / 10.;
+	  ice = bits.ToUnsignedInt(348, 2);  // yes/no/undef/unknown
+	  spare2 = bits.ToUnsignedInt(350, 10);
+
+	 // assert(bits.GetRemaining() == 0);
+	 // status = AIS_OK;
+	}
+
 	//********** Weather FI 11 ************************
 
 	Ais8_1_11::Ais8_1_11(const char *nmea_payload, const size_t pad)

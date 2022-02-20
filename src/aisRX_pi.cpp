@@ -193,7 +193,7 @@ int aisRX_pi::Init(void)
 
     return (WANTS_OVERLAY_CALLBACK | WANTS_OPENGL_OVERLAY_CALLBACK
         | WANTS_TOOLBAR_CALLBACK | INSTALLS_TOOLBAR_TOOL | WANTS_CURSOR_LATLON
-         | WANTS_AIS_SENTENCES| WANTS_NMEA_SENTENCES  | WANTS_PREFERENCES
+         | WANTS_AIS_SENTENCES  | WANTS_NMEA_SENTENCES | WANTS_PREFERENCES
         | WANTS_PLUGIN_MESSAGING | WANTS_CONFIG);
 }
 
@@ -357,20 +357,28 @@ void aisRX_pi::OnToolbarToolCallback(int id)
 }
 
 void aisRX_pi::SetAISSentence(wxString &sentence) {
-		wxString myMsg;// = parseNMEASentence(mySentence).ToStdString();
+
+	//wxMessageBox(sentence);
+
+	wxString myMsg = sentence;
 
 	wxString token[40];
 	wxString s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11;
-	token[0] = _T("");
-
-	wxStringTokenizer tokenizer(sentence, wxT(","));
 	
-	int i = 0;
+	wxStringTokenizer tokenizer(myMsg, wxT(","));
+	
+	token[0] = tokenizer.GetNextToken().Trim(); // !AIVDM
+	token[1] = tokenizer.GetNextToken();        // 1
+	token[2] = tokenizer.GetNextToken();        // 2
+	token[3] = tokenizer.GetNextToken();        // ,,
+	token[4] = tokenizer.GetNextToken();        // A/B
+	token[5] = tokenizer.GetNextToken();        // > etc
 
-	while (tokenizer.HasMoreTokens()) {
-		token[i] = tokenizer.GetNextToken();
-		i++;
+	if (token[3].IsSameAs(_T("5"))) {
+		//wxMessageBox("here");
+
 	}
+
 	if (token[0].Right(3) == _T("VDM")) {
 
 		if (token[1].IsSameAs("2")) {
@@ -392,7 +400,7 @@ void aisRX_pi::SetAISSentence(wxString &sentence) {
 				s51 = "";
 				s52 = "";
 				//wxMessageBox(s53);
-				if (NULL != m_pDialog) m_pDialog->SetAISMessage(s53);
+				//if (NULL != m_pDialog) m_pDialog->m_textCtrlTest->SetValue(myMsg);
 				return;
 			}
 		}
@@ -401,12 +409,14 @@ void aisRX_pi::SetAISSentence(wxString &sentence) {
 			s5 = token[5];
 			s51 = "";
 			s52 = "";
-			if (NULL != m_pDialog) m_pDialog->SetAISMessage(s5);
+			//if (NULL != m_pDialog)  m_pDialog->m_textCtrlTest->SetValue(myMsg);
 		    return;
 		}
 
-		
+
 	}
+
+	
 	
 	return;
 
@@ -535,8 +545,8 @@ void aisRX_pi::OnaisRXDialogClose()
 
 void aisRX_pi::SetNMEASentence(wxString& sentence)
 {
-
- 	wxString myMsg;// = parseNMEASentence(mySentence).ToStdString();
+	
+ 	wxString myMsg = sentence;// = parseNMEASentence(mySentence).ToStdString();
 
 	wxString token[40];
 	wxString s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11;
@@ -551,34 +561,10 @@ void aisRX_pi::SetNMEASentence(wxString& sentence)
 		i++;
 	}
 	if (token[0].Right(3) == _T("VDM")) {
-		
-
-		if (token[1].IsSameAs("2")){
-			if (token[2].IsSameAs("1")) {
-				s51 = token[5];	
-				s52 = "";
-				return;
-			}
-		}
-		
-		if (token[1].IsSameAs("2") && token[2].IsSameAs("2")) {
-				s52 = token[5];
-				s53 = s51.append(s52);
-				s51 = "";
-				//wxMessageBox(s53);
-				if (NULL != m_pDialog) m_pDialog->SetAISMessage(s53);
-				return;
-		}
-		
-		if (token[3].IsSameAs("")) {
-			s5 = token[5];
-			s51 = "";
-			s52 = "";
-			if (NULL != m_pDialog) m_pDialog->SetAISMessage(s5);
-		    return;
-		}
-
-		
+	
+				s5 = token[5];
+				if (NULL != m_pDialog) m_pDialog->SetAISMessage(s5, myMsg);
+				return;		
 	}
 	
 	return;

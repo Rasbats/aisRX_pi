@@ -152,6 +152,11 @@ public:
 	/***************** weather obs *****/
 	double					  air_press;
 	string                  MMSI;
+	/***************** 8_1_31 *****/
+	/********* provide an index*********/
+	  int utc_day;
+	  int utc_hour;
+	  int utc_min;
 
   
 };
@@ -221,7 +226,7 @@ public:
 
 	bool m_bDisplayStarted;
 	bool m_bPaused;
-	void SetAISMessage(wxString &msg);
+	void SetAISMessage(wxString &msg, wxString &sentence);
 	wxString SetaisRXMessage(string &msg);
 	void RenderHTMLQuery(AIS_Target_Data *td);
 	wxString BuildQueryResult(AIS_Target_Data *td);
@@ -337,6 +342,7 @@ private:
 	void OnSignalShow(wxCommandEvent& event);
 	wxString parseNMEASentence(wxString& sentence);
 	void getAis8_1_11(string rawPayload);
+	void getAis8_1_31(string rawPayload);
 	void getAis8_200_25(string rawPayload);
 	void getAis8_200_26(string rawPayload);
 	void getAis8_200_41(string rawPayload);

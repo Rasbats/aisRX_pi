@@ -42,7 +42,7 @@ class aisRXBase : public wxDialog
 
 	protected:
 		wxStaticText* m_staticText1;
-		wxTextCtrl* m_textCtrlTest;
+		
 		wxToggleButton* m_toggleBtn1;
 		wxNotebook* m_notebookMessage;
 		wxPanel* m_panelSignal;
@@ -142,6 +142,7 @@ class aisRXBase : public wxDialog
 
 	public:
 		wxTimer m_timer1;
+		wxTextCtrl* m_textCtrlTest;
 
 		aisRXBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AIS Rx"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 401,591 ), long style = wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX|wxRESIZE_BORDER );
 		~aisRXBase();

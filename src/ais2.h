@@ -614,7 +614,54 @@ namespace mylibais {
 	};
 	  
 	  
+		// IMO Circ 289 Meteorological and Hydrographic data
+	// Section 1, Table 1.1
+	// TODO(schwehr): is this exactly the same as 8_1_11 or has anything changed?
+	//       x,y swapped.
+	class Ais8_1_31 : public Ais8 {
+	 public:
+	  AisPoint position;  // Opposite the bit order of 8_1_11
+	  int position_accuracy;  // New field
+	  int utc_day;
+	  int utc_hour;
+	  int utc_min;
+	  int wind_ave;  // kts
+	  int wind_gust;  // kts
+	  int wind_dir;
+	  int wind_gust_dir;
+	  float air_temp;  // C
+	  int rel_humid;
+	  float dew_point;
+	  float air_pres;  // Pascals (Pa).
+	  int air_pres_trend;
+	  float horz_vis;  // NM
+	  float water_level;  // m
+	  int water_level_trend;
 
+	  float surf_cur_speed;
+	  int surf_cur_dir;
+	  float cur_speed_2;  // kts
+	  int cur_dir_2;
+	  int cur_depth_2;  // m
+	  float cur_speed_3;  // kts
+	  int cur_dir_3;
+	  int cur_depth_3;  // m
+
+	  float wave_height;  // m
+	  int wave_period;
+	  int wave_dir;
+	  float swell_height;  // m
+	  int swell_period;
+	  int swell_dir;
+	  int sea_state;  // beaufort scale - Table 1.2
+	  float water_temp;
+	  int precip_type;
+	  float salinity;
+	  int ice;  // yes/no/undef/unknown
+	  int spare2;
+
+	  Ais8_1_31(const char *nmea_payload, const size_t pad);
+	};
 
 } //mylibais
 
