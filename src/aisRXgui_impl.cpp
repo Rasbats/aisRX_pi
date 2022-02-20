@@ -576,7 +576,7 @@ wxString Dlg::DateTimeToDateString(wxDateTime myDT)
 bool Dlg::DecodeForDAC(wxString insentence)
 {
 
-	string myMsg = insentence;
+	string myMsg = std::string(insentence.mb_str());
     
 	const char* payload1 = myMsg.c_str();
 	mylibais::Ais8 myDacFi(payload1, 0);
