@@ -182,8 +182,7 @@ namespace mylibais {
 			return MakeUnique<mylibais::Ais8_200_44>(body.c_str(), fill_bits);
 		}
 		}
-
-	}
+	};
 
 
 
