@@ -10,62 +10,73 @@
 # (at your option) any later version.
 
 
+
 # -------- Options ----------
 
 set(OCPN_TEST_REPO
-    "opencpn/shipdriver-alpha"
+    "mike-rossiter/aisrx-alpha"
     CACHE STRING "Default repository for untagged builds"
 )
 set(OCPN_BETA_REPO
-    "opencpn/shipdriver-beta"
-    CACHE STRING
+    "mike-rossiter/aisrx-beta"
+    CACHE STRING 
     "Default repository for tagged builds matching 'beta'"
 )
 set(OCPN_RELEASE_REPO
-    "opencpn/shipdriver-prod"
-    CACHE STRING
+    "mike-rossiter/aisrx-prod"
+    CACHE STRING 
     "Default repository for tagged builds not matching 'beta'"
 )
-
-option(SHIPDRIVER_USE_SVG "Use SVG graphics" ON)
+option(aisRX_USE_SVG "Use SVG graphics" ON)
 
 #
 #
 # -------  Plugin setup --------
 #
-set(PKG_NAME ShipDriver_pi)
+set(PKG_NAME aisRX_pi)
 set(PKG_VERSION  3.0.0)
 set(PKG_PRERELEASE "")  # Empty, or a tag like 'beta'
 
-set(DISPLAY_NAME ShipDriver)    # Dialogs, installer artifacts, ...
-set(PLUGIN_API_NAME ShipDriver) # As of GetCommonName() in plugin API
-set(PKG_SUMMARY "Simulate ship movements")
+set(DISPLAY_NAME aisRX)    # Dialogs, installer artifacts, ...
+set(PLUGIN_API_NAME aisRX) # As of GetCommonName() in plugin API
+set(PKG_SUMMARY "Read AIS binary messages")
 set(PKG_DESCRIPTION [=[
-Simulates navigation of a vessel. Using the sail option and a current
-grib file for wind data, simulates how a sailing vessel might react in
-those conditions. Using 'Preferences' the simulator is able to record AIS
-data from itself. This can be replayed to simulate collision situations.
+Read AIS binary messages
 ]=])
 
 set(PKG_AUTHOR "Mike Rossiter")
 set(PKG_IS_OPEN_SOURCE "yes")
-set(PKG_HOMEPAGE https://github.com/Rasbats/shipdriver_pi)
-set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/shipdriver.html)
+set(PKG_HOMEPAGE https://github.com/Rasbats/aisRX_pi)
+set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/aisRX.html)
 
 set(SRC
-    src/ShipDriver_pi.h
-    src/ShipDriver_pi.cpp
-    src/icons.h
-    src/icons.cpp
-    src/ShipDrivergui.h
-    src/ShipDrivergui.cpp
-    src/ShipDrivergui_impl.cpp
-    src/ShipDrivergui_impl.h
-    src/AisMaker.h
+	src/ais2.h
+	src/ais8_200.cpp
+	src/ais8.cpp
+	src/ais_bitset2.cpp
+	src/AIS_Bitstring.cpp
+	src/AIS_Bitstring.h
+	src/ais.cpp
     src/AisMaker.cpp
-    src/GribRecord.cpp
-    src/GribRecordSet.h
-    src/GribRecord.h
+    src/AisMaker.h
+    src/aisRXgui.cpp
+    src/aisRXgui.h
+    src/aisRXgui_impl.cpp
+    src/aisRXgui_impl.h
+    src/aisRX_pi.cpp
+    src/aisRX_pi.h
+    src/icons.cpp
+    src/icons.h
+	src/signal.cpp
+	src/signal.h
+	src/widget.cpp
+	src/widget.h
+	src/bbox.cpp
+    src/bbox.h	
+	src/AISdisplay.cpp
+	src/AISdisplay.h
+	src/ASMmessages.cpp
+	src/ASMmessages.h
 )
 
 set(PKG_API_LIB api-16)  #  A directory in libs/ e. g., api-17 or api-16
@@ -73,8 +84,8 @@ set(PKG_API_LIB api-16)  #  A directory in libs/ e. g., api-17 or api-16
 macro(late_init)
   # Perform initialization after the PACKAGE_NAME library, compilers
   # and ocpn::api is available.
-  if (SHIPDRIVER_USE_SVG)
-    target_compile_definitions(${PACKAGE_NAME} PUBLIC SHIPDRIVER_USE_SVG)
+  if (aisRX_USE_SVG)
+    target_compile_definitions(${PACKAGE_NAME} PUBLIC aisRX_USE_SVG)
   endif ()
 endmacro ()
 
@@ -91,4 +102,8 @@ macro(add_plugin_libraries)
 
   add_subdirectory("libs/jsoncpp")
   target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
+
+  add_subdirectory("libs/sqlite")
+  target_link_libraries(${PACKAGE_NAME} sqlite::sqlite)
+
 endmacro ()
