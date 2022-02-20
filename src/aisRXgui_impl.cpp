@@ -610,7 +610,7 @@ bool Dlg::DecodeForDAC(wxString insentence)
 void Dlg::Decode(wxString sentence)
 {
 
-	string myMsg = sentence;
+	string myMsg = std::string(sentence.mb_str());
 
 	const char* payload1 = myMsg.c_str();
 	mylibais::Ais8 myDacFi(payload1, 0);
@@ -874,7 +874,7 @@ void Dlg::getAis8_1_11(string rawPayload) {
 
 	int mm = myRIS.mmsi;
 	wxString outmmsi = wxString::Format("%i", mm);
-	string mmsi = outmmsi;
+	string mmsi = std::string(outmmsi.mb_str());
 
 	//wxMessageBox(outmm);
 
