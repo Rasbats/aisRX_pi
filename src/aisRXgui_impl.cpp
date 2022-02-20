@@ -1075,7 +1075,7 @@ void Dlg::getAis8_1_31(string rawPayload) {
 	wxString outmin = wxString::Format("%i", min);
 
 	wxString ddhhmm = outdd + outhr + outmin;
-	string DayHourMinute = ddhhmm;
+	string DayHourMinute = std::string(ddhhmm.mb_str());
 
 	//wxMessageBox(outmm);
 
