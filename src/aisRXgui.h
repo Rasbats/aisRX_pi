@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 26 2018)
+// C++ code generated with wxFormBuilder (version 3.10.1-0-g8feb16b3)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -43,27 +43,6 @@ class aisRXBase : public wxDialog
 		wxStaticText* m_staticText1;
 		wxTextCtrl* m_textCtrlTest;
 		wxNotebook* m_notebookMessage;
-		wxPanel* m_panelSignal;
-		wxStaticText* m_staticText3;
-		wxTextCtrl* m_textMMSI;
-		wxStaticText* m_staticText2;
-		wxTextCtrl* m_textCountry;
-		wxStaticText* m_staticText4;
-		wxTextCtrl* m_textFairwaySection;
-		wxStaticText* m_staticText5;
-		wxTextCtrl* m_textStationType;
-		wxStaticText* m_staticText6;
-		wxTextCtrl* m_textStationNumber;
-		wxStaticText* m_staticText7;
-		wxTextCtrl* m_textHectometre;
-		wxStaticText* m_staticText8;
-		wxTextCtrl* m_textSignalForm;
-		wxStaticText* m_staticText9;
-		wxTextCtrl* m_textOrientation;
-		wxStaticText* m_staticText10;
-		wxTextCtrl* m_textImpact;
-		wxStaticText* m_staticText11;
-		wxTextCtrl* m_textLightStatus;
 		wxPanel* m_panel3;
 		wxStaticText* m_staticText12;
 		wxTextCtrl* m_textMMSI1;
@@ -77,23 +56,6 @@ class aisRXBase : public wxDialog
 		wxTextCtrl* m_textHectometre1;
 		wxStaticText* m_staticText17;
 		wxTextCtrl* m_textText1;
-		wxPanel* m_panel4;
-		wxStaticText* m_staticText121;
-		wxTextCtrl* m_textMMSI2;
-		wxStaticText* m_staticText131;
-		wxTextCtrl* m_textCountry2;
-		wxStaticText* m_staticText141;
-		wxTextCtrl* m_textFairwaySection2;
-		wxStaticText* m_staticText151;
-		wxTextCtrl* m_textObjectCode2;
-		wxStaticText* m_staticText161;
-		wxTextCtrl* m_textHectometre2;
-		wxStaticText* m_staticText28;
-		wxTextCtrl* m_textBridgeClearance;
-		wxStaticText* m_staticText29;
-		wxTextCtrl* m_textTime;
-		wxStaticText* m_staticText30;
-		wxTextCtrl* m_textAccuracy;
 		wxPanel* m_panel5;
 		wxStaticText* m_staticText31;
 		wxTextCtrl* m_textMMSI3;
@@ -126,12 +88,10 @@ class aisRXBase : public wxDialog
 		wxButton* m_button73;
 		wxButton* m_button74;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
-		virtual void OnData( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnLogging( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTest( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnSignalShow( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMessageList( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnTimer( wxTimerEvent& event ) { event.Skip(); }
 
@@ -140,6 +100,7 @@ class aisRXBase : public wxDialog
 		wxTimer m_timer1;
 
 		aisRXBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AIS Rx"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 401,591 ), long style = wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX|wxRESIZE_BORDER );
+
 		~aisRXBase();
 
 };
@@ -162,6 +123,7 @@ class aisRXPreferences : public wxDialog
 		wxTextCtrl* m_textCtrlMMSI;
 
 		aisRXPreferences( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Preferences"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxCAPTION|wxRESIZE_BORDER );
+
 		~aisRXPreferences();
 
 };

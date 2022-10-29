@@ -661,17 +661,8 @@ void Dlg::Decode(wxString sentence)
 	//wxMessageBox(outfi0);
 
 	switch (fi0) {
-	case 25: {
-		getAis8_200_25(myMsg);
-		break;
-	}
 	case 26: {
 		getAis8_200_26(myMsg);
-		break;
-	}
-	case 41: {
-		getAis8_200_41(myMsg);
-
 		break;
 	}
 	case 44: {
@@ -711,16 +702,8 @@ void Dlg::OnTest(wxCommandEvent& event)
 	wxMessageBox(outfi0);
 
 	switch (fi0) {
-	case 25: {
-		getAis8_200_25(myMsg);
-		break;
-	}
 	case 26: {
 		getAis8_200_26(myMsg);
-		break;
-	}
-	case 41: {
-		getAis8_200_41(myMsg);
 		break;
 	}
 	case 44: {
@@ -731,17 +714,6 @@ void Dlg::OnTest(wxCommandEvent& event)
 
 }
 
-void Dlg::OnSignalShow(wxCommandEvent& event) {
-
-	plugin->m_pDialog->m_notebookMessage->SetSelection(0);
-	wxString form = plugin->m_pDialog->m_textSignalForm->GetValue();
-	int m_form = atoi(form);
-	wxString m_lights = plugin->m_pDialog->m_textLightStatus->GetValue();
-
-	signalling = new Signalling(wxT("Signal Display"), m_form, m_lights);
-	signalling->Show(true);
-
-}
 
 wxString Dlg::parseNMEASentence(wxString& sentence)
 {
@@ -827,126 +799,6 @@ void Dlg::UpdateAISTargetList(void)
 
 	}		
 }
-// ************ Signal Station **************
-void Dlg::getAis8_200_41(string rawPayload) {
-
-	mySignalCollection.clear();  // This avoids polluting myTestDataCollection
-
-	pTargetData = new AIS_Target_Data;
-	AIS_Target_Data *pStaleTarget = NULL;
-	bool bnewtarget = false;
-	bool bdecode_result = false;
-
-	const char* payload = rawPayload.c_str();
-
-	mylibais::Ais8_200_41 myRIS(payload, 0);
-
-	int mm = myRIS.mmsi;
-	wxString outmm = wxString::Format("%i", mm);
-	//wxMessageBox(outmm);
-
-	wxString outcountry = myRIS.country;
-	//wxMessageBox(outcountry);
-
-	int sect = myRIS.section;
-	wxString outsect = wxString::Format("%i", sect);
-	//wxMessageBox(outsect);
-
-	int objtype = myRIS.objectType;
-	wxString outobjtype = wxString::Format("%i", objtype);
-	//wxMessageBox(outtype);
-
-	int objnum = myRIS.objectNumber;
-	wxString outobjnum = wxString::Format("%i", objnum);
-	//wxMessageBox(outobj);
-
-	int hect = 0;
-
-	hect = myRIS.hectometre;
-	wxString outhect = wxString::Format("%i", hect);
-	//wxMessageBox(outhect);
-
-	int sig = myRIS.signalForm;
-	wxString outsig = wxString::Format("%i", sig);
-	//wxMessageBox(outsig);
-
-	int orientation = myRIS.orientation;
-	wxString outorientation = wxString::Format("%i", orientation);
-	//wxMessageBox(outorientation);
-
-	int imp = myRIS.impact;
-	wxString outimp = wxString::Format("%i", imp);
-	//wxMessageBox(outimp);
-
-	int stat = myRIS.lightStatus;
-	wxString outstat = wxString::Format("%i", stat);
-	//wxMessageBox(outstat);
-
-	//  Search the current AISTargetList for a hect match
-	AIS_Target_Hash::iterator it = AISTargetList->find(hect);
-	vector<AIS_Target_Data> signalData;
-	
-
-	if (it == AISTargetList->end())                  // not found
-	{			
-		signalData.clear();
-		signalData = FindSignalRISindex(hect);	
-		pTargetData->RISindex = signalData.at(0).RISindex;
-		pTargetData->Lat = signalData.at(0).Lat;
-		pTargetData->Lon = signalData.at(0).Lon;
-		pTargetData->hect = hect;
-		pTargetData->signalForm = sig;
-		pTargetData->signalStatus = stat;
-		pTargetData->country = outcountry;
-
-		bdecode_result = true;
-		bnewtarget = true;
-		m_n_targets++;
-	}
-	else {
-		
-		// Not needed at present
-		// pTargetData = it->second;          // find current entry
-		// save a pointer to stale data
-	}
-
-	
-
-	//  If the message was decoded correctly
-	//  Update the AIS Target information
-	if (bdecode_result) {
-		m_bUpdateTarget = true;
-		signalData.clear();
-		signalData = FindSignalData(pTargetData->hect);
-		// **********
-		// signalData is not used but FindSignalData populates myTestDataCollection
-		// This is used by the factory to draw the signal locations
-		//
-		// ***********
-		//AISshipNameCache(pTargetData, AISTargetNamesC, AISTargetNamesNC, hect);
-		(*AISTargetList)[pTargetData->hect] = pTargetData;  // update the hash table entry
-		
-		//wxString sz = wxString::Format("%i",pTargetData->hect);
-	    //wxMessageBox(sz);
-
-	}
-
-	m_notebookMessage->SetSelection(0);
-
-	m_textMMSI->SetValue(outmm);
-	m_textCountry->SetValue(outcountry);
-	m_textFairwaySection->SetValue(outsect);
-	m_textStationType->SetValue(outobjtype);
-	m_textStationNumber->SetValue(outobjnum);
-	m_textHectometre->SetValue(outhect);
-	m_textSignalForm->SetValue(outsig);
-	m_textOrientation->SetValue(outorientation);
-	m_textImpact->SetValue(outimp);
-	m_textLightStatus->SetValue(outstat);
-
-	//this->Refresh();
-
-}
 
 //  ***** Text Message *******************
 void Dlg::getAis8_200_44(string rawPayload) {
@@ -984,57 +836,6 @@ void Dlg::getAis8_200_44(string rawPayload) {
 	m_textObjectCode1->SetValue(myObj);
 	m_textHectometre1->SetValue(outhect);
 	m_textText1->SetValue(myText);
-
-	Refresh();
-
-}
-
-//  ********** Bridge Clearance *************
-void Dlg::getAis8_200_25(string rawPayload) {
-	// Bridge Clearance
-	const char* payload = rawPayload.c_str();
-
-	mylibais::Ais8_200_25 myRIS(payload, 0);
-
-	int mm = myRIS.mmsi;
-	wxString outmm = wxString::Format("%i", mm);
-	//wxMessageBox(outmm);
-
-	wxString outcountry = myRIS.country;
-	//wxMessageBox(outcountry);
-
-	int sect = myRIS.sectionNumber;
-	wxString outsect = wxString::Format("%i", sect);
-	//wxMessageBox(outsect);
-
-	wxString outobj = myRIS.objectCode;
-	//wxMessageBox(outobj);
-
-	int hect = myRIS.hectometre;
-	wxString outhect = wxString::Format("%i", hect);
-
-	int clearance = myRIS.bridgeClearance;
-	wxString outclear = wxString::Format("%i", clearance);
-	//wxMessageBox(outclear);
-
-	int time = myRIS.time;
-	wxString outtime = wxString::Format("%i", time);
-	//wxMessageBox(outtime);
-
-	int acc = myRIS.accuracy;
-	wxString outacc = wxString::Format("%i", acc);
-	//wxMessageBox(outacc);	
-
-	m_notebookMessage->SetSelection(2);
-
-	m_textMMSI2->SetValue(outmm);
-	m_textCountry2->SetValue(outcountry);
-	m_textFairwaySection2->SetValue(outsect);
-	m_textObjectCode2->SetValue(outobj);
-	m_textHectometre2->SetValue(outhect);
-	m_textBridgeClearance->SetValue(outclear);
-	m_textTime->SetValue(outtime);
-	m_textAccuracy->SetValue(outacc);
 
 	Refresh();
 
