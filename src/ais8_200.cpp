@@ -1,7 +1,7 @@
 // River Information Systems ECE-TRANS-SC3-2006-10r-RIS.pdf
 // http://www.unece.org/fileadmin/DAM/trans/doc/finaldocs/sc3/ECE-TRANS-SC3-176e.pdf
 
-#include "ais2.h"
+#include "ais.h"
 
 namespace mylibais {
 	// River Information Systems

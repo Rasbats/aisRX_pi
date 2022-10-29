@@ -262,7 +262,7 @@ void Dlg::OnMessageList(wxCommandEvent& event) {
 		m_pASMmessages1 = new asmMessages(this, wxID_ANY, _T("ASM Messages"), wxPoint(100, 100), wxSize(300, 400), wxDEFAULT_DIALOG_STYLE |wxCLOSE_BOX| wxRESIZE_BORDER);
 		CreateControlsMessageList();
 		m_pASMmessages1->Show();
-		m_bHaveMessageList = true;
+		//m_bHaveMessageList = true;
 
 		myTestDataCollection.clear();
 		m_timer1.Start();
@@ -302,6 +302,7 @@ void Dlg::OnToggleButton(wxCommandEvent& event) {
 
 void Dlg::SetAISMessage(wxString &msg , wxString &sentence)
 {
+<<<<<<< HEAD
 		
 	if (m_bPaused) return;
 	
@@ -318,6 +319,9 @@ void Dlg::SetAISMessage(wxString &msg , wxString &sentence)
 	//	Decode(msg);
 		//UpdateAISTargetList();
 	//}
+=======
+	m_message = msg;
+>>>>>>> 8c06546 (v0.4)
 
 	if (m_bHaveDisplay) {
 		if (myAISdisplay->m_tbAISPause->GetValue()) {
@@ -328,28 +332,31 @@ void Dlg::SetAISMessage(wxString &msg , wxString &sentence)
 			myAISdisplay->m_tcAIS->AppendText(msg);
 		}				
 	}
+
+	Decode(msg);
 }
 
-wxString Dlg::SetaisRXMessage(string &msg) {
-	unique_ptr<AisMsg> myMsg;
+void Dlg::SetNMEAMessage(wxString &msg) {
 
-	//AIS_Bitstring* myBits;
+  wxString token[40];
+  wxString s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11;
+  token[0] = "";
 
-	string payload;
-	//   !AIVDM,1,1,,A,E>j4e>@LtqHIpHHLh@@@@@@@@@@0Vei<=iWL000000N2P0,4*05
-	//payload = "E>j4e>@LtqHIpHHLh@@@@@@@@@@0Vei<=iWL000000N2P0"; //aisRX
-	payload = msg;
-	//string output;
+  wxStringTokenizer tokenizer(msg, ",");
+  token[0] = tokenizer.GetNextToken().Trim();  // !AIVDM or !xxBMM
 
-	// myMsg = CreateAisMsg(payload,0);
-	int mm = myMsg->mmsi;
-	int ms = myMsg->message_id;
 
-	wxString outstring(wxString::Format(("%i"), mm));
-	return outstring;
-	
+  if (m_bHaveDisplay && token[0] == "!xxBBM") {
+    if (myAISdisplay->m_tbAISPause->GetValue()) {
+      int mm = 0;
+      int ms = 0;
+
+      myAISdisplay->m_tcAIS->AppendText(msg);
+    }
+  }
 }
 
+/*
 vector<AIS_Target_Data>  Dlg::FindSignalData(int hect) {
 
 	char **result;
@@ -477,6 +484,195 @@ vector<AIS_Target_Data>  Dlg::FindSignalRISindex(int hect, wxString objcode) {
 
 	return mySignalCollection;
 }
+
+vector<AIS_Target_Data>  Dlg::FindSignalRISindex(int hect) {
+
+	char **result;
+	int n_rows;
+	int n_columns;
+	mySignalCollection.clear();
+
+	wxString shect = wxString::Format("%i", hect);
+
+	wxString sql = "SELECT lat,lon,hectomt, risindex FROM RIS where hectomt = " + shect;
+
+	plugin->dbGetTable(sql, &result, n_rows, n_columns);
+	wxArrayString objects;
+
+
+
+	for (int i = 1; i <= n_rows; i++)
+	{
+		char *lat = result[(i * n_columns) + 0];
+		char *lon = result[(i * n_columns) + 1];
+		string risindex = result[(i * n_columns) + 3];
+
+		wxString object_lat(lat, wxConvUTF8);
+
+		wxString object_lon(lon, wxConvUTF8);
+
+		//wxMessageBox(object_lat);
+	   // wxMessageBox(object_lon);
+
+		double value;
+		object_lat.ToDouble(&value);
+		myTestData.Lat = value;
+		object_lon.ToDouble(&value);
+		myTestData.Lon = value;
+		myTestData.RISindex = risindex;
+		mySignalCollection.push_back(myTestData);
+	}
+	plugin->dbFreeResults(result);
+
+	return mySignalCollection;
+}
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void Dlg::OnData(wxCommandEvent& event) {
 
@@ -610,7 +806,23 @@ bool Dlg::DecodeForDAC(wxString insentence)
 void Dlg::Decode(wxString sentence)
 {
 
+<<<<<<< HEAD
 	string myMsg = std::string(sentence.mb_str());
+=======
+	wxString mySentence = sentence;
+
+	if (mySentence.IsEmpty() || mySentence.IsNull()) {
+		//wxMessageBox("No sentence has been entered");
+		return;
+	}
+
+	if (mySentence.Mid(0, 6) != "!AIVDM") {
+          // wxMessageBox("Invalid sentence");
+          return;
+        }
+
+	string myMsg = parseNMEASentence(mySentence).ToStdString();
+>>>>>>> 8c06546 (v0.4)
 
 	const char* payload1 = myMsg.c_str();
 	mylibais::Ais8 myDacFi(payload1, 0);
@@ -632,17 +844,8 @@ void Dlg::Decode(wxString sentence)
 
 
 	switch (fi0) {
-	case 25: {
-		getAis8_200_25(myMsg);
-		break;
-	}
 	case 26: {
 		getAis8_200_26(myMsg);
-		break;
-	}
-	case 41: {
-		getAis8_200_41(myMsg);
-
 		break;
 	}
 	case 44: {
@@ -682,16 +885,8 @@ void Dlg::OnTest(wxCommandEvent& event)
 	wxMessageBox(outfi0, "FI");
 
 	switch (fi0) {
-	case 25: {
-		getAis8_200_25(myMsg);
-		break;
-	}
 	case 26: {
 		getAis8_200_26(myMsg);
-		break;
-	}
-	case 41: {
-		getAis8_200_41(myMsg);
 		break;
 	}
 	case 44: {
@@ -702,6 +897,7 @@ void Dlg::OnTest(wxCommandEvent& event)
 
 }
 
+<<<<<<< HEAD
 void Dlg::OnContextMenu(double m_lat, double m_lon)
 {
 	m_bUsingTest = false;
@@ -750,6 +946,8 @@ void Dlg::OnSignalShow(wxCommandEvent& event) {
 	signalling->Show(true);
 
 }
+=======
+>>>>>>> 8c06546 (v0.4)
 
 void Dlg::GetSignal(AIS_Target_Data myTarget) {
 
@@ -845,6 +1043,7 @@ void Dlg::UpdateAISTargetList(void)
 			m_pASMmessages1->m_pListCtrlAISTargets->Refresh(false);
 			
 #endif 
+<<<<<<< HEAD
 
 	}		
 }
@@ -1378,6 +1577,10 @@ void Dlg::getAis8_200_41(string rawPayload) {
 		m_textImpact->SetValue(outimp);
 		m_textLightStatus->SetValue(outstat);
 	}
+=======
+
+	}		
+>>>>>>> 8c06546 (v0.4)
 }
 
 //  ***** Text Message *******************
@@ -1422,6 +1625,7 @@ void Dlg::getAis8_200_44(string rawPayload) {
 
 }
 
+<<<<<<< HEAD
 //  ********** Bridge Clearance *************
 void Dlg::getAis8_200_25(string rawPayload) {
 	// Bridge Clearance
@@ -1546,6 +1750,8 @@ void Dlg::getAis8_200_25(string rawPayload) {
 	}
 }
 
+=======
+>>>>>>> 8c06546 (v0.4)
 //  ***** Water Level ************
 void Dlg::getAis8_200_26(string rawPayload) {
 
@@ -1632,7 +1838,7 @@ void Dlg::OnFactory(wxCommandEvent& event)
 	myTestDataCollection.push_back(myTestData);
 
 }
-
+/*
 void Dlg::RenderHTMLQuery(AIS_Target_Data *td) {
 
 	int font_size = 12;
@@ -1730,7 +1936,7 @@ wxString Dlg::BuildQueryResult(AIS_Target_Data *td)
 	html << _T("</table>");
 	return html;
 }
-
+*/
 void Dlg::CreateControlsMessageList()
 {
 	int width;
@@ -1745,6 +1951,7 @@ void Dlg::CreateControlsMessageList()
 
 	}
 }
+<<<<<<< HEAD
 
 void Dlg::OnTimer(wxTimerEvent& event)
 {
@@ -1833,3 +2040,5 @@ wxString Dlg::StandardPath()
     return stdPath;
 }
 
+=======
+>>>>>>> 8c06546 (v0.4)

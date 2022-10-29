@@ -158,8 +158,6 @@ int aisRX_pi::Init(void)
       bool newDB = !wxFileExists(dbpath);
       b_dbUsable = true;
 
-	  void* cache; // SOLUTION
-
 	ret = sqlite3_open_v2(dbpath.mb_str(), &m_database, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL);
       if (ret != SQLITE_OK)
       {
@@ -356,6 +354,7 @@ void aisRX_pi::OnToolbarToolCallback(int id)
     RequestRefresh(m_parent_window); // refresh main window
 }
 
+<<<<<<< HEAD
 void aisRX_pi::SetAISSentence(wxString &sentence) {
 
 	//wxMessageBox(sentence);
@@ -482,6 +481,36 @@ void aisRX_pi::SetAISSentence(wxString &sentence) {
     if (NULL != m_pDialog) m_pDialog->SetAISMessage(myMsg);
 }
 */
+=======
+bool aisRX_pi::RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp)
+{
+	
+	if(!m_pDialog ||
+       !m_pDialog->IsShown() ||
+       !m_paisRXOverlayFactory)
+        return false;
+
+    m_pDialog->SetViewPort( vp );
+    m_paisRXOverlayFactory->RenderaisRXOverlay ( dc, vp );
+    return true;
+}
+
+bool aisRX_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
+{
+	
+
+	if(!m_pDialog ||
+       !m_pDialog->IsShown() ||
+       !m_paisRXOverlayFactory)
+        return false;
+
+    m_pDialog->SetViewPort( vp );
+    m_paisRXOverlayFactory->RenderGLaisRXOverlay ( pcontext, vp );
+    return true;
+}
+
+
+>>>>>>> 8c06546 (v0.4)
 bool aisRX_pi::LoadConfig(void)
 {
     wxFileConfig* pConf = (wxFileConfig*)m_pconfig;
@@ -543,8 +572,13 @@ void aisRX_pi::OnaisRXDialogClose()
     SaveConfig();   
 }
 
+void aisRX_pi::SetAISSentence(wxString& sentence) {
+  if (NULL != m_pDialog) m_pDialog->SetAISMessage(sentence);
+}
+
 void aisRX_pi::SetNMEASentence(wxString& sentence)
 {
+<<<<<<< HEAD
 	
  	wxString myMsg = sentence;// = parseNMEASentence(mySentence).ToStdString();
 
@@ -584,6 +618,13 @@ void aisRX_pi::OnContextMenuItemCallback(int id)
 
         m_pDialog->OnContextMenu(m_cursor_lat, m_cursor_lon);
     }
+=======
+    if (NULL != m_pDialog) {
+      m_pDialog->SetNMEAMessage(sentence);
+    }     
+
+    
+>>>>>>> 8c06546 (v0.4)
 }
 
 void aisRX_pi::SetCursorLatLon(double lat, double lon)
