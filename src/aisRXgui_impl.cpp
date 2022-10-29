@@ -234,7 +234,7 @@ void Dlg::OnMessageList(wxCommandEvent& event) {
 		m_pASMmessages1 = new asmMessages(this, wxID_ANY, _T("ASM Messages"), wxPoint(100, 100), wxSize(300, 400), wxDEFAULT_DIALOG_STYLE |wxCLOSE_BOX| wxRESIZE_BORDER);
 		CreateControlsMessageList();
 		m_pASMmessages1->Show();
-		//m_bHaveMessageList = true;
+		m_bHaveMessageList = true;
 
 		myTestDataCollection.clear();
 		m_timer1.Start();
@@ -271,6 +271,10 @@ void Dlg::OnLogging(wxCommandEvent& event) {
 void Dlg::SetAISMessage(wxString &msg)
 {
 	m_message = msg;
+	if (m_bHaveMessageList) {
+		Decode(msg);
+		//UpdateAISTargetList();
+	}
 
 	if (m_bHaveDisplay) {
 		if (myAISdisplay->m_tbAISPause->GetValue()) {
@@ -281,31 +285,28 @@ void Dlg::SetAISMessage(wxString &msg)
 			myAISdisplay->m_tcAIS->AppendText(msg);
 		}				
 	}
-
-	Decode(msg);
 }
 
-void Dlg::SetNMEAMessage(wxString &msg) {
+wxString Dlg::SetaisRXMessage(string &msg) {
+	unique_ptr<AisMsg> myMsg;
 
-  wxString token[40];
-  wxString s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11;
-  token[0] = "";
+	//AIS_Bitstring* myBits;
 
-  wxStringTokenizer tokenizer(msg, ",");
-  token[0] = tokenizer.GetNextToken().Trim();  // !AIVDM or !xxBMM
+	string payload;
+	//   !AIVDM,1,1,,A,E>j4e>@LtqHIpHHLh@@@@@@@@@@0Vei<=iWL000000N2P0,4*05
+	//payload = "E>j4e>@LtqHIpHHLh@@@@@@@@@@0Vei<=iWL000000N2P0"; //aisRX
+	payload = msg;
+	//string output;
 
+	// myMsg = CreateAisMsg(payload,0);
+	int mm = myMsg->mmsi;
+	int ms = myMsg->message_id;
 
-  if (m_bHaveDisplay && token[0] == "!xxBBM") {
-    if (myAISdisplay->m_tbAISPause->GetValue()) {
-      int mm = 0;
-      int ms = 0;
-
-      myAISdisplay->m_tcAIS->AppendText(msg);
-    }
-  }
+	wxString outstring(wxString::Format(("%i"), mm));
+	return outstring;
+	
 }
 
-/*
 vector<AIS_Target_Data>  Dlg::FindSignalData(int hect) {
 
 	char **result;
@@ -347,195 +348,6 @@ vector<AIS_Target_Data>  Dlg::FindSignalData(int hect) {
 
 	return myTestDataCollection;
 }
-
-
-vector<AIS_Target_Data>  Dlg::FindSignalRISindex(int hect) {
-
-	char **result;
-	int n_rows;
-	int n_columns;
-	mySignalCollection.clear();
-
-	wxString shect = wxString::Format("%i", hect);
-
-	wxString sql = "SELECT lat,lon,hectomt, risindex FROM RIS where hectomt = " + shect;
-
-	plugin->dbGetTable(sql, &result, n_rows, n_columns);
-	wxArrayString objects;
-
-
-
-	for (int i = 1; i <= n_rows; i++)
-	{
-		char *lat = result[(i * n_columns) + 0];
-		char *lon = result[(i * n_columns) + 1];
-		string risindex = result[(i * n_columns) + 3];
-
-		wxString object_lat(lat, wxConvUTF8);
-
-		wxString object_lon(lon, wxConvUTF8);
-
-		//wxMessageBox(object_lat);
-	   // wxMessageBox(object_lon);
-
-		double value;
-		object_lat.ToDouble(&value);
-		myTestData.Lat = value;
-		object_lon.ToDouble(&value);
-		myTestData.Lon = value;
-		myTestData.RISindex = risindex;
-		mySignalCollection.push_back(myTestData);
-	}
-	plugin->dbFreeResults(result);
-
-	return mySignalCollection;
-}
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 void Dlg::OnData(wxCommandEvent& event) {
@@ -644,9 +456,9 @@ void Dlg::Decode(wxString sentence)
 	}
 
 	if (mySentence.Mid(0, 6) != "!AIVDM") {
-          // wxMessageBox("Invalid sentence");
-          return;
-        }
+		//wxMessageBox("Invalid sentence");
+		return;
+	}
 
 	string myMsg = parseNMEASentence(mySentence).ToStdString();
 
@@ -662,8 +474,17 @@ void Dlg::Decode(wxString sentence)
 	//wxMessageBox(outfi0);
 
 	switch (fi0) {
+	case 25: {
+		getAis8_200_25(myMsg);
+		break;
+	}
 	case 26: {
 		getAis8_200_26(myMsg);
+		break;
+	}
+	case 41: {
+		getAis8_200_41(myMsg);
+
 		break;
 	}
 	case 44: {
@@ -703,8 +524,16 @@ void Dlg::OnTest(wxCommandEvent& event)
 	wxMessageBox(outfi0);
 
 	switch (fi0) {
+	case 25: {
+		getAis8_200_25(myMsg);
+		break;
+	}
 	case 26: {
 		getAis8_200_26(myMsg);
+		break;
+	}
+	case 41: {
+		getAis8_200_41(myMsg);
 		break;
 	}
 	case 44: {
@@ -715,6 +544,17 @@ void Dlg::OnTest(wxCommandEvent& event)
 
 }
 
+void Dlg::OnSignalShow(wxCommandEvent& event) {
+
+	plugin->m_pDialog->m_notebookMessage->SetSelection(0);
+	wxString form = plugin->m_pDialog->m_textSignalForm->GetValue();
+	int m_form = atoi(form);
+	wxString m_lights = plugin->m_pDialog->m_textLightStatus->GetValue();
+
+	signalling = new Signalling(wxT("Signal Display"), m_form, m_lights);
+	signalling->Show(true);
+
+}
 
 wxString Dlg::parseNMEASentence(wxString& sentence)
 {
@@ -753,8 +593,6 @@ void Dlg::UpdateAISTargetList(void)
 
 			current_targets = AISTargetList;
 			size_t z = current_targets->size();
-			//wxString sz = wxString::Format("%i", z);
-			//wxMessageBox(sz);
 
 			if (z == 0) {
 				return;
@@ -792,13 +630,123 @@ void Dlg::UpdateAISTargetList(void)
 				id++;
 			}
 
+
+
 #ifdef __WXMSW__
 
 			m_pASMmessages1->m_pListCtrlAISTargets->Refresh(false);
 			
 #endif 
+		//}
+	}
+	
+	//GetParent()->Refresh();
+	
+}
+// ************ Signal Station **************
+void Dlg::getAis8_200_41(string rawPayload) {
 
-	}		
+	pTargetData = new AIS_Target_Data;
+	AIS_Target_Data *pStaleTarget = NULL;
+	bool bnewtarget = false;
+	bool bdecode_result = false;
+
+	const char* payload = rawPayload.c_str();
+
+	mylibais::Ais8_200_41 myRIS(payload, 0);
+
+	int mm = myRIS.mmsi;
+	wxString outmm = wxString::Format("%i", mm);
+	//wxMessageBox(outmm);
+
+	wxString outcountry = myRIS.country;
+	//wxMessageBox(outcountry);
+
+	int sect = myRIS.section;
+	wxString outsect = wxString::Format("%i", sect);
+	//wxMessageBox(outsect);
+
+	int objtype = myRIS.objectType;
+	wxString outobjtype = wxString::Format("%i", objtype);
+	//wxMessageBox(outtype);
+
+	int objnum = myRIS.objectNumber;
+	wxString outobjnum = wxString::Format("%i", objnum);
+	//wxMessageBox(outobj);
+
+	int hect = 0;
+
+	hect = myRIS.hectometre;
+	wxString outhect = wxString::Format("%i", hect);
+	//wxMessageBox(outhect);
+
+	int sig = myRIS.signalForm;
+	wxString outsig = wxString::Format("%i", sig);
+	//wxMessageBox(outsig);
+
+	int orientation = myRIS.orientation;
+	wxString outorientation = wxString::Format("%i", orientation);
+	//wxMessageBox(outorientation);
+
+	int imp = myRIS.impact;
+	wxString outimp = wxString::Format("%i", imp);
+	//wxMessageBox(outimp);
+
+	int stat = myRIS.lightStatus;
+	wxString outstat = wxString::Format("%i", stat);
+	//wxMessageBox(outstat);
+
+	//  Search the current AISTargetList for a hect match
+	AIS_Target_Hash::iterator it = AISTargetList->find(hect);
+	vector<AIS_Target_Data> signalData;
+	signalData = FindSignalData(hect);
+
+	if (it == AISTargetList->end())                  // not found
+	{			
+		pTargetData = new AIS_Target_Data;
+		pTargetData->RISindex = signalData.at(0).RISindex;
+		pTargetData->Lat = signalData.at(0).Lat;
+		pTargetData->Lon = signalData.at(0).Lon;
+		pTargetData->hect = hect;
+		pTargetData->signalForm = sig;
+		pTargetData->signalStatus = stat;
+		pTargetData->country = outcountry;
+
+		bdecode_result = true;
+		bnewtarget = true;
+		m_n_targets++;
+	}
+	else {
+		pTargetData = it->second;          // find current entry
+	// save a pointer to stale data
+	}
+
+	
+
+	//  If the message was decoded correctly
+	//  Update the AIS Target information
+	if (bdecode_result) {
+		m_bUpdateTarget = true;
+		//AISshipNameCache(pTargetData, AISTargetNamesC, AISTargetNamesNC, hect);
+		(*AISTargetList)[pTargetData->hect] = pTargetData;  // update the hash table entry
+
+	}
+
+	m_notebookMessage->SetSelection(0);
+
+	m_textMMSI->SetValue(outmm);
+	m_textCountry->SetValue(outcountry);
+	m_textFairwaySection->SetValue(outsect);
+	m_textStationType->SetValue(outobjtype);
+	m_textStationNumber->SetValue(outobjnum);
+	m_textHectometre->SetValue(outhect);
+	m_textSignalForm->SetValue(outsig);
+	m_textOrientation->SetValue(outorientation);
+	m_textImpact->SetValue(outimp);
+	m_textLightStatus->SetValue(outstat);
+
+	//this->Refresh();
+
 }
 
 //  ***** Text Message *******************
@@ -837,6 +785,57 @@ void Dlg::getAis8_200_44(string rawPayload) {
 	m_textObjectCode1->SetValue(myObj);
 	m_textHectometre1->SetValue(outhect);
 	m_textText1->SetValue(myText);
+
+	Refresh();
+
+}
+
+//  ********** Bridge Clearance *************
+void Dlg::getAis8_200_25(string rawPayload) {
+	// Bridge Clearance
+	const char* payload = rawPayload.c_str();
+
+	mylibais::Ais8_200_25 myRIS(payload, 0);
+
+	int mm = myRIS.mmsi;
+	wxString outmm = wxString::Format("%i", mm);
+	//wxMessageBox(outmm);
+
+	wxString outcountry = myRIS.country;
+	//wxMessageBox(outcountry);
+
+	int sect = myRIS.sectionNumber;
+	wxString outsect = wxString::Format("%i", sect);
+	//wxMessageBox(outsect);
+
+	wxString outobj = myRIS.objectCode;
+	//wxMessageBox(outobj);
+
+	int hect = myRIS.hectometre;
+	wxString outhect = wxString::Format("%i", hect);
+
+	int clearance = myRIS.bridgeClearance;
+	wxString outclear = wxString::Format("%i", clearance);
+	//wxMessageBox(outclear);
+
+	int time = myRIS.time;
+	wxString outtime = wxString::Format("%i", time);
+	//wxMessageBox(outtime);
+
+	int acc = myRIS.accuracy;
+	wxString outacc = wxString::Format("%i", acc);
+	//wxMessageBox(outacc);	
+
+	m_notebookMessage->SetSelection(2);
+
+	m_textMMSI2->SetValue(outmm);
+	m_textCountry2->SetValue(outcountry);
+	m_textFairwaySection2->SetValue(outsect);
+	m_textObjectCode2->SetValue(outobj);
+	m_textHectometre2->SetValue(outhect);
+	m_textBridgeClearance->SetValue(outclear);
+	m_textTime->SetValue(outtime);
+	m_textAccuracy->SetValue(outacc);
 
 	Refresh();
 
@@ -928,7 +927,7 @@ void Dlg::OnFactory(wxCommandEvent& event)
 	myTestDataCollection.push_back(myTestData);
 
 }
-/*
+
 void Dlg::RenderHTMLQuery(AIS_Target_Data *td) {
 
 	int font_size = 12;
@@ -1026,7 +1025,7 @@ wxString Dlg::BuildQueryResult(AIS_Target_Data *td)
 	html << _T("</table>");
 	return html;
 }
-*/
+
 void Dlg::CreateControlsMessageList()
 {
 	int width;
@@ -1041,3 +1040,20 @@ void Dlg::CreateControlsMessageList()
 
 	}
 }
+
+void Dlg::OnTimer(wxTimerEvent& event)
+{
+	if (m_bHaveMessageList && m_pASMmessages1->IsShown()) {
+
+			// Refresh AIS target list every 5 seconds to avoid blinking
+		if (m_pASMmessages1->m_pListCtrlAISTargets && (0 == (g_tick % (5)))) {
+			if (m_bUpdateTarget) {
+				UpdateAISTargetList();
+				m_bUpdateTarget = false;
+				GetParent()->Refresh();
+			}
+		}
+			g_tick++;
+	}	
+}
+

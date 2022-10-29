@@ -41,16 +41,16 @@ message(STATUS "Building: ${BUILD_TYPE}")
 # -------- Options ----------
 
 set(OCPN_TEST_REPO
-    "mike-rossiter/aisrx-alpha"
+    "opencpn/aisRX-alpha"
     CACHE STRING "Default repository for untagged builds"
 )
 set(OCPN_BETA_REPO
-    "mike-rossiter/aisrx-beta"
+    "opencpn/aisRX-beta"
     CACHE STRING 
     "Default repository for tagged builds matching 'beta'"
 )
 set(OCPN_RELEASE_REPO
-    "mike-rossiter/aisrx-prod"
+    "opencpn/aisRX-prod"
     CACHE STRING 
     "Default repository for tagged builds not matching 'beta'"
 )
@@ -73,15 +73,18 @@ endif ()
 #
 # -------  Plugin setup --------
 #
-project(aisRX_pi VERSION 0.4.0.0)
+project(aisRX_pi VERSION 0.3.0.0)
 set(PKG_PRERELEASE "")  # Empty, or a tag like 'beta'
 
 set(DISPLAY_NAME aisRX)    # Dialogs, installer artifacts, ...
 set(PLUGIN_API_NAME aisRX) # As of GetCommonName() in plugin API
 set(CPACK_PACKAGE_CONTACT "Mike Rossiter")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "RIS FI44")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Simulate ship movements")
 set(CPACK_PACKAGE_DESCRIPTION [=[
-DAC 200 FI 44
+Simulates navigation of a vessel. Using the sail option and a current
+grib file for wind data, simulates how a sailing vessel might react in
+those conditions. Using 'Preferences' the simulator is able to record AIS
+data from itself. This can be replayed to simulate collision situations.
 ]=])
 
 set(PKG_AUTHOR "Mike Rossiter")
@@ -90,13 +93,15 @@ set(CPACK_PACKAGE_HOMEPAGE_URL https://github.com/Rasbats/aisRX_pi)
 set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/aisRX.html)
 
 set(SRC
-	src/ais.h
+	src/ais2.h
 	src/ais8_200.cpp
 	src/ais8.cpp
-	src/ais_bitset.cpp
+	src/ais_bitset2.cpp
 	src/AIS_Bitstring.cpp
 	src/AIS_Bitstring.h
 	src/ais.cpp
+    src/AisMaker.cpp
+    src/AisMaker.h
     src/aisRXgui.cpp
     src/aisRXgui.h
     src/aisRXgui_impl.cpp

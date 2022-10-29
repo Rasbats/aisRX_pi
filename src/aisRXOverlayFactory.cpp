@@ -863,8 +863,8 @@ void aisRXOverlayFactory::DrawSignalIndicators
 
 	double myLat;
 	double myLon;
-	//double tcLat;
-	//double tcLon;
+	double tcLat;
+	double tcLon;
 
 	wxColour colour("RED");
 
@@ -932,8 +932,12 @@ void aisRXOverlayFactory::DrawAllSignalsInViewPort(PlugIn_ViewPort *BBox, bool b
 
 	double lon = -4;
 	double lat = 50;
-	//double value;
+	double value;
 	double depth;
+	int sdgid;
+	int surid;
+	double tid;
+	double corrn;
 
 	for (vector<AIS_Target_Data>::iterator it = m_dlg.myTestDataCollection.begin(); it != m_dlg.myTestDataCollection.end(); it++) {
 
@@ -941,10 +945,13 @@ void aisRXOverlayFactory::DrawAllSignalsInViewPort(PlugIn_ViewPort *BBox, bool b
 		lon = it->Lon;
 		//wxMessageBox(it->depth);
 		depth = 99.9;
+		sdgid = 0;
+		surid = 0;
 		//it->tide.ToDouble(&tid);
 
 		myLLBox = new LLBBox;
 		wxBoundingBox LLBBox(BBox->lon_min, BBox->lat_min, BBox->lon_max, BBox->lat_max);
+		double testLon;
 
 		if (LLBBox.PointInBox(lon, lat, 0)) {
 
@@ -974,11 +981,11 @@ void aisRXOverlayFactory::DrawAllSignalsInViewPort(PlugIn_ViewPort *BBox, bool b
 			if (!m_pdc) {
 
 				if (m_bUseSymbol && (m_iSoundingShape == 1 || m_iSoundingShape == 2)) {
-					//drawGLPolygons(this, m_pdc, BBox, DrawGLPolygon(depth), lat, lon, sdgid, surid, pixxc, pixyc, 0);
+					drawGLPolygons(this, m_pdc, BBox, DrawGLPolygon(depth), lat, lon, sdgid, surid, pixxc, pixyc, 0);
 				}
 				else {
 					
-					//DrawGLSoundingMark(pixxc, pixyc, 0, depth, sdgid, surid, s_Colour);
+					DrawGLSoundingMark(pixxc, pixyc, 0, depth, sdgid, surid, s_Colour);
 				}
 				//
 				if (m_bRenderSoundingText) {
@@ -989,7 +996,7 @@ void aisRXOverlayFactory::DrawAllSignalsInViewPort(PlugIn_ViewPort *BBox, bool b
 
 			if (m_pdc)
 			{
-				//DrawSignal(*m_pdc, pixxc, pixyc, depth, sdgid, surid, 5);
+				DrawSignal(*m_pdc, pixxc, pixyc, depth, sdgid, surid, 5);
 			}
 		}
 	}

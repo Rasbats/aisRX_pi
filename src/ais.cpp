@@ -1,6 +1,6 @@
 // General helper functions for working with AIS and NMEA.
 
-#include "ais.h"
+#include "ais2.h"
 
 
 namespace mylibais {

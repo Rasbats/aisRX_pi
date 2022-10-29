@@ -32,6 +32,8 @@
 #include "wx/wx.h"
 #endif
 
+#include "AisMaker.h"
+
 #include "aisRXgui.h"
 #include "ocpn_plugin.h"
 #include "tinyxml.h"
@@ -47,7 +49,7 @@
 #include <wx/thread.h>
 #include <wx/utils.h>
 
-#include "ais.h"
+#include "ais2.h"
 #include "signal.h"
 #include "widget.h"
 #include "AIS_Bitstring.h"
@@ -62,8 +64,8 @@
 
 #include "AISdisplay.h"
 #include "ASMmessages.h"
-#include <wx/dcmemory.h>
-#include <wx/textfile.h>
+
+
 
 #ifdef __WXOSX__
 #define aisRX_DLG_STYLE                                                   \
@@ -87,6 +89,20 @@ class Signalling;
 class AIS_Target_Data
 {
 public:
+	/*
+    AIS_Target_Data();
+    ~AIS_Target_Data();
+
+    wxString BuildQueryResult(void);
+    wxString GetRolloverString(void);
+    wxString Get_vessel_type_string(bool b_short = false);
+    wxString Get_class_string(bool b_short = false);
+    wxString GetFullName( void );
+    wxString GetCountryCode(bool b_CntryLongStr);
+    void Toggle_AIS_CPA(void);
+    void ToggleShowTrack(void);
+    void CloneFrom( AIS_Target_Data* q );
+    */
 
     int                       MID;
     int                       HECT;
@@ -200,9 +216,9 @@ public:
 
 	bool m_bDisplayStarted;
 	void SetAISMessage(wxString &msg);
-	void SetNMEAMessage(wxString &msg);
-	//void RenderHTMLQuery(AIS_Target_Data *td);
-	//wxString BuildQueryResult(AIS_Target_Data *td);
+	wxString SetaisRXMessage(string &msg);
+	void RenderHTMLQuery(AIS_Target_Data *td);
+	wxString BuildQueryResult(AIS_Target_Data *td);
 	AIS_Target_Data *td;
 
     wxTextFile* nmeafile;
@@ -229,8 +245,7 @@ public:
 
     AIS_Target_Data* m_pLatestTargetData;
 
-	//vector<AIS_Target_Data>  FindSignalData(int hect);
-	//vector<AIS_Target_Data>  FindSignalRISindex(int hect);
+	vector<AIS_Target_Data>  FindSignalData(int hect);
 
 	wxString testing;
 	
@@ -238,10 +253,11 @@ public:
 
 	AIS_Target_Data myTestData;
 	vector<AIS_Target_Data> myTestDataCollection;
-	vector<AIS_Target_Data> mySignalCollection;
 	void UpdateAISTargetList(void);
 
 	void CreateControlsMessageList();
+	void OnTimer(wxTimerEvent& event);
+	int  g_tick;
 
 	wxArrayInt* myHect;
 	
@@ -288,15 +304,20 @@ private:
 	void OnLogging(wxCommandEvent& event);
 	void Decode(wxString sentence);
     void OnTest(wxCommandEvent& event);
+	void OnSignalShow(wxCommandEvent& event);
 	wxString parseNMEASentence(wxString& sentence);
+	void getAis8_200_25(string rawPayload);
 	void getAis8_200_26(string rawPayload);
+	void getAis8_200_41(string rawPayload);
 	void getAis8_200_44(string rawPayload);
+    // void SendAIS(double cse, double spd, double lat, double lon);
 
     void OnData(wxCommandEvent& event);
 	void JumpTo( wxString lat, wxString lon, int scale);
     //void GoToStandby();
 
     void OnFactory(wxCommandEvent& event);
+	void OnMessages(wxCommandEvent& event);
 
     long m_iHECT;
 

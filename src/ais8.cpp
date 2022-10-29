@@ -4,7 +4,7 @@
 
 #include <iomanip>
 
-#include "ais.h"
+#include "ais2.h"
 
 namespace mylibais {
 
