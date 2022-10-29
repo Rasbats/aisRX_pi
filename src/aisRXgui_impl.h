@@ -62,14 +62,8 @@
 
 #include "AISdisplay.h"
 #include "ASMmessages.h"
-<<<<<<< HEAD
-#include "ocpn_plugin.h"
-
-
-=======
 #include <wx/dcmemory.h>
 #include <wx/textfile.h>
->>>>>>> 8c06546 (v0.4)
 
 #ifdef __WXOSX__
 #define aisRX_DLG_STYLE                                                   \
@@ -133,28 +127,18 @@ public:
 	int						  hect;
 	int                       signalForm;
 	int                       signalStatus;
-	int						  bridgeClearance;
 	string                    country;
 	string					  RISindex;
 	bool                      b_nameValid;
 	bool                      b_nameFromCache;
-	/***************** weather obs *****/
-	double					  air_press;
-	string                  MMSI;
-	/***************** 8_1_31 *****/
-	/********* provide an index*********/
-	  int utc_day;
-	  int utc_hour;
-	  int utc_min;
 
   
 };
 
-//WX_DECLARE_HASH_MAP( int, AIS_Target_Data*, wxIntegerHash, wxIntegerEqual, AIS_Target_Hash );
-//WX_DECLARE_HASH_MAP( int, wxString, wxIntegerHash, wxIntegerEqual, AIS_Target_Name_Hash );
+WX_DECLARE_HASH_MAP( int, AIS_Target_Data*, wxIntegerHash, wxIntegerEqual, AIS_Target_Hash );
+WX_DECLARE_HASH_MAP( int, wxString, wxIntegerHash, wxIntegerEqual, AIS_Target_Name_Hash );
 
-WX_DECLARE_HASH_MAP( string, AIS_Target_Data*, wxStringHash, wxStringEqual, AIS_Target_Hash );
-WX_DECLARE_HASH_MAP( string, wxString, wxStringHash, wxStringEqual, AIS_Target_Name_Hash );
+
 
 
 // An identifier to notify the application when the // work is done #define
@@ -190,6 +174,7 @@ std::unique_ptr<mylibais::AisMsg> CreateAisMsg(const string &body,
 
 }  // namespace mylibais
 
+class aisRXOverlayFactory;
 class PlugIn_ViewPort;
 
 
@@ -214,18 +199,10 @@ public:
 	
 
 	bool m_bDisplayStarted;
-<<<<<<< HEAD
-	bool m_bPaused;
-	void SetAISMessage(wxString &msg, wxString &sentence);
-	wxString SetaisRXMessage(string &msg);
-	void RenderHTMLQuery(AIS_Target_Data *td);
-	wxString BuildQueryResult(AIS_Target_Data *td);
-=======
 	void SetAISMessage(wxString &msg);
 	void SetNMEAMessage(wxString &msg);
 	//void RenderHTMLQuery(AIS_Target_Data *td);
 	//wxString BuildQueryResult(AIS_Target_Data *td);
->>>>>>> 8c06546 (v0.4)
 	AIS_Target_Data *td;
 
     wxTextFile* nmeafile;
@@ -240,7 +217,6 @@ public:
     double myDir;
 
 	AIS_Target_Data*  pTargetData;
-	AIS_Target_Data*  pBridgeData;
 	AIS_Target_Hash* AISTargetList;
 	AIS_Target_Name_Hash* AISTargetNamesC;
     AIS_Target_Name_Hash* AISTargetNamesNC;
@@ -249,18 +225,12 @@ public:
 	int              m_n_targets;
 
     AIS_Target_Hash *GetTargetList(void) {return AISTargetList;}
-   // AIS_Target_Data *Get_Target_Data_From_HECT(int mmsi);
+    AIS_Target_Data *Get_Target_Data_From_HECT(int mmsi);
 
     AIS_Target_Data* m_pLatestTargetData;
 
-<<<<<<< HEAD
-	vector<AIS_Target_Data>  FindSignalData(int hect);
-	vector<AIS_Target_Data>  FindBridgeRISindex(int hect, wxString objcode);
-	vector<AIS_Target_Data>  FindSignalRISindex(int hect, wxString objcode);
-=======
 	//vector<AIS_Target_Data>  FindSignalData(int hect);
 	//vector<AIS_Target_Data>  FindSignalRISindex(int hect);
->>>>>>> 8c06546 (v0.4)
 
 	wxString testing;
 	
@@ -268,21 +238,10 @@ public:
 
 	AIS_Target_Data myTestData;
 	vector<AIS_Target_Data> myTestDataCollection;
-<<<<<<< HEAD
-	vector<AIS_Target_Data> myBridgeCollection;
 	vector<AIS_Target_Data> mySignalCollection;
-	vector<AIS_Target_Data> mySignalsFoundCollection;
-=======
-	vector<AIS_Target_Data> mySignalCollection;
->>>>>>> 8c06546 (v0.4)
 	void UpdateAISTargetList(void);
 
 	void CreateControlsMessageList();
-
-	void OnSelectMessage(wxCommandEvent& event);
-	double CalculatePPM(float scale);
-	double m_vpppm;
-    double m_vpscale;
 
 	wxArrayInt* myHect;
 	
@@ -299,23 +258,12 @@ public:
 
 	void OnCloseList(wxCloseEvent& event);
 
-	wxFileName fn;
-	wxString station_icon_name;
-	wxBitmap* wpIcon;
-	wxString StandardPath();
-
-	void OnContextMenu(double m_lat, double m_lon);
-	double initLat;
-	double initLon;
-	void GetSignal(AIS_Target_Data myTarget);
-	
-
 protected:
     bool m_bNeedsGrib;
 
 private:
 
-	bool m_bUsingTest;
+	
 	
 
 	wxString AIVDM;
@@ -338,17 +286,9 @@ private:
 	//void OnAuto(wxCommandEvent& event);
 	void OnMessageList(wxCommandEvent& event);
 	void OnLogging(wxCommandEvent& event);
-	void OnToggleButton(wxCommandEvent& event);
-	bool DecodeForDAC(wxString insentence);
 	void Decode(wxString sentence);
     void OnTest(wxCommandEvent& event);
 	wxString parseNMEASentence(wxString& sentence);
-<<<<<<< HEAD
-	void getAis8_1_11(string rawPayload);
-	void getAis8_1_31(string rawPayload);
-	void getAis8_200_25(string rawPayload);
-=======
->>>>>>> 8c06546 (v0.4)
 	void getAis8_200_26(string rawPayload);
 	void getAis8_200_44(string rawPayload);
 
@@ -364,16 +304,11 @@ private:
     virtual void Unlock() { routemutex.Unlock(); }
     wxMutex routemutex;
 
-	
-	AIS_Target_Data* Get_Target_Data_From_RISindex(string risindex);
 
     bool m_bUsingWind;
     bool m_bUsingFollow;
     bool m_bInvalidPolarsFile;
     bool m_bInvalidGribFile;
-
-	
-
    
 };
 

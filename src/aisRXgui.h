@@ -17,7 +17,6 @@
 #include <wx/colour.h>
 #include <wx/settings.h>
 #include <wx/textctrl.h>
-#include <wx/tglbtn.h>
 #include <wx/sizer.h>
 #include <wx/panel.h>
 #include <wx/bitmap.h>
@@ -42,8 +41,7 @@ class aisRXBase : public wxDialog
 
 	protected:
 		wxStaticText* m_staticText1;
-		
-		wxToggleButton* m_toggleBtn1;
+		wxTextCtrl* m_textCtrlTest;
 		wxNotebook* m_notebookMessage;
 		wxPanel* m_panel3;
 		wxStaticText* m_staticText12;
@@ -92,24 +90,14 @@ class aisRXBase : public wxDialog
 
 		// Virtual event handlers, override them in your derived class
 		virtual void OnClose( wxCloseEvent& event ) { event.Skip(); }
-<<<<<<< HEAD
-		virtual void OnToggleButton( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnData( wxCommandEvent& event ) { event.Skip(); }
-=======
->>>>>>> 8c06546 (v0.4)
 		virtual void OnLogging( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnMessageList( wxCommandEvent& event ) { event.Skip(); }
-<<<<<<< HEAD
-		virtual void OnSelectMessage( wxCommandEvent& event ) { event.Skip(); }
-=======
 		virtual void OnTest( wxCommandEvent& event ) { event.Skip(); }
->>>>>>> 8c06546 (v0.4)
 		virtual void OnTimer( wxTimerEvent& event ) { event.Skip(); }
 
 
 	public:
 		wxTimer m_timer1;
-		wxTextCtrl* m_textCtrlTest;
 
 		aisRXBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("AIS Rx"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 401,591 ), long style = wxDEFAULT_DIALOG_STYLE|wxMINIMIZE_BOX|wxRESIZE_BORDER );
 

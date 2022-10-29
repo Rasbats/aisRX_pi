@@ -30,12 +30,6 @@ aisRXBase::aisRXBase( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_textCtrlTest = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer121->Add( m_textCtrlTest, 0, wxALL|wxEXPAND, 5 );
 
-	m_toggleBtn1 = new wxToggleButton( this, wxID_ANY, _("Pause"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_toggleBtn1->SetValue( true );
-	m_toggleBtn1->SetFont( wxFont( 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Arial") ) );
-
-	bSizer121->Add( m_toggleBtn1, 0, wxALL|wxEXPAND, 5 );
-
 
 	bSizer10->Add( bSizer121, 0, wxEXPAND, 5 );
 
@@ -254,19 +248,8 @@ aisRXBase::aisRXBase( wxWindow* parent, wxWindowID id, const wxString& title, co
 
 	fgSizer82->Add( m_button72, 0, wxALL|wxEXPAND, 5 );
 
-<<<<<<< HEAD
-	m_button73 = new wxButton( this, wxID_ANY, _("List"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_button73->SetFont( wxFont( 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Arial") ) );
-	m_button73->SetMinSize( wxSize( 50,-1 ) );
-
-	fgSizer82->Add( m_button73, 0, wxALL|wxEXPAND, 5 );
-
-	m_button74 = new wxButton( this, wxID_ANY, _("Item"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_button74->SetFont( wxFont( 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxT("Arial") ) );
-=======
 	m_button74 = new wxButton( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	m_button74->SetFont( wxFont( 12, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxT("Arial") ) );
->>>>>>> 8c06546 (v0.4)
 	m_button74->SetMinSize( wxSize( 50,-1 ) );
 
 	fgSizer82->Add( m_button74, 0, wxALL|wxEXPAND, 5 );
@@ -283,18 +266,9 @@ aisRXBase::aisRXBase( wxWindow* parent, wxWindowID id, const wxString& title, co
 
 	// Connect Events
 	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( aisRXBase::OnClose ) );
-<<<<<<< HEAD
-	m_toggleBtn1->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnToggleButton ), NULL, this );
-	m_buttonStandby->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnData ), NULL, this );
-=======
->>>>>>> 8c06546 (v0.4)
 	m_buttonMessages->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnLogging ), NULL, this );
 	m_button73->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnMessageList ), NULL, this );
-<<<<<<< HEAD
-	m_button74->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnSelectMessage ), NULL, this );
-=======
 	m_button7->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnTest ), NULL, this );
->>>>>>> 8c06546 (v0.4)
 	this->Connect( wxID_ANY, wxEVT_TIMER, wxTimerEventHandler( aisRXBase::OnTimer ) );
 }
 
@@ -302,18 +276,9 @@ aisRXBase::~aisRXBase()
 {
 	// Disconnect Events
 	this->Disconnect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( aisRXBase::OnClose ) );
-<<<<<<< HEAD
-	m_toggleBtn1->Disconnect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnToggleButton ), NULL, this );
-	m_buttonStandby->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnData ), NULL, this );
-=======
->>>>>>> 8c06546 (v0.4)
 	m_buttonMessages->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnLogging ), NULL, this );
 	m_button73->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnMessageList ), NULL, this );
-<<<<<<< HEAD
-	m_button74->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnSelectMessage ), NULL, this );
-=======
 	m_button7->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( aisRXBase::OnTest ), NULL, this );
->>>>>>> 8c06546 (v0.4)
 	this->Disconnect( wxID_ANY, wxEVT_TIMER, wxTimerEventHandler( aisRXBase::OnTimer ) );
 
 }
