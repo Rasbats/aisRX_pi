@@ -13,8 +13,8 @@ rem into C:\wxWidgets-3.2.1
 
 mkdir  build
 cd build
-cmake -T v141_xp ..
-cmake -G "Visual Studio 15 2017" --config RelWithDebInfo  ..
-cmake --build . --target tarball --config RelWithDebInfo
+cmake -A Win32 ..
+cmake -G "Visual Studio 15 2017" ..
+cmake --build . --target tarball --config Release
 
 cmd /k

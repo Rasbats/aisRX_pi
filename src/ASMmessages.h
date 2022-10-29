@@ -42,7 +42,6 @@ class asmMessages : public wxDialog
 
 		// Virtual event handlers, overide them in your derived class
 		void OnHideList( wxCommandEvent& event ); 
-		
 
 
 	public:

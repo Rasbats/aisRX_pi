@@ -389,11 +389,6 @@ bool aisRX_pi::RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp)
 }
 
 
-
-void aisRX_pi::SetAISSentence(wxString &sentence) {
-    if (NULL != m_pDialog) m_pDialog->SetAISMessage(sentence);
-}
-
 bool aisRX_pi::LoadConfig(void)
 {
     wxFileConfig* pConf = (wxFileConfig*)m_pconfig;
@@ -453,42 +448,17 @@ void aisRX_pi::OnaisRXDialogClose()
     SaveConfig();   
 }
 
+void aisRX_pi::SetAISSentence(wxString& sentence) {
+  if (NULL != m_pDialog) m_pDialog->SetAISMessage(sentence);
+}
+
 void aisRX_pi::SetNMEASentence(wxString& sentence)
 {
+    if (NULL != m_pDialog) {
+      m_pDialog->SetNMEAMessage(sentence);
+    }     
 
-    // $GPAPB,A,A,0.10,R,N,V,V,011,M,DEST,011,M,011,M*3C
-
-    if (NULL == m_pDialog)
-        return;
-
-    wxString token[40];
-    wxString s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11;
-    token[0] = _T("");
-
-    wxStringTokenizer tokenizer(sentence, wxT(","));
-    int i = 0;
-
-    while (tokenizer.HasMoreTokens()) {
-        token[i] = tokenizer.GetNextToken();
-        i++;
-    }
-    if (token[0].Right(3) == _T("APB")) {
-
-        s11 = token[11];
-
-        if (m_pDialog->m_bAuto) {
-
-            double value;
-            s11.ToDouble(&value);
-            m_pDialog->myDir = value;
-        }
-        /*
-        s6 = token[6];
-        if (s6 == _T("A")) {
-                wxMessageBox(_("Vessel has arrived at the final waypoint"));
-        }
-        */
-    }
+    
 }
 
 void aisRX_pi::dbGetTable(wxString sql, char ***results, int &n_rows, int &n_columns)

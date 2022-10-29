@@ -34,7 +34,7 @@ Widget::Widget(wxPanel *parent, int id, int signalForm, wxString signalLights)
 
   mySignalForm = signalForm;
   wxString msg = wxString::Format("%i", mySignalForm);
-  //wxMessageBox(msg);
+  wxMessageBox(msg);
 
   SetupSignal(signalForm, signalLights);
 
@@ -145,6 +145,7 @@ void Widget::SetupSignal(int signalForm, wxString signalLights) {
 			break;
 		}
 	}
+	//wxMessageBox("here");
 }
 
 void Widget::OnSignal(int signalForm) {	

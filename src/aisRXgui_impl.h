@@ -32,8 +32,6 @@
 #include "wx/wx.h"
 #endif
 
-#include "AisMaker.h"
-
 #include "aisRXgui.h"
 #include "ocpn_plugin.h"
 #include "tinyxml.h"
@@ -49,7 +47,7 @@
 #include <wx/thread.h>
 #include <wx/utils.h>
 
-#include "ais2.h"
+#include "ais.h"
 #include "signal.h"
 #include "widget.h"
 #include "AIS_Bitstring.h"
@@ -64,8 +62,7 @@
 
 #include "AISdisplay.h"
 #include "ASMmessages.h"
-
-
+#include <wx/textfile.h>
 
 #ifdef __WXOSX__
 #define aisRX_DLG_STYLE                                                   \
@@ -216,7 +213,7 @@ public:
 
 	bool m_bDisplayStarted;
 	void SetAISMessage(wxString &msg);
-	wxString SetaisRXMessage(string &msg);
+	void SetNMEAMessage(wxString &msg);
 	void RenderHTMLQuery(AIS_Target_Data *td);
 	wxString BuildQueryResult(AIS_Target_Data *td);
 	AIS_Target_Data *td;
@@ -246,6 +243,7 @@ public:
     AIS_Target_Data* m_pLatestTargetData;
 
 	vector<AIS_Target_Data>  FindSignalData(int hect);
+	vector<AIS_Target_Data>  FindSignalRISindex(int hect);
 
 	wxString testing;
 	
@@ -253,6 +251,7 @@ public:
 
 	AIS_Target_Data myTestData;
 	vector<AIS_Target_Data> myTestDataCollection;
+	vector<AIS_Target_Data> mySignalCollection;
 	void UpdateAISTargetList(void);
 
 	void CreateControlsMessageList();

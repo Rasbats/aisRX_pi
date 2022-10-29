@@ -22,7 +22,7 @@ asmMessages::asmMessages( wxWindow* parent, wxWindowID id, const wxString& title
 	wxStaticBoxSizer* sbSizer3;
 	sbSizer3 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("label") ), wxVERTICAL );
 
-	m_pListCtrlAISTargets = new wxListCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_ICON|wxLC_REPORT|wxLC_SINGLE_SEL);
+	m_pListCtrlAISTargets = new wxListCtrl( sbSizer3->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_ICON|wxLC_REPORT );
 	sbSizer3->Add( m_pListCtrlAISTargets, 0, wxALL|wxEXPAND, 5 );
 
 
