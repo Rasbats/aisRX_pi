@@ -81,6 +81,16 @@ class asmMessages;
 
 class AIS_Target_Data;
 class Signalling;
+class AIS_Text_Data;
+
+class AIS_Text_Data {
+public:
+    string Sector;
+    string Hect;
+    string ObjCode;
+    string TextIndex;
+};
+
 
 // lass rtept;
 class AIS_Target_Data
@@ -148,9 +158,11 @@ public:
   
 };
 
-WX_DECLARE_HASH_MAP( int, AIS_Target_Data*, wxIntegerHash, wxIntegerEqual, AIS_Target_Hash );
-WX_DECLARE_HASH_MAP( int, wxString, wxIntegerHash, wxIntegerEqual, AIS_Target_Name_Hash );
+//WX_DECLARE_HASH_MAP( int, AIS_Target_Data*, wxIntegerHash, wxIntegerEqual, AIS_Target_Hash );
+//WX_DECLARE_HASH_MAP( int, wxString, wxIntegerHash, wxIntegerEqual, AIS_Target_Name_Hash );
 
+WX_DECLARE_HASH_MAP(string, AIS_Text_Data*, wxStringHash, wxStringEqual, AIS_Text_Hash);
+WX_DECLARE_HASH_MAP(string, wxString, wxStringHash, wxStringEqual, AIS_Text_Name_Hash);
 
 
 
@@ -215,8 +227,8 @@ public:
 	void SetAISMessage(wxString &msg);
 	void SetNMEAMessage(wxString &msg);
 	void RenderHTMLQuery(AIS_Target_Data *td);
-	wxString BuildQueryResult(AIS_Target_Data *td);
-	AIS_Target_Data *td;
+	//wxString BuildQueryResult(AIS_Target_Data *td);
+	//AIS_Target_Data *td;
 
     wxTextFile* nmeafile;
 
@@ -228,30 +240,40 @@ public:
     wxDateTime m_GribTimelineTime;
 
     double myDir;
+    // Old hash data
 
-	AIS_Target_Data*  pTargetData;
-	AIS_Target_Hash* AISTargetList;
-	AIS_Target_Name_Hash* AISTargetNamesC;
-    AIS_Target_Name_Hash* AISTargetNamesNC;
-	AIS_Target_Name_Hash* HashFile;
+	//AIS_Target_Data*  pTargetData;
+	//AIS_Target_Hash* AISTargetList;
+	//AIS_Target_Name_Hash* AISTargetNamesC;
+    //AIS_Target_Name_Hash* AISTargetNamesNC;
+	//AIS_Target_Name_Hash* HashFile;
+
+    	// For Text messages
+        AIS_Text_Hash* AISTextList;
+        AIS_Text_Data* pNewTextData;
+        AIS_Text_Data* pTextData;
+
+        string slotNumber;
+        string theMMSI;
+        vector<AIS_Text_Data> myTextDataCollection;
 
 	int              m_n_targets;
 
-    AIS_Target_Hash *GetTargetList(void) {return AISTargetList;}
-    AIS_Target_Data *Get_Target_Data_From_HECT(int mmsi);
+   //AIS_Target_Hash *GetTargetList(void) {return AISTargetList;}
+   // AIS_Target_Data *Get_Target_Data_From_HECT(int mmsi);
 
-    AIS_Target_Data* m_pLatestTargetData;
+   // AIS_Target_Data* m_pLatestTargetData;
 
-	vector<AIS_Target_Data>  FindSignalData(int hect);
-	vector<AIS_Target_Data>  FindSignalRISindex(int hect);
+	//vector<AIS_Target_Data>  FindSignalData(int hect);
+	//vector<AIS_Target_Data>  FindSignalRISindex(int hect);
 
 	wxString testing;
 	
     void SetViewPort( PlugIn_ViewPort *vp );
 
-	AIS_Target_Data myTestData;
-	vector<AIS_Target_Data> myTestDataCollection;
-	vector<AIS_Target_Data> mySignalCollection;
+	//AIS_Target_Data myTestData;
+	//vector<AIS_Target_Data> myTestDataCollection;
+	//vector<AIS_Target_Data> mySignalCollection;
 	void UpdateAISTargetList(void);
 
 	void CreateControlsMessageList();
@@ -303,20 +325,14 @@ private:
 	void OnLogging(wxCommandEvent& event);
 	void Decode(wxString sentence);
     void OnTest(wxCommandEvent& event);
-	void OnSignalShow(wxCommandEvent& event);
 	wxString parseNMEASentence(wxString& sentence);
-	void getAis8_200_25(string rawPayload);
 	void getAis8_200_26(string rawPayload);
-	void getAis8_200_41(string rawPayload);
 	void getAis8_200_44(string rawPayload);
-    // void SendAIS(double cse, double spd, double lat, double lon);
 
     void OnData(wxCommandEvent& event);
 	void JumpTo( wxString lat, wxString lon, int scale);
-    //void GoToStandby();
 
     void OnFactory(wxCommandEvent& event);
-	void OnMessages(wxCommandEvent& event);
 
     long m_iHECT;
 

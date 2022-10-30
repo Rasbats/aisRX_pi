@@ -70,7 +70,7 @@ aisRXOverlayFactory::aisRXOverlayFactory( Dlg &dlg )
     m_dFont_war = new wxFont( 16, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL );
 
 	m_last_vp_scale = 0.;
-	myCollection = m_dlg.myTestDataCollection;
+	myCollection = m_dlg.myTextDataCollection;
 }
 
 aisRXOverlayFactory::~aisRXOverlayFactory()
@@ -877,10 +877,10 @@ void aisRXOverlayFactory::DrawSignalIndicators
 		m_pdc->SetBrush(brush);
 	}
 
-	for (vector<AIS_Target_Data>::iterator it = m_dlg.myTestDataCollection.begin(); it != m_dlg.myTestDataCollection.end(); it++) {
+	for (vector<AIS_Text_Data>::iterator it = m_dlg.myTextDataCollection.begin(); it != m_dlg.myTextDataCollection.end(); it++) {
 
-		myLat = (*it).Lat;
-		myLon = (*it).Lon;
+		myLat = 50; //(*it).Lat;
+            myLon = -4.0; //(*it).Lon;
 
 		
 
@@ -939,10 +939,10 @@ void aisRXOverlayFactory::DrawAllSignalsInViewPort(PlugIn_ViewPort *BBox, bool b
 	double tid;
 	double corrn;
 
-	for (vector<AIS_Target_Data>::iterator it = m_dlg.myTestDataCollection.begin(); it != m_dlg.myTestDataCollection.end(); it++) {
+	for (vector<AIS_Text_Data>::iterator it = m_dlg.myTextDataCollection.begin(); it != m_dlg.myTextDataCollection.end(); it++) {
 
-		lat = it->Lat;
-		lon = it->Lon;
+		lat = 50;//it->Lat;
+        lon = -4; // it->Lon;
 		//wxMessageBox(it->depth);
 		depth = 99.9;
 		sdgid = 0;

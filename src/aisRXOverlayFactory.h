@@ -122,7 +122,7 @@ public:
 
 	void drawCurrentArrow(int x, int y, double rot_angle, double scale, double rate);
 	
-	vector<AIS_Target_Data> myCollection;
+	vector<AIS_Text_Data> myCollection;
 private:
 
 	

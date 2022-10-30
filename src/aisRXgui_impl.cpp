@@ -132,10 +132,13 @@ Dlg::Dlg(wxWindow* parent, wxWindowID id, const wxString& title,
 		pConf->Read(_T("aisRXHECT"), &m_tMMSI, "12345");
 	}
 
-	AISTargetList = new AIS_Target_Hash;
-	AISTargetNamesC = new AIS_Target_Name_Hash;
-	AISTargetNamesNC = new AIS_Target_Name_Hash;
-	pTargetData = new AIS_Target_Data;
+	//AISTargetList = new AIS_Target_Hash;
+	//AISTargetNamesC = new AIS_Target_Name_Hash;
+	//AISTargetNamesNC = new AIS_Target_Name_Hash;
+	//pTargetData = new AIS_Target_Data;
+
+	AISTextList = new AIS_Text_Hash;
+    pTextData = new AIS_Text_Data;
 
 	m_pASMmessages1 = NULL;
 	myAISdisplay = NULL;
@@ -204,7 +207,7 @@ namespace mylibais {
 
 } // mylibais
 
-
+/*
 AIS_Target_Data* Dlg::Get_Target_Data_From_HECT(int mmsi)
 {
 	int sz = AISTargetList->count(pTargetData->HECT);
@@ -217,7 +220,7 @@ AIS_Target_Data* Dlg::Get_Target_Data_From_HECT(int mmsi)
 		return NULL;
 	else
 		return (*AISTargetList)[mmsi];          // find current entry
-}
+}*/
 
 inline const char * const BoolToString(bool b)
 {
@@ -234,9 +237,9 @@ void Dlg::OnMessageList(wxCommandEvent& event) {
 		m_pASMmessages1 = new asmMessages(this, wxID_ANY, _T("ASM Messages"), wxPoint(100, 100), wxSize(300, 400), wxDEFAULT_DIALOG_STYLE |wxCLOSE_BOX| wxRESIZE_BORDER);
 		CreateControlsMessageList();
 		m_pASMmessages1->Show();
-		//m_bHaveMessageList = true;
+		m_bHaveMessageList = true;
 
-		myTestDataCollection.clear();
+		myTextDataCollection.clear();
 		m_timer1.Start();
 	}
 
@@ -304,7 +307,7 @@ void Dlg::SetNMEAMessage(wxString &msg) {
     }
   }
 }
-
+/*
 vector<AIS_Target_Data>  Dlg::FindSignalData(int hect) {
 
 	char **result;
@@ -389,6 +392,7 @@ vector<AIS_Target_Data>  Dlg::FindSignalRISindex(int hect) {
 
 	return mySignalCollection;
 }
+*/
 
 
 
@@ -534,9 +538,7 @@ vector<AIS_Target_Data>  Dlg::FindSignalRISindex(int hect) {
 
 
 
-
-
-
+/*
 void Dlg::OnData(wxCommandEvent& event) {
 
 	char **result;
@@ -576,7 +578,7 @@ void Dlg::OnData(wxCommandEvent& event) {
 	Refresh();
 
 }
-
+*/
 void Dlg::JumpTo(wxString lat, wxString lon, int scale)
 {
 	double mla, mlo;
@@ -746,11 +748,11 @@ void Dlg::UpdateAISTargetList(void)
 	if (m_bHaveMessageList) {
 		
 			int index = 0; 
-			AIS_Target_Hash::iterator it;
-			AIS_Target_Data *pAISTarget;
-			AIS_Target_Hash *current_targets = new AIS_Target_Hash;
+			AIS_Text_Hash::iterator it;
+			AIS_Text_Data *pAISTarget;
+			AIS_Text_Hash *current_targets = new AIS_Text_Hash;
 
-			current_targets = AISTargetList;
+			current_targets = AISTextList;
 			size_t z = current_targets->size();
 			//wxString sz = wxString::Format("%i", z);
 			//wxMessageBox(sz);
@@ -761,8 +763,8 @@ void Dlg::UpdateAISTargetList(void)
 
 			m_pASMmessages1->m_pListCtrlAISTargets->DeleteAllItems();
 
-			int h = 0;
-			int id = 0;
+			string h = "";
+            int id = 0;
 
 			for (it = (current_targets)->begin(); it != (current_targets)->end(); ++it, ++index) {
 
@@ -774,15 +776,15 @@ void Dlg::UpdateAISTargetList(void)
 				for (int j = 0; j < 2; j++) {
 					item.SetColumn(j);
 					if (j == 0) {
-						h = pAISTarget->hect;
+						h = pAISTarget->TextIndex;
 						wxString shect = wxString::Format("%i", h);
 						item.SetText(shect);
 						m_pASMmessages1->m_pListCtrlAISTargets->SetItem(item);
 					}
 
 					if (j == 1) {
-						h = pAISTarget->hect;;
-						string r = pAISTarget->RISindex;
+						h = pAISTarget->Hect;
+						string r = pAISTarget->TextIndex;
 						item.SetText(r);
 						m_pASMmessages1->m_pListCtrlAISTargets->SetItem(item);
 					}
@@ -802,6 +804,8 @@ void Dlg::UpdateAISTargetList(void)
 
 //  ***** Text Message *******************
 void Dlg::getAis8_200_44(string rawPayload) {
+    bool bnewtarget = false;
+    bool bdecode_result = false;
 
 	const char* payload = rawPayload.c_str();
 
@@ -815,30 +819,81 @@ void Dlg::getAis8_200_44(string rawPayload) {
 	//wxMessageBox(myCountry);
 
 	int sect = myRIS.section;
-	wxString outsect = wxString::Format("%i", sect);
+	wxString xoutsect = wxString::Format("%i", sect);
+        const char* moutsect = xoutsect.c_str();
+        string outsect = moutsect;
+
 	//wxMessageBox(outsect);
 
 	string myObj = myRIS.object;
 	//wxMessageBox(myObj);
 
 	int myHect = myRIS.hectometre;
-	wxString outhect = wxString::Format("%i", myHect);
+	wxString xouthect = wxString::Format("%i", myHect);
+    const char* mouthect = xouthect.c_str();
+        string outhect = mouthect;
+
 	//wxMessageBox(outhect);
 
 	string myText = myRIS.text;
 	//wxMessageBox(myText);
 
-	m_notebookMessage->SetSelection(1);
 
-	m_textMMSI1->SetValue(outmm);
-	m_textCountry1->SetValue(myCountry);
-	m_textFairwaySection1->SetValue(outsect);
-	m_textObjectCode1->SetValue(myObj);
-	m_textHectometre1->SetValue(outhect);
-	m_textText1->SetValue(myText);
+	    pNewTextData = new AIS_Text_Data ;
+        pNewTextData->Sector = outsect;
+        pNewTextData->ObjCode = myObj;
+        pNewTextData->Hect = outhect;
 
-	Refresh();
+        pNewTextData->TextIndex = outsect + "_" + myObj + "_" + outhect;
+        vector<AIS_Text_Data> textData;
+        textData.push_back(*pNewTextData);
 
+		//
+
+        // Search the current AISTextList for an MMSI match
+        AIS_Text_Hash::iterator it
+            = AISTextList->find(textData.at(0).TextIndex);
+
+        if (it == AISTextList->end()) // not found
+        {
+            pTextData->Sector = outsect;
+            pTextData->ObjCode = myObj;
+            pTextData->Hect = outhect;
+
+            pTextData->TextIndex = outsect + "_" + myObj + "_" + outhect;
+
+            (*AISTextList)[pTextData->TextIndex]
+                = pTextData; // update the hash table entry
+
+            bdecode_result = true;
+
+        } else {
+
+            // Not needed at present
+            // pTargetData = it->second;          // find current entry
+            // save a pointer to stale data
+        }
+
+        //  If the message was decoded correctly
+        //  Update the AIS Text information
+        if (bdecode_result) {
+            m_bUpdateTarget = true;
+
+            (*AISTextList)[pTextData->TextIndex]
+                = pTextData; // update the hash table entry
+            myTextDataCollection.push_back(*pTextData);
+
+			m_notebookMessage->SetSelection(0);
+
+            m_textMMSI1->SetValue(outmm);
+            m_textCountry1->SetValue(myCountry);
+            m_textFairwaySection1->SetValue(outsect);
+            m_textObjectCode1->SetValue(myObj);
+            m_textHectometre1->SetValue(outhect);
+            m_textText1->SetValue(myText);
+
+            GetParent()->Refresh();
+        }
 }
 
 //  ***** Water Level ************
@@ -914,11 +969,11 @@ void Dlg::SetViewPort(PlugIn_ViewPort *vp)
 
 	m_vp = new PlugIn_ViewPort(*vp);
 }
-
+/*
 void Dlg::OnFactory(wxCommandEvent& event)
 {
-	myTestData.Lat = 50.0;
-	myTestData.Lon = -4.0;
+	myTextData.Lat = 50.0;
+	myTextData.Lon = -4.0;
 
 	myTestDataCollection.push_back(myTestData);
 	myTestData.Lat = 50.5;
@@ -926,7 +981,7 @@ void Dlg::OnFactory(wxCommandEvent& event)
 
 	myTestDataCollection.push_back(myTestData);
 
-}
+}*/
 
 void Dlg::RenderHTMLQuery(AIS_Target_Data *td) {
 
@@ -940,7 +995,7 @@ void Dlg::RenderHTMLQuery(AIS_Target_Data *td) {
 
 	html.Printf(_T("<html><body bgcolor=#%02x%02x%02x><font color=#%02x%02x%02x><center>"), bg.Red(), bg.Green(), bg.Blue(), fg.Red(), fg.Green(), fg.Blue());
 
-	wxString myQueryResult = BuildQueryResult(td);
+	wxString myQueryResult = "query"; //BuildQueryResult(td);
 
 	html << myQueryResult;
 
@@ -952,7 +1007,7 @@ void Dlg::RenderHTMLQuery(AIS_Target_Data *td) {
 	//if (buf.data())                            // string OK?
 		//m_pASMmessages->m_htmlWin->SetPage(html);
 }
-
+/*
 wxString Dlg::BuildQueryResult(AIS_Target_Data *td)
 {
 	wxString html;
@@ -1025,7 +1080,7 @@ wxString Dlg::BuildQueryResult(AIS_Target_Data *td)
 	html << _T("</table>");
 	return html;
 }
-
+*/
 void Dlg::CreateControlsMessageList()
 {
 	int width;
