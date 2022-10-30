@@ -122,10 +122,6 @@ int aisRX_pi::Init(void)
 {
     AddLocaleCatalog(_T("opencpn-aisRX_pi"));
 
-	      //      Establish the location of the database file
-     
-
-
     // Set some default private member parameters
     m_hr_dialog_x = 40;
     m_hr_dialog_y = 80;
@@ -155,10 +151,8 @@ int aisRX_pi::Init(void)
     fn.SetFullName(_T("RIS.db"));
 	dbpath = fn.GetFullPath();
 
-      bool newDB = !wxFileExists(dbpath);
-      b_dbUsable = true;
-
-	  void* cache; // SOLUTION
+    bool newDB = !wxFileExists(dbpath);
+    b_dbUsable = true;
 
 	ret = sqlite3_open_v2(dbpath.mb_str(), &m_database, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL);
       if (ret != SQLITE_OK)
@@ -193,10 +187,8 @@ int aisRX_pi::Init(void)
 
 bool aisRX_pi::DeInit(void)
 {
-   
-	
 
-		//    Record the dialog position
+    //    Record the dialog position
 	if (NULL != m_pDialog) {
 
 		if (m_pDialog->m_timer1.IsRunning()) { // need to stop the timer or crash on exit
@@ -209,9 +201,7 @@ bool aisRX_pi::DeInit(void)
         SetaisRXDialogX(p.x);
         SetaisRXDialogY(p.y);
         SetaisRXDialogSizeX(r.GetWidth());
-        SetaisRXDialogSizeY(r.GetHeight());
-
-		
+        SetaisRXDialogSizeY(r.GetHeight());	
 
 		if(m_pDialog) {
 			m_pDialog->Close();
@@ -228,12 +218,10 @@ bool aisRX_pi::DeInit(void)
     m_bShowaisRX = false;
     SetToolbarItemState(m_leftclick_tool_id, m_bShowaisRX);
 
-	}
-    		
+	}  		
 	
 	SaveConfig();
     
-	
 	int m = sqlite3_close(m_database);
 
 	wxLogMessage (_T("AISRX_PI: Close Msg: %i\n"), m);

@@ -37,11 +37,6 @@
 #include "widget.h"
 #include <memory>
 
-using mylibais::AisMsg;
-using std::unique_ptr;
-using namespace mylibais;
-
-
 /**************************************************************************/
 /*          Some assorted utilities                                       */
 /**************************************************************************/
@@ -96,13 +91,6 @@ wxString toSDMM(int NEflag, double a)
 	return s;
 }
 
-
-
-
-void assign(char* dest, char* arrTest2) { strcpy(dest, arrTest2); }
-
-#define BUFSIZE 0x10000
-
 Dlg::Dlg(wxWindow* parent, wxWindowID id, const wxString& title,
 	const wxPoint& pos, const wxSize& size, long style)
 	: aisRXBase(parent, id, title, pos, size, style)
@@ -132,11 +120,6 @@ Dlg::Dlg(wxWindow* parent, wxWindowID id, const wxString& title,
 		pConf->Read(_T("aisRXHECT"), &m_tMMSI, "12345");
 	}
 
-	//AISTargetList = new AIS_Target_Hash;
-	//AISTargetNamesC = new AIS_Target_Name_Hash;
-	//AISTargetNamesNC = new AIS_Target_Name_Hash;
-	//pTargetData = new AIS_Target_Data;
-
 	AISTextList = new AIS_Text_Hash;
     pTextData = new AIS_Text_Data;
 
@@ -144,83 +127,6 @@ Dlg::Dlg(wxWindow* parent, wxWindowID id, const wxString& title,
 	myAISdisplay = NULL;
 
 }
-
-namespace mylibais {
-	template <typename T, typename... Args>
-	std::unique_ptr<T> MakeUnique(Args &&... args) {
-		//wxMessageBox("here");
-		return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
-	}
-
-	unique_ptr<AisMsg>CreateAisMsg8(const string &body, const int fill_bits) {
-		mylibais::Ais8 msg(body.c_str(), fill_bits);
-		int fi = msg.fi;
-		wxString fis = wxString::Format("%i", fi);
-		wxMessageBox(fis);
-
-		switch (fi) {
-		case 25: {
-			return MakeUnique<mylibais::Ais8_200_25>(body.c_str(), fill_bits);
-		}
-		case 26: {
-			return MakeUnique<mylibais::Ais8_200_26>(body.c_str(), fill_bits);
-		}
-		case 41: {
-			return MakeUnique<mylibais::Ais8_200_41>(body.c_str(), fill_bits);
-		}
-		case 44: {
-			return MakeUnique<mylibais::Ais8_200_44>(body.c_str(), fill_bits);
-		}
-		}
-
-	}
-
-
-
-	unique_ptr<AisMsg> CreateAisMsg(const string &body, const int fill_bits) {
-
-
-		string mybody = body;
-		//wxMessageBox(mybody);
-
-		int fill = fill_bits;
-		wxString fills = wxString::Format("%i", fill);
-		//wxMessageBox(fills);
-
-		Ais8 msg(body.c_str(), fill_bits);
-
-
-
-		int dac = msg.dac;
-		wxString dacs = wxString::Format("%i", dac);
-		wxMessageBox(dacs);
-
-		int fi = msg.fi;
-		wxString fis = wxString::Format("%i", fi);
-		wxMessageBox(fis);
-
-		return CreateAisMsg8(body, fill_bits);
-	}
-
-
-
-
-} // mylibais
-
-/*
-AIS_Target_Data* Dlg::Get_Target_Data_From_HECT(int mmsi)
-{
-	int sz = AISTargetList->count(pTargetData->HECT);
-
-	wxString testCount = wxString::Format("%i", sz);
-	wxMessageBox(testCount);
-
-
-	if (AISTargetList->find(mmsi) == AISTargetList->end())     // if entry does not exist....
-		return NULL;
-	else
-		return (*AISTargetList)[mmsi];          // find current entry
-}*/
 
 inline const char * const BoolToString(bool b)
 {
@@ -230,11 +136,9 @@ inline const char * const BoolToString(bool b)
 
 void Dlg::OnMessageList(wxCommandEvent& event) {
 
-	
-
 	if (NULL == m_pASMmessages1) {		
 	
-		m_pASMmessages1 = new asmMessages(this, wxID_ANY, _T("ASM Messages"), wxPoint(100, 100), wxSize(300, 400), wxDEFAULT_DIALOG_STYLE |wxCLOSE_BOX| wxRESIZE_BORDER);
+		m_pASMmessages1 = new asmMessages(this, wxID_ANY, _T("BBM Messages"), wxPoint(100, 100), wxSize(300, 500), wxDEFAULT_DIALOG_STYLE |wxCLOSE_BOX| wxRESIZE_BORDER);
 		CreateControlsMessageList();
 		m_pASMmessages1->Show();
 		m_bHaveMessageList = true;
@@ -245,12 +149,7 @@ void Dlg::OnMessageList(wxCommandEvent& event) {
 
 	if (m_bHaveMessageList) {
 		m_pASMmessages1->Show();
-	}
-
-	//wxMessageBox(BoolToString(listYN));
-	//wxMessageBox(BoolToString(listYN));
-
-	
+	}	
 }
 
 void Dlg::OnCloseList(wxCloseEvent& event) {
@@ -261,7 +160,7 @@ void Dlg::OnCloseList(wxCloseEvent& event) {
 void Dlg::OnLogging(wxCommandEvent& event) {
 	
 	if ( NULL == myAISdisplay) {		
-		myAISdisplay = new AISdisplay(this, wxID_ANY, _T("AIS Logging"), wxPoint(20, 20), wxSize(350, 400), wxCAPTION|wxCLOSE_BOX|wxRESIZE_BORDER);
+		myAISdisplay = new AISdisplay(this, wxID_ANY, _T("AIS Logging"), wxPoint(20, 20), wxSize(550, 400), wxCAPTION|wxCLOSE_BOX|wxRESIZE_BORDER);
 		myAISdisplay->Show();
 		m_bHaveDisplay = true;
 	}
@@ -395,149 +294,6 @@ vector<AIS_Target_Data>  Dlg::FindSignalRISindex(int hect) {
 */
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 void Dlg::OnData(wxCommandEvent& event) {
 
@@ -592,24 +348,6 @@ void Dlg::JumpTo(wxString lat, wxString lon, int scale)
 void Dlg::OnClose(wxCloseEvent& event)
 {	
 	plugin->OnaisRXDialogClose();
-}
-
-
-wxString Dlg::makeCheckSum(wxString mySentence)
-{
-	size_t i;
-	unsigned char XOR;
-
-	wxString s(mySentence);
-	wxCharBuffer buffer = s.ToUTF8();
-	char* Buff = buffer.data(); // data() returns const char *
-	size_t iLen = strlen(Buff);
-	for (XOR = 0, i = 0; i < iLen; i++)
-		XOR ^= (unsigned char)Buff[i];
-	stringstream tmpss;
-	tmpss << hex << (int)XOR << endl;
-	wxString mystr = tmpss.str();
-	return mystr;
 }
 
 wxString Dlg::DateTimeToTimeString(wxDateTime myDT)
@@ -674,11 +412,8 @@ void Dlg::Decode(wxString sentence)
 	}
 }
 
-
-
 void Dlg::OnTest(wxCommandEvent& event)
 {
-
 	wxString mySentence = plugin->m_pDialog->m_textCtrlTest->GetValue();
 
 	if (mySentence.IsEmpty() || mySentence.IsNull()) {
@@ -716,11 +451,8 @@ void Dlg::OnTest(wxCommandEvent& event)
 
 }
 
-
 wxString Dlg::parseNMEASentence(wxString& sentence)
 {
-
-	// $GPAPB,A,A,0.10,R,N,V,V,011,M,DEST,011,M,011,M*3C
 
 	wxString token[40];
 	wxString s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11;
@@ -754,8 +486,6 @@ void Dlg::UpdateAISTargetList(void)
 
 			current_targets = AISTextList;
 			size_t z = current_targets->size();
-			//wxString sz = wxString::Format("%i", z);
-			//wxMessageBox(sz);
 
 			if (z == 0) {
 				return;
@@ -776,14 +506,12 @@ void Dlg::UpdateAISTargetList(void)
 				for (int j = 0; j < 2; j++) {
 					item.SetColumn(j);
 					if (j == 0) {
-						h = pAISTarget->TextIndex;
-						wxString shect = wxString::Format("%i", h);
-						item.SetText(shect);
+						h = pAISTarget->Hect;						
+						item.SetText(h);
 						m_pASMmessages1->m_pListCtrlAISTargets->SetItem(item);
 					}
 
-					if (j == 1) {
-						h = pAISTarget->Hect;
+					if (j == 1) {						
 						string r = pAISTarget->TextIndex;
 						item.SetText(r);
 						m_pASMmessages1->m_pListCtrlAISTargets->SetItem(item);
@@ -969,118 +697,7 @@ void Dlg::SetViewPort(PlugIn_ViewPort *vp)
 
 	m_vp = new PlugIn_ViewPort(*vp);
 }
-/*
-void Dlg::OnFactory(wxCommandEvent& event)
-{
-	myTextData.Lat = 50.0;
-	myTextData.Lon = -4.0;
 
-	myTestDataCollection.push_back(myTestData);
-	myTestData.Lat = 50.5;
-	myTestData.Lon = -4.5;
-
-	myTestDataCollection.push_back(myTestData);
-
-}*/
-
-void Dlg::RenderHTMLQuery(AIS_Target_Data *td) {
-
-	int font_size = 12;
-
-
-
-	wxString html;
-	wxColor bg = GetBackgroundColour();
-	wxColor fg = GetForegroundColour();
-
-	html.Printf(_T("<html><body bgcolor=#%02x%02x%02x><font color=#%02x%02x%02x><center>"), bg.Red(), bg.Green(), bg.Blue(), fg.Red(), fg.Green(), fg.Blue());
-
-	wxString myQueryResult = "query"; //BuildQueryResult(td);
-
-	html << myQueryResult;
-
-	html << _T("</center></font></body></html>");
-
-	//m_pASMmessages->m_htmlWin->SetFonts( fp_font->GetFaceName(), fp_font->GetFaceName(), sizes );
-
-	wxCharBuffer buf = html.ToUTF8();
-	//if (buf.data())                            // string OK?
-		//m_pASMmessages->m_htmlWin->SetPage(html);
-}
-/*
-wxString Dlg::BuildQueryResult(AIS_Target_Data *td)
-{
-	wxString html;
-	wxDateTime now = wxDateTime::Now();
-
-	wxString tableStart = _T("\n<table border=0 cellpadding=1 cellspacing=0>\n");
-	wxString tableEnd = _T("</table>\n\n");
-	wxString rowStart = _T("<tr><td><font size=-2>");
-	wxString rowStartH = _T("<tr><td nowrap>");
-	wxString rowSeparator = _T("</font></td><td></td><td><b>");
-	wxString rowSeparatorH = _T("</td><td></td><td>");
-	wxString colSeparator = _T("<td></td>");
-	wxString rowEnd = _T("</b></td></tr>\n");
-	wxString vertSpacer = _T("<tr><td></td></tr><tr><td></td></tr><tr><td></td></tr>\n\n");
-
-	wxString IMOstr, HECTstr, ClassStr;
-
-	html << tableStart << _T("<tr><td nowrap colspan=2>");
-
-
-
-
-	html << vertSpacer;
-
-
-
-	if (IMOstr.Length())
-		html << _T("<tr><td colspan=2><table width=100% border=0 cellpadding=0 cellspacing=0>")
-		<< rowStart << _("HECT") << _T("</font></td><td>&nbsp;</td><td><font size=-2>")
-		<< _("Class") << _T("</font></td><td>&nbsp;</td><td align=right><font size=-2>")
-		<< _("IMO") << _T("</font></td></tr>")
-		<< rowStartH << _T("<b>") << HECTstr << _T("</b></td><td>&nbsp;</td><td><b>")
-		<< ClassStr << _T("</b></td><td>&nbsp;</td><td align=right><b>")
-		<< IMOstr << rowEnd << _T("</table></td></tr>");
-
-	else
-		html << _T("<tr><td colspan=2><table width=100% border=0 cellpadding=0 cellspacing=0>")
-		<< rowStart << _("HECT") << _T("</font></td><td>&nbsp;</td><td align=right><font size=-2>")
-		<< _("Class") << _T("</font></td></tr>")
-		<< rowStartH << _T("<b>") << HECTstr << _T("</b></td><td>&nbsp;</td><td align=right><b>")
-		<< ClassStr << rowEnd << _T("</table></td></tr>");
-
-
-
-	html << vertSpacer;
-
-	wxString navStatStr;
-
-
-
-
-	now.MakeGMT();
-	int target_age = now.GetTicks();
-	//   wxLogMessage(wxString::Format(_T("** PositionReportTicks %ld %ld %d"),
-	//                                 now.GetTicks(), PositionReportTicks, target_age));
-
-	html << vertSpacer
-		<< rowStart << _("Position") << "ASM" << _T("</font></td><td align=right><font size=-2>")
-		<< _("Report Age") << _T("</font></td></tr>")
-
-		<< rowStartH << _T("<b>") << toSDMM(1, td->Lat) << _T("</b></td><td align=right><b>")
-
-		<< rowStartH << _T("<b>") << toSDMM(2, td->Lon) << rowEnd;
-
-
-	wxString courseStr, sogStr, hdgStr, rotStr, rngStr, brgStr, destStr, etaStr;
-
-
-
-	html << _T("</table>");
-	return html;
-}
-*/
 void Dlg::CreateControlsMessageList()
 {
 	int width;
@@ -1088,11 +705,10 @@ void Dlg::CreateControlsMessageList()
 
 	int dx = 20;
 
-	width = dx * 4;
+	width = dx * 6;
 	if (m_pASMmessages1) {
 		m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(tlTRK, _("Hectomtr"), wxLIST_FORMAT_LEFT, width);
-		m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(tlNAME, _("RISindex"), wxLIST_FORMAT_LEFT, width);
-
+		m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(tlNAME, _("TextIndex"), wxLIST_FORMAT_LEFT, width);
 	}
 }
 

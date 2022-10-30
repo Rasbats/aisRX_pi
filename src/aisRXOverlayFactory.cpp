@@ -863,8 +863,6 @@ void aisRXOverlayFactory::DrawSignalIndicators
 
 	double myLat;
 	double myLon;
-	double tcLat;
-	double tcLon;
 
 	wxColour colour("RED");
 
@@ -932,26 +930,19 @@ void aisRXOverlayFactory::DrawAllSignalsInViewPort(PlugIn_ViewPort *BBox, bool b
 
 	double lon = -4;
 	double lat = 50;
-	double value;
 	double depth;
 	int sdgid;
 	int surid;
-	double tid;
-	double corrn;
 
 	for (vector<AIS_Text_Data>::iterator it = m_dlg.myTextDataCollection.begin(); it != m_dlg.myTextDataCollection.end(); it++) {
 
 		lat = 50;//it->Lat;
         lon = -4; // it->Lon;
-		//wxMessageBox(it->depth);
 		depth = 99.9;
 		sdgid = 0;
 		surid = 0;
-		//it->tide.ToDouble(&tid);
-
 		myLLBox = new LLBBox;
 		wxBoundingBox LLBBox(BBox->lon_min, BBox->lat_min, BBox->lon_max, BBox->lat_max);
-		double testLon;
 
 		if (LLBBox.PointInBox(lon, lat, 0)) {
 
