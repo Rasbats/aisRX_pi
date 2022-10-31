@@ -213,94 +213,6 @@ void Dlg::SetNMEAMessage(wxString &msg) {
     }
   }
 }
-/*
-vector<AIS_Target_Data>  Dlg::FindSignalData(int hect) {
-
-	char **result;
-	int n_rows;
-	int n_columns;
-	//myTestDataCollection.clear();
-
-	wxString shect = wxString::Format("%i", hect);
-
-	wxString sql = "SELECT lat,lon,hectomt, risindex FROM RIS where hectomt = " + shect;
-
-	plugin->dbGetTable(sql, &result, n_rows, n_columns);
-	wxArrayString objects;
-
-
-
-	for (int i = 1; i <= n_rows; i++)
-	{
-		char *lat = result[(i * n_columns) + 0];
-		char *lon = result[(i * n_columns) + 1];
-		string risindex = result[(i * n_columns) + 3];
-
-		wxString object_lat(lat, wxConvUTF8);
-
-		wxString object_lon(lon, wxConvUTF8);
-
-		//wxMessageBox(object_lat);
-	   // wxMessageBox(object_lon);
-
-		double value;
-		object_lat.ToDouble(&value);
-		myTestData.Lat = value;
-		object_lon.ToDouble(&value);
-		myTestData.Lon = value;
-		myTestData.RISindex = risindex;
-		myTestDataCollection.push_back(myTestData);
-	}
-	plugin->dbFreeResults(result);
-
-	return myTestDataCollection;
-}
-
-
-vector<AIS_Target_Data>  Dlg::FindSignalRISindex(int hect) {
-
-	char **result;
-	int n_rows;
-	int n_columns;
-	mySignalCollection.clear();
-
-	wxString shect = wxString::Format("%i", hect);
-        //select DISTINCT lat, lon from RIS WHERE unloccc = "NL" and hectomt = 267 and objcode = 05397
-	wxString sql = "SELECT lat,lon,hectomt, risindex FROM RIS where hectomt = " + shect;
-
-	plugin->dbGetTable(sql, &result, n_rows, n_columns);
-	wxArrayString objects;
-
-
-
-	for (int i = 1; i <= n_rows; i++)
-	{
-		char *lat = result[(i * n_columns) + 0];
-		char *lon = result[(i * n_columns) + 1];
-		string risindex = result[(i * n_columns) + 3];
-
-		wxString object_lat(lat, wxConvUTF8);
-
-		wxString object_lon(lon, wxConvUTF8);
-
-		//wxMessageBox(object_lat);
-	   // wxMessageBox(object_lon);
-
-		double value;
-		object_lat.ToDouble(&value);
-		myTestData.Lat = value;
-		object_lon.ToDouble(&value);
-		myTestData.Lon = value;
-		myTestData.RISindex = risindex;
-		mySignalCollection.push_back(myTestData);
-	}
-	plugin->dbFreeResults(result);
-
-	return mySignalCollection;
-}
-*/
-
-
 
 /*
 void Dlg::OnData(wxCommandEvent& event) {
@@ -511,19 +423,38 @@ void Dlg::UpdateAISTargetList(void)
 				wxListItem item;
 				item.SetId(id);
 				m_pASMmessages1->m_pListCtrlAISTargets->InsertItem(item);
-				for (int j = 0; j < 2; j++) {
+				for (int j = 0; j < 5; j++) {
 					item.SetColumn(j);
 					if (j == 0) {
-						h = pAISTarget->Hect;						
+						h = pAISTarget->country;						
 						item.SetText(h);
 						m_pASMmessages1->m_pListCtrlAISTargets->SetItem(item);
 					}
 
 					if (j == 1) {						
-						string r = pAISTarget->TextIndex;
-						item.SetText(r);
+						h = pAISTarget->wwname;
+						item.SetText(h);
 						m_pASMmessages1->m_pListCtrlAISTargets->SetItem(item);
 					}
+
+					if (j == 2) {
+                         h = pAISTarget->Hect;
+                         item.SetText(h);
+                         m_pASMmessages1->m_pListCtrlAISTargets->SetItem(item);
+                    }
+
+					if (j == 3) {
+                        h = pAISTarget->location;
+                        item.SetText(h);
+                        m_pASMmessages1->m_pListCtrlAISTargets->SetItem(item);
+                    }
+
+					if (j == 4) {
+                        h = pAISTarget->Text;
+                        item.SetText(h);
+                        m_pASMmessages1->m_pListCtrlAISTargets->SetItem(item);
+                    }
+
 				}
 
 				id++;
@@ -569,36 +500,31 @@ void Dlg::getAis8_200_44(string rawPayload) {
     const char* mouthect = xouthect.c_str();
         string outhect = mouthect;
 
-	//wxMessageBox(outhect);
-
 	string myText = myRIS.text;
-	//wxMessageBox(myText);
 
-
-	    pNewTextData = new AIS_Text_Data ;
-        pNewTextData->Sector = outsect;
-        pNewTextData->ObjCode = myObj;
-        pNewTextData->Hect = outhect;
-
-        pNewTextData->TextIndex = outsect + "_" + myObj + "_" + outhect;
-        vector<AIS_Text_Data> textData;
-        textData.push_back(*pNewTextData);
+	vector<AIS_Text_Data> NewTextData;
+        NewTextData = FindObjectRISindex(sect, myObj, myHect);
 
 		//
-
-        // Search the current AISTextList for an MMSI match
+        // Search the current AISTextList for an RISindex match
         AIS_Text_Hash::iterator it
-            = AISTextList->find(textData.at(0).TextIndex);
+            = AISTextList->find(NewTextData.at(0).RISindex);
 
         if (it == AISTextList->end()) // not found
         {
-            pTextData->Sector = outsect;
+            pTextData = new AIS_Text_Data;	
+			pTextData->Sector = outsect;
             pTextData->ObjCode = myObj;
             pTextData->Hect = outhect;
+            pTextData->RISindex = NewTextData.at(0).RISindex;
+            pTextData->lat = NewTextData.at(0).lat;
+            pTextData->lon = NewTextData.at(0).lon;   
+			pTextData->wwname = NewTextData.at(0).wwname;
+            pTextData->country = myCountry;
+            pTextData->location = NewTextData.at(0).location;
+            pTextData->Text = myText;
 
-            pTextData->TextIndex = outsect + "_" + myObj + "_" + outhect;
-
-            (*AISTextList)[pTextData->TextIndex]
+            (*AISTextList)[pTextData->RISindex]
                 = pTextData; // update the hash table entry
 
             bdecode_result = true;
@@ -615,7 +541,7 @@ void Dlg::getAis8_200_44(string rawPayload) {
         if (bdecode_result) {
             m_bUpdateTarget = true;
 
-            (*AISTextList)[pTextData->TextIndex]
+            (*AISTextList)[pTextData->RISindex]
                 = pTextData; // update the hash table entry
             myTextDataCollection.push_back(*pTextData);
 
@@ -631,6 +557,54 @@ void Dlg::getAis8_200_44(string rawPayload) {
             GetParent()->Refresh();
         }
 }
+
+
+vector<AIS_Text_Data> Dlg::FindObjectRISindex(int sect, wxString objcode, int hectomt)
+{
+
+    char** result;
+    int n_rows;
+    int n_columns;
+
+    
+    wxString quote = "\"";
+    wxString sSect = wxString::Format("%i", sect);
+    wxString andobjcode = " and objcode = ";
+    wxString shect = wxString::Format("%i", hectomt);
+    wxString andhect = " and hectomt = ";
+
+    wxString sql
+        = "SELECT DISTINCT lat, lon, risindex, wwname, locname FROM RIS where wwsectcode = "
+        + sSect + andobjcode + quote + objcode + quote + andhect + shect;
+
+    plugin->dbGetTable(sql, &result, n_rows, n_columns);
+    wxArrayString objects;
+
+    for (int i = 1; i <= n_rows; i++) {
+        char* lat = result[(i * n_columns) + 0];
+        char* lon = result[(i * n_columns) + 1];
+        string risindex = result[(i * n_columns) + 2];
+        string wwname = result[(i * n_columns) + 3];
+        string locname = result[(i * n_columns) + 4];
+
+        wxString object_lat(lat, wxConvUTF8);
+        wxString object_lon(lon, wxConvUTF8);
+
+        double value;
+        object_lat.ToDouble(&value);
+        myTextData.lat = value;
+        object_lon.ToDouble(&value);
+        myTextData.lon = value;
+        myTextData.RISindex = risindex;
+        myTextData.wwname = wwname;
+        myTextData.location = locname;
+        myTextCollection.push_back(myTextData);
+    }
+    plugin->dbFreeResults(result);
+
+    return myTextCollection;
+}
+
 
 //  ***** Water Level ************
 void Dlg::getAis8_200_26(string rawPayload) {
@@ -709,14 +683,15 @@ void Dlg::SetViewPort(PlugIn_ViewPort *vp)
 void Dlg::CreateControlsMessageList()
 {
 	int width;
-	long lwidth;
-
 	int dx = 20;
 
 	width = dx * 6;
 	if (m_pASMmessages1) {
-		m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(tlTRK, _("Hectomtr"), wxLIST_FORMAT_LEFT, width);
-		m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(tlNAME, _("TextIndex"), wxLIST_FORMAT_LEFT, width);
+        m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(tlTRK, _("Text"), wxLIST_FORMAT_LEFT, width);
+		m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(tlNAME, _("Location"), wxLIST_FORMAT_LEFT, width);
+		m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(tlTRK, _("Kilometer"), wxLIST_FORMAT_LEFT, width);
+        m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(tlTRK, _("Waterway"), wxLIST_FORMAT_LEFT, width);
+        m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(tlTRK, _("Country"), wxLIST_FORMAT_LEFT, width);
 	}
 }
 

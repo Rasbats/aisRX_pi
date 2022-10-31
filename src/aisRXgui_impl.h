@@ -85,7 +85,13 @@ public:
     string Sector;
     string Hect;
     string ObjCode;
-    string TextIndex;
+    string Text;
+    string RISindex;
+    double lat;
+    double lon;
+    string wwname;
+    string location;
+    string country;
 };
 
 
@@ -161,6 +167,9 @@ public:
     void Dlg::OnLocate(wxString RISitem);
 
 	void OnCloseList(wxCloseEvent& event);
+    vector<AIS_Text_Data> Dlg::FindObjectRISindex(int sect, wxString objcode, int hectomt);
+    AIS_Text_Data myTextData;
+    vector<AIS_Text_Data> myTextCollection;
 
 protected:
     bool m_bNeedsGrib;
