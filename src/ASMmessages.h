@@ -26,6 +26,9 @@
 #include <wx/dialog.h>
 
 #include "AISdisplay.h"
+#include "aisRXgui_impl.h"
+
+class Dlg;
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -41,6 +44,7 @@ class asmMessages : public wxDialog
 		wxButton* m_buttonHide;
 
 		// Virtual event handlers, overide them in your derived class
+        void GetItemSelected(wxListEvent& event);
 		void OnHideList( wxCommandEvent& event ); 
 
 
@@ -48,6 +52,10 @@ class asmMessages : public wxDialog
 		wxListCtrl* m_pListCtrlAISTargets;
 		wxStaticText* m_pHeaderText;
 		wxHtmlWindow* m_htmlWin;
+                Dlg* myMainDialog;
+
+		wxString asmMessages::GetCellContentsString(
+                    long row_number, int column);
 
 		asmMessages( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("ASM Messages"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 322,340 ), long style = wxCAPTION|wxMINIMIZE_BOX|wxRESIZE_BORDER );
 		~asmMessages();

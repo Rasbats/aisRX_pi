@@ -140,6 +140,7 @@ void Dlg::OnMessageList(wxCommandEvent& event) {
 	
 		m_pASMmessages1 = new asmMessages(this, wxID_ANY, _T("BBM Messages"), wxPoint(100, 100), wxSize(300, 500), wxDEFAULT_DIALOG_STYLE |wxCLOSE_BOX| wxRESIZE_BORDER);
 		CreateControlsMessageList();
+        m_pASMmessages1->myMainDialog = this;
 		m_pASMmessages1->Show();
 		m_bHaveMessageList = true;
 
@@ -148,13 +149,19 @@ void Dlg::OnMessageList(wxCommandEvent& event) {
 	}
 
 	if (m_bHaveMessageList) {
+        m_message = "here";            
 		m_pASMmessages1->Show();
+
 	}	
 }
 
 void Dlg::OnCloseList(wxCloseEvent& event) {
 
 	wxMessageBox("closing");
+}
+
+void Dlg::OnLocate(wxString RISitem) { 
+	wxMessageBox("RIS"); 
 }
 
 void Dlg::OnLogging(wxCommandEvent& event) {
@@ -258,7 +265,7 @@ vector<AIS_Target_Data>  Dlg::FindSignalRISindex(int hect) {
 	mySignalCollection.clear();
 
 	wxString shect = wxString::Format("%i", hect);
-
+        //select DISTINCT lat, lon from RIS WHERE unloccc = "NL" and hectomt = 267 and objcode = 05397
 	wxString sql = "SELECT lat,lon,hectomt, risindex FROM RIS where hectomt = " + shect;
 
 	plugin->dbGetTable(sql, &result, n_rows, n_columns);
@@ -292,6 +299,7 @@ vector<AIS_Target_Data>  Dlg::FindSignalRISindex(int hect) {
 	return mySignalCollection;
 }
 */
+
 
 
 /*

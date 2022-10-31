@@ -94,6 +94,7 @@ WX_DECLARE_HASH_MAP(string, wxString, wxStringHash, wxStringEqual, AIS_Text_Name
 
 class aisRXOverlayFactory;
 class PlugIn_ViewPort;
+class asmMessages;
 
 
 class Dlg : public aisRXBase {
@@ -157,6 +158,7 @@ public:
 	bool m_bUpdateTarget;
 
 	wxString m_message;
+    void Dlg::OnLocate(wxString RISitem);
 
 	void OnCloseList(wxCloseEvent& event);
 
@@ -192,6 +194,7 @@ private:
 	void getAis8_200_26(string rawPayload);
 	void getAis8_200_44(string rawPayload);
 	void JumpTo( wxString lat, wxString lon, int scale);
+
 
     //long m_iHECT;
 
