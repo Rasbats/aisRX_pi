@@ -77,8 +77,11 @@ void asmMessages::GetItemSelected(wxListEvent& event)
         selectedItem = item;
     }
 	
-    wxString test = GetCellContentsString(selectedItem, 1);
-    myMainDialog->OnLocate(test);	
+    wxString risindex = GetCellContentsString(selectedItem, 5);
+    wxString text = GetCellContentsString(selectedItem, 4);
+    wxString location = GetCellContentsString(selectedItem, 3);
+
+    myMainDialog->OnLocate(risindex, text, location);	
 }
 
 wxString asmMessages::GetCellContentsString(

@@ -64,6 +64,7 @@
 #include "ASMmessages.h"
 #include <wx/textfile.h>
 
+
 #ifdef __WXOSX__
 #define aisRX_DLG_STYLE                                                   \
     wxCLOSE_BOX | wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER | wxSTAY_ON_TOP
@@ -164,12 +165,14 @@ public:
 	bool m_bUpdateTarget;
 
 	wxString m_message;
-    void Dlg::OnLocate(wxString RISitem);
+    void OnLocate(wxString risindex, wxString text, wxString location);
 
 	void OnCloseList(wxCloseEvent& event);
-    vector<AIS_Text_Data> Dlg::FindObjectRISindex(int sect, wxString objcode, int hectomt);
-    AIS_Text_Data myTextData;
+    AIS_Text_Data FindObjectRISindex(int sect, string objcode, int hectomt);
+    AIS_Text_Data FindLatLonObjectRISindex(wxString risindex, wxString text, wxString locname); 
+    
     vector<AIS_Text_Data> myTextCollection;
+    bool m_bUsingTest;
 
 protected:
     bool m_bNeedsGrib;

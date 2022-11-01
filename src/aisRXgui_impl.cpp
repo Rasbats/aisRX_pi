@@ -104,11 +104,14 @@ Dlg::Dlg(wxWindow* parent, wxWindowID id, const wxString& title,
 	m_bInvalidGribFile = false;
 	m_baisRXHasStarted = false;
 	m_bDisplayStarted = false;
+    m_bUsingTest = false;
 
 	bool m_bShowaisRX = true;
 	m_bHaveMessageList = false;
 	m_bHaveDisplay = false;
 	m_bUpdateTarget = false; 
+	// for the green pins
+	wxFileName fn;
 
 	wxFileConfig* pConf = GetOCPNConfigObject();
 
@@ -121,10 +124,22 @@ Dlg::Dlg(wxWindow* parent, wxWindowID id, const wxString& title,
 	}
 
 	AISTextList = new AIS_Text_Hash;
-    pTextData = new AIS_Text_Data;
+    
 
 	m_pASMmessages1 = NULL;
 	myAISdisplay = NULL;
+
+		auto path = GetPluginDataDir("aisRX_pi");
+        fn.SetPath(path);
+        fn.AppendDir("data");
+        fn.AppendDir("pins");
+        fn.SetFullName("green-pin.png");
+        path = fn.GetFullPath();
+        wxImage panelIcon(path);
+        wxBitmap* m_panelBitmap = new wxBitmap(panelIcon);
+
+        AddCustomWaypointIcon(m_panelBitmap, "green-pin", "test");
+
 
 }
 
@@ -138,13 +153,13 @@ void Dlg::OnMessageList(wxCommandEvent& event) {
 
 	if (NULL == m_pASMmessages1) {		
 	
-		m_pASMmessages1 = new asmMessages(this, wxID_ANY, _T("BBM Messages"), wxPoint(100, 100), wxSize(300, 500), wxDEFAULT_DIALOG_STYLE |wxCLOSE_BOX| wxRESIZE_BORDER);
+		m_pASMmessages1 = new asmMessages(this, wxID_ANY, _T("BBM Messages"), wxPoint(100, 100), wxSize(-1, -1), wxDEFAULT_DIALOG_STYLE |wxCLOSE_BOX| wxRESIZE_BORDER);
 		CreateControlsMessageList();
         m_pASMmessages1->myMainDialog = this;
 		m_pASMmessages1->Show();
 		m_bHaveMessageList = true;
 
-		myTextDataCollection.clear();
+		//myTextDataCollection.clear();
 		m_timer1.Start();
 	}
 
@@ -160,8 +175,25 @@ void Dlg::OnCloseList(wxCloseEvent& event) {
 	wxMessageBox("closing");
 }
 
-void Dlg::OnLocate(wxString RISitem) { 
-	wxMessageBox("RIS"); 
+void Dlg::OnLocate(wxString risindex, wxString text, wxString location) {
+
+	AIS_Text_Data tempData = FindLatLonObjectRISindex(risindex, text, location);
+
+		// Mark the location with a pin
+        double myLat = tempData.lat;
+        double myLon = tempData.lon;
+        
+
+        PlugIn_Waypoint* wayPoint
+            = new PlugIn_Waypoint(myLat, myLon, "", tempData.location, "");
+        wayPoint->m_MarkDescription = tempData.Text;
+        wayPoint->m_IsVisible = true;
+        wayPoint->m_IconName = "green-pin";
+
+        AddSingleWaypoint(wayPoint, false);
+        GetParent()->Refresh();
+
+//	wxMessageBox(tempData.Text); 
 }
 
 void Dlg::OnLogging(wxCommandEvent& event) {
@@ -170,6 +202,7 @@ void Dlg::OnLogging(wxCommandEvent& event) {
 		myAISdisplay = new AISdisplay(this, wxID_ANY, _T("AIS Logging"), wxPoint(20, 20), wxSize(550, 400), wxCAPTION|wxCLOSE_BOX|wxRESIZE_BORDER);
 		myAISdisplay->Show();
 		m_bHaveDisplay = true;
+        m_bHaveMessageList = true;
 	}
 
 	if (m_bHaveDisplay) {
@@ -257,6 +290,7 @@ void Dlg::OnData(wxCommandEvent& event) {
 */
 void Dlg::JumpTo(wxString lat, wxString lon, int scale)
 {
+	
 	double mla, mlo;
 
 	lat.ToDouble(&mla);
@@ -334,6 +368,8 @@ void Dlg::Decode(wxString sentence)
 
 void Dlg::OnTest(wxCommandEvent& event)
 {
+    m_bUsingTest = true;
+
 	wxString mySentence = plugin->m_pDialog->m_textCtrlTest->GetValue();
 
 	if (mySentence.IsEmpty() || mySentence.IsNull()) {
@@ -407,6 +443,9 @@ void Dlg::UpdateAISTargetList(void)
 			current_targets = AISTextList;
 			size_t z = current_targets->size();
 
+			wxString x = wxString::Format("%i", z);
+                       // wxMessageBox(x);
+
 			if (z == 0) {
 				return;
 			}
@@ -423,7 +462,7 @@ void Dlg::UpdateAISTargetList(void)
 				wxListItem item;
 				item.SetId(id);
 				m_pASMmessages1->m_pListCtrlAISTargets->InsertItem(item);
-				for (int j = 0; j < 5; j++) {
+				for (int j = 0; j < 6; j++) {
 					item.SetColumn(j);
 					if (j == 0) {
 						h = pAISTarget->country;						
@@ -454,6 +493,13 @@ void Dlg::UpdateAISTargetList(void)
                         item.SetText(h);
                         m_pASMmessages1->m_pListCtrlAISTargets->SetItem(item);
                     }
+
+					if (j == 5) {
+                        h = pAISTarget->RISindex;                                 
+                        item.SetText(h);
+                        m_pASMmessages1->m_pListCtrlAISTargets->SetItem(item);
+                    }
+
 
 				}
 
@@ -502,13 +548,12 @@ void Dlg::getAis8_200_44(string rawPayload) {
 
 	string myText = myRIS.text;
 
-	vector<AIS_Text_Data> NewTextData;
-        NewTextData = FindObjectRISindex(sect, myObj, myHect);
-
+	AIS_Text_Data NewTextData;
+    NewTextData = FindObjectRISindex(sect, myObj, myHect);
+        //wxMessageBox(NewTextData.at(0).RISindex);
 		//
-        // Search the current AISTextList for an RISindex match
-        AIS_Text_Hash::iterator it
-            = AISTextList->find(NewTextData.at(0).RISindex);
+    // Search the current AISTextList for an RISindex match
+    AIS_Text_Hash::iterator it = AISTextList->find(NewTextData.RISindex);
 
         if (it == AISTextList->end()) // not found
         {
@@ -516,16 +561,15 @@ void Dlg::getAis8_200_44(string rawPayload) {
 			pTextData->Sector = outsect;
             pTextData->ObjCode = myObj;
             pTextData->Hect = outhect;
-            pTextData->RISindex = NewTextData.at(0).RISindex;
-            pTextData->lat = NewTextData.at(0).lat;
-            pTextData->lon = NewTextData.at(0).lon;   
-			pTextData->wwname = NewTextData.at(0).wwname;
+            pTextData->RISindex = NewTextData.RISindex;
+            pTextData->lat = NewTextData.lat;
+            pTextData->lon = NewTextData.lon;   
+			pTextData->wwname = NewTextData.wwname;
             pTextData->country = myCountry;
-            pTextData->location = NewTextData.at(0).location;
+            pTextData->location = NewTextData.location;
             pTextData->Text = myText;
 
-            (*AISTextList)[pTextData->RISindex]
-                = pTextData; // update the hash table entry
+			//wxMessageBox(NewTextData.at(0).RISindex);
 
             bdecode_result = true;
 
@@ -543,9 +587,15 @@ void Dlg::getAis8_200_44(string rawPayload) {
 
             (*AISTextList)[pTextData->RISindex]
                 = pTextData; // update the hash table entry
+
+            // wxMessageBox(pTextData->RISindex);
+
             myTextDataCollection.push_back(*pTextData);
 
-			m_notebookMessage->SetSelection(0);
+        }
+
+		if (m_bUsingTest) {
+            m_notebookMessage->SetSelection(0);
 
             m_textMMSI1->SetValue(outmm);
             m_textCountry1->SetValue(myCountry);
@@ -556,25 +606,66 @@ void Dlg::getAis8_200_44(string rawPayload) {
 
             GetParent()->Refresh();
         }
+
 }
 
 
-vector<AIS_Text_Data> Dlg::FindObjectRISindex(int sect, wxString objcode, int hectomt)
+AIS_Text_Data Dlg::FindLatLonObjectRISindex(wxString risindex, wxString text, wxString locname)
 {
 
     char** result;
     int n_rows;
     int n_columns;
+    AIS_Text_Data myFoundData;
 
     
+    wxString quote = "\"";
+    wxString myIndex = risindex;
+
+    wxString sql
+        = "SELECT DISTINCT lat, lon FROM RIS where risindex = "
+        + quote + myIndex + quote;
+
+    plugin->dbGetTable(sql, &result, n_rows, n_columns);
+    wxArrayString objects;
+
+    for (int i = 1; i <= n_rows; i++) {
+        char* lat = result[(i * n_columns) + 0];
+        char* lon = result[(i * n_columns) + 1];
+
+        wxString object_lat(lat, wxConvUTF8);
+        wxString object_lon(lon, wxConvUTF8);
+
+        double value;
+        object_lat.ToDouble(&value);
+        myFoundData.lat = value;
+        object_lon.ToDouble(&value);
+        myFoundData.lon = value;        
+    }
+    plugin->dbFreeResults(result);
+
+	myFoundData.location = locname;
+    myFoundData.Text = text;
+
+    return myFoundData;
+}
+
+AIS_Text_Data Dlg::FindObjectRISindex(
+    int sect, string objcode, int hectomt)
+{
+    AIS_Text_Data myTextData;
+    char** result;
+    int n_rows;
+    int n_columns;
+
     wxString quote = "\"";
     wxString sSect = wxString::Format("%i", sect);
     wxString andobjcode = " and objcode = ";
     wxString shect = wxString::Format("%i", hectomt);
     wxString andhect = " and hectomt = ";
 
-    wxString sql
-        = "SELECT DISTINCT lat, lon, risindex, wwname, locname FROM RIS where wwsectcode = "
+    wxString sql = "SELECT DISTINCT lat, lon, risindex, wwname, locname FROM "
+                   "RIS where wwsectcode = "
         + sSect + andobjcode + quote + objcode + quote + andhect + shect;
 
     plugin->dbGetTable(sql, &result, n_rows, n_columns);
@@ -598,13 +689,12 @@ vector<AIS_Text_Data> Dlg::FindObjectRISindex(int sect, wxString objcode, int he
         myTextData.RISindex = risindex;
         myTextData.wwname = wwname;
         myTextData.location = locname;
-        myTextCollection.push_back(myTextData);
+        
     }
     plugin->dbFreeResults(result);
 
-    return myTextCollection;
+    return myTextData;
 }
-
 
 //  ***** Water Level ************
 void Dlg::getAis8_200_26(string rawPayload) {
@@ -685,13 +775,14 @@ void Dlg::CreateControlsMessageList()
 	int width;
 	int dx = 20;
 
-	width = dx * 6;
+	width = -1;
 	if (m_pASMmessages1) {
-        m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(tlTRK, _("Text"), wxLIST_FORMAT_LEFT, width);
-		m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(tlNAME, _("Location"), wxLIST_FORMAT_LEFT, width);
-		m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(tlTRK, _("Kilometer"), wxLIST_FORMAT_LEFT, width);
-        m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(tlTRK, _("Waterway"), wxLIST_FORMAT_LEFT, width);
-        m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(tlTRK, _("Country"), wxLIST_FORMAT_LEFT, width);
+        m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(0, _("Country"), wxLIST_FORMAT_LEFT, width);
+        m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(1, _("Waterway"), wxLIST_FORMAT_LEFT, width);
+		m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(2, _("Kilometer"), wxLIST_FORMAT_LEFT, width);
+		m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(3, _("Location"), wxLIST_FORMAT_LEFT, width);
+        m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(4, _("Text"), wxLIST_FORMAT_LEFT, width);
+        m_pASMmessages1->m_pListCtrlAISTargets->InsertColumn(5, _("RISindex"), wxLIST_FORMAT_LEFT, width);
 	}
 }
 
@@ -701,11 +792,11 @@ void Dlg::OnTimer(wxTimerEvent& event)
 
 			// Refresh AIS target list every 5 seconds to avoid blinking
 		if (m_pASMmessages1->m_pListCtrlAISTargets && (0 == (g_tick % (5)))) {
-			if (m_bUpdateTarget) {
+			//if (m_bUpdateTarget) {
 				UpdateAISTargetList();
-				m_bUpdateTarget = false;
-				GetParent()->Refresh();
-			}
+				//m_bUpdateTarget = false;
+				//GetParent()->Refresh();
+			//}
 		}
 			g_tick++;
 	}	
