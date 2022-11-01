@@ -73,7 +73,7 @@ endif ()
 #
 # -------  Plugin setup --------
 #
-project(aisRX_pi VERSION 0.4.2.0)
+project(aisRX_pi VERSION 0.5.0.0)
 set(PKG_PRERELEASE "")  # Empty, or a tag like 'beta'
 
 set(DISPLAY_NAME aisRX)    # Dialogs, installer artifacts, ...
