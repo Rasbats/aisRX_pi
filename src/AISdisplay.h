@@ -73,4 +73,4 @@ class AISdisplay : public wxDialog
 
 };
 
-#endif _AISGUI_IMPL_H_
+#endif

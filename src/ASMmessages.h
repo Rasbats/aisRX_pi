@@ -54,8 +54,7 @@ class asmMessages : public wxDialog
 		wxHtmlWindow* m_htmlWin;
                 Dlg* myMainDialog;
 
-		wxString asmMessages::GetCellContentsString(
-                    long row_number, int column);
+		wxString GetCellContentsString(long row_number, int column);
 
 		asmMessages( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("ASM Messages"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 322,340 ), long style = wxCAPTION|wxMINIMIZE_BOX|wxRESIZE_BORDER );
 		~asmMessages();
