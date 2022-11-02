@@ -1,0 +1,9 @@
+build
+build-*
+!build-deps
+po/*.pot
+.DS_Store
+*humbs.db
+cache
+plugins
+data/RIS.db
