@@ -50,15 +50,13 @@ set(PKG_HOMEPAGE https://github.com/Rasbats/aisRX_pi)
 set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/aisRX.html)
 
 set(SRC
-	src/ais2.h
+	src/ais.h
 	src/ais8_200.cpp
 	src/ais8.cpp
-	src/ais_bitset2.cpp
+	src/ais_bitset.cpp
 	src/AIS_Bitstring.cpp
 	src/AIS_Bitstring.h
 	src/ais.cpp
-    src/AisMaker.cpp
-    src/AisMaker.h
     src/aisRXgui.cpp
     src/aisRXgui.h
     src/aisRXgui_impl.cpp
