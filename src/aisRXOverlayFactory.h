@@ -27,7 +27,6 @@
 #include <map>
 #include <wx/string.h>
 #include "bbox.h"
-#include "ocpn_plugin.h"
 
 
 

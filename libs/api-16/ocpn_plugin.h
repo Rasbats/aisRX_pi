@@ -50,7 +50,6 @@
 
 #include <memory>
 #include <vector>
-#include <wx/dcmemory.h>
 
 class wxGLContext;
 
