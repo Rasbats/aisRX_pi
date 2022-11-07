@@ -11,7 +11,7 @@ extern void initialize_images(void);
 
 extern wxBitmap* _img_aisRXIcon;
 
-#ifdef aisRX_USE_SVG
+#ifdef ocpnUSE_SVG
 extern wxString _svg_aisRX;
 extern wxString _svg_aisRX_toggled;
 #endif

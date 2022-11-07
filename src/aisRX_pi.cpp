@@ -164,7 +164,7 @@ int aisRX_pi::Init(void)
 
     //    This PlugIn needs a toolbar icon, so request its insertion
     if (m_baisRXShowIcon) {
-#ifdef aisRX_USE_SVG
+#ifdef ocpnUSE_SVG
         m_leftclick_tool_id = InsertPlugInToolSVG(_T( "aisRX" ),
             _svg_aisRX, _svg_aisRX, _svg_aisRX_toggled,
             wxITEM_CHECK, _("aisRX"), _T( "" ), NULL,

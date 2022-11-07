@@ -34,7 +34,7 @@ option(aisRX_USE_SVG "Use SVG graphics" ON)
 # -------  Plugin setup --------
 #
 set(PKG_NAME aisRX_pi)
-set(PKG_VERSION  3.0.0)
+set(PKG_VERSION  0.6.0)
 set(PKG_PRERELEASE "")  # Empty, or a tag like 'beta'
 
 set(DISPLAY_NAME aisRX)    # Dialogs, installer artifacts, ...
@@ -50,15 +50,13 @@ set(PKG_HOMEPAGE https://github.com/Rasbats/aisRX_pi)
 set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/aisRX.html)
 
 set(SRC
-	src/ais2.h
+	src/ais.h
 	src/ais8_200.cpp
 	src/ais8.cpp
-	src/ais_bitset2.cpp
+	src/ais_bitset.cpp
 	src/AIS_Bitstring.cpp
 	src/AIS_Bitstring.h
 	src/ais.cpp
-    src/AisMaker.cpp
-    src/AisMaker.h
     src/aisRXgui.cpp
     src/aisRXgui.h
     src/aisRXgui_impl.cpp
@@ -73,37 +71,39 @@ set(SRC
 	src/widget.h
 	src/bbox.cpp
     src/bbox.h	
+	src/aisRXOverlayFactory.cpp
+    src/aisRXOverlayFactory.h
 	src/AISdisplay.cpp
 	src/AISdisplay.h
 	src/ASMmessages.cpp
 	src/ASMmessages.h
 )
 
-set(PKG_API_LIB api-16)  #  A directory in libs/ e. g., api-17 or api-16
+set(PKG_API_LIB api-17)  #  A directory in libs/ e. g., api-17 or api-16
 
 macro(late_init)
   # Perform initialization after the PACKAGE_NAME library, compilers
   # and ocpn::api is available.
-  if (aisRX_USE_SVG)
-    target_compile_definitions(${PACKAGE_NAME} PUBLIC aisRX_USE_SVG)
-  endif ()
 endmacro ()
 
 macro(add_plugin_libraries)
   # Add libraries required by this plugin
-  add_subdirectory("libs/tinyxml")
+  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/tinyxml")
   target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 
-  add_subdirectory("libs/wxJSON")
+  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/wxJSON")
   target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
 
-  add_subdirectory("libs/plugingl")
+  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/plugingl")
   target_link_libraries(${PACKAGE_NAME} ocpn::plugingl)
 
-  add_subdirectory("libs/jsoncpp")
+  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/jsoncpp")
   target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
+  
+  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/sqlite")
+  target_link_libraries(${PACKAGE_NAME} ocpn::sqlite)  
 
-  add_subdirectory("libs/sqlite")
-  target_link_libraries(${PACKAGE_NAME} sqlite::sqlite)
-
+  # The wxsvg library enables SVG overall in the plugin
+  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/wxsvg")
+  target_link_libraries(${PACKAGE_NAME} ocpn::wxsvg)
 endmacro ()

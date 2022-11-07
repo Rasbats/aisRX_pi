@@ -9,7 +9,7 @@
 
 wxBitmap* _img_aisRXIcon;
 
-#ifdef aisRX_USE_SVG
+#ifdef ocpnUSE_SVG
 #include "ocpn_plugin.h"
 wxString _svg_aisRX;
 wxString _svg_aisRX_toggled;
@@ -76,7 +76,7 @@ void initialize_images(void)
         _img_aisRXIcon = new wxBitmap(wxImage(sm));
     }
 
-#ifdef aisRX_USE_SVG
+#ifdef ocpnUSE_SVG
     wxFileName fn;
     wxString tmp_path;
 
@@ -89,7 +89,7 @@ void initialize_images(void)
     fn.SetFullName(_T("aisRX_pi_toggled.svg"));
     _svg_aisRX_toggled = fn.GetFullPath();
 
-#endif // aisRX_USE_SVG
+#endif // #ifdef ocpnUSE_SVG
 
     return;
 }
