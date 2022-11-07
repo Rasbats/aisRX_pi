@@ -34,7 +34,7 @@ option(aisRX_USE_SVG "Use SVG graphics" ON)
 # -------  Plugin setup --------
 #
 set(PKG_NAME aisRX_pi)
-set(PKG_VERSION  3.0.0)
+set(PKG_VERSION  0.5.3)
 set(PKG_PRERELEASE "")  # Empty, or a tag like 'beta'
 
 set(DISPLAY_NAME aisRX)    # Dialogs, installer artifacts, ...
@@ -84,9 +84,6 @@ set(PKG_API_LIB api-17)  #  A directory in libs/ e. g., api-17 or api-16
 macro(late_init)
   # Perform initialization after the PACKAGE_NAME library, compilers
   # and ocpn::api is available.
-  if (aisRX_USE_SVG)
-    target_compile_definitions(${PACKAGE_NAME} PUBLIC aisRX_USE_SVG)
-  endif ()
 endmacro ()
 
 macro(add_plugin_libraries)
@@ -105,5 +102,9 @@ macro(add_plugin_libraries)
 
   add_subdirectory("libs/sqlite")
   target_link_libraries(${PACKAGE_NAME} sqlite::sqlite)
+  
+  # The wxsvg library enables SVG overall in the plugin
+  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/wxsvg")
+  target_link_libraries(${PACKAGE_NAME} ocpn::wxsvg)  
 
 endmacro ()
