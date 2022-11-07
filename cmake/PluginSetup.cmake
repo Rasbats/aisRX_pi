@@ -82,16 +82,9 @@ if (plugin_target STREQUAL "ubuntu")
       OUTPUT_STRIP_TRAILING_WHITESPACE
     )
     if (_WX_SELECTED_CONFIG MATCHES gtk3)
-      if (${plugin_target_version} VERSION_LESS 22.04)
-        set(plugin_target ubuntu-gtk3)
-      endif ()
+      set(plugin_target ubuntu-gtk3)
     endif ()
   else ()
     message(WARNING "Cannot locate wx-config utility")
   endif ()
 endif ()
-
-string(CONCAT msg "Building for target-release "
-  "${plugin_target}-${plugin_target_version}"
-)
-message(STATUS "${msg}")

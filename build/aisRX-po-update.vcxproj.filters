@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\ar_SA.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\bg_BG.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\ca_ES.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\cs_CZ.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\da_DK.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\de_DE.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\el_GR.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\es_ES.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\et_EE.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\fi_FI.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\fil_PH.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\fr_FR.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\gl_ES.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\hi_IN.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\hu_HU.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\id_ID.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\is_IS.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\it_IT.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\ja_JP.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\ko_KR.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\mr_IN.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\nb_NO.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\nl_NL.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\pl_PL.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\pt_BR.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\pt_PT.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\ro_RO.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\ru_RU.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\sv_SE.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\th_TH.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\tr_TR.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\vi_VN.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\zh_CN.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\1271e47b87e93cbb7c87deb2845e7821\zh_TW.po.dummy.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\c8a54ee0ec13d79efd935a682ce01cb9\aisRX-po-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\aisRX-po-update" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{E6C6E0CB-C28D-3038-A470-4551ED3CE535}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

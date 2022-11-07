@@ -1,0 +1,10 @@
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\LIBS\WXJSON\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Mike/Documents/GitHub/aisRX_pi -BC:/Users/Mike/Documents/GitHub/aisRX_pi/build --check-stamp-file C:/Users/Mike/Documents/GitHub/aisRX_pi/build/libs/wxJSON/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

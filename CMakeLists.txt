@@ -1,43 +1,130 @@
 # ~~~
-# Summary:      Main plugin build script
-# Copyright (c) 2020-2021 Mike Rossiter
-# License:      GPLv3+
+# Author:      Rasbats aka. Mike Rossiter
+# Copyright:
+# License:     wxWidgets License
 # ~~~
 
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3 of the License, or
-# (at your option) any later version.
 
 # -------- Cmake setup ---------
 #
 cmake_minimum_required(VERSION 3.12.0)
-include(${CMAKE_SOURCE_DIR}/cmake/CmakeSetup.cmake NO_POLICY_SCOPE)
+
+cmake_policy(SET CMP0042 NEW)
+
+if (POLICY CMP0072)
+  cmake_policy(SET CMP0072 NEW)
+endif ()
+
+if (POLICY CMP0077)
+  cmake_policy(SET CMP0077 NEW)
+endif ()
+
+# Locations where cmake looks for cmake modules.
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/build ${CMAKE_SOURCE_DIR}/cmake)
+
+if (WIN32)
+  list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/buildwin)
+endif ()
 message(STATUS "Cmake version: ${CMAKE_VERSION}.")
 
 
-# -------- Build setup  --------
+# -------- Build setup (mostly in PluginCompiler) --------
 #
-include(PluginOptions)
-if (BUILD_TYPE)
-  message(STATUS "Building: ${BUILD_TYPE}")
-else ()
-  message(STATUS "Configuring")
-endif ()
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# -------- Plugin setup ----------
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+message(STATUS "Building: ${BUILD_TYPE}")
+
+
+# -------- Options ----------
+
+set(OCPN_TEST_REPO
+    "mike-rossiter/aisrx-alpha"
+    CACHE STRING "Default repository for untagged builds"
+)
+set(OCPN_BETA_REPO
+    "mike-rossiter/aisrx-beta"
+    CACHE STRING 
+    "Default repository for tagged builds matching 'beta'"
+)
+set(OCPN_RELEASE_REPO
+    "mike-rossiter/aisrx-prod"
+    CACHE STRING 
+    "Default repository for tagged builds not matching 'beta'"
+)
+option(aisRX_USE_SVG "Use SVG graphics" ON)
+
+set(OCPN_TARGET_TUPLE "" CACHE STRING
+  "Target spec: \"platform;version;arch\""
+)
+
+string(TOLOWER "${OCPN_TARGET_TUPLE}" _lc_target)
+if ("${_lc_target}" MATCHES "android*")
+  set(QT_ANDROID ON)
+  # Until we have a proper toolchain file:
+  set(CMAKE_CROSSCOMPILING ON)
+else ()
+  set(QT_ANDROID OFF)
+  add_definitions(-D__OCPN_USE_CURL__)
+endif ()
 #
-include(Plugin.cmake)
+#
+# -------  Plugin setup --------
+#
+project(aisRX_pi VERSION 0.5.2.0)
+set(PKG_PRERELEASE "")  # Empty, or a tag like 'beta'
+
+set(DISPLAY_NAME aisRX)    # Dialogs, installer artifacts, ...
+set(PLUGIN_API_NAME aisRX) # As of GetCommonName() in plugin API
+set(CPACK_PACKAGE_CONTACT "Mike Rossiter")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "aisRX")
+set(CPACK_PACKAGE_DESCRIPTION [=[
+For Rx RIS BBM.
+]=])
+
+set(PKG_AUTHOR "Mike Rossiter")
+set(PKG_IS_OPEN_SOURCE "yes")
+set(CPACK_PACKAGE_HOMEPAGE_URL https://github.com/Rasbats/aisRX_pi)
+set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/aisRX.html)
+
+set(SRC
+	src/ais.h
+	src/ais8_200.cpp
+	src/ais8.cpp
+	src/ais_bitset.cpp
+	src/AIS_Bitstring.cpp
+	src/AIS_Bitstring.h
+	src/ais.cpp
+    src/aisRXgui.cpp
+    src/aisRXgui.h
+    src/aisRXgui_impl.cpp
+    src/aisRXgui_impl.h
+    src/aisRX_pi.cpp
+    src/aisRX_pi.h
+    src/icons.cpp
+    src/icons.h
+	src/signal.cpp
+	src/signal.h
+	src/widget.cpp
+	src/widget.h
+	src/bbox.cpp
+    src/bbox.h	
+	src/aisRXOverlayFactory.cpp
+    src/aisRXOverlayFactory.h
+	src/AISdisplay.cpp
+	src/AISdisplay.h
+	src/ASMmessages.cpp
+	src/ASMmessages.h
+)
 
 # -------- Setup completed, build the plugin --------
 #
-project(${PKG_NAME} VERSION ${PKG_VERSION})
-include(PluginCompiler)
-
-add_library(${CMAKE_PROJECT_NAME} SHARED EXCLUDE_FROM_ALL ${SRC})
+add_library(${CMAKE_PROJECT_NAME} SHARED ${SRC})
 include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
 
-add_subdirectory("opencpn-libs/${PKG_API_LIB}")
+add_subdirectory("libs/api-16")
 target_link_libraries(${CMAKE_PROJECT_NAME} ocpn::api)
 
 set(VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
@@ -50,24 +137,18 @@ set(PACKAGE_NAME ${CMAKE_PROJECT_NAME})
 string(REGEX REPLACE "\([0-9]\)\.\([0-9]\).*" "ov\\1\\2"
        OCPN_MIN_VERSION ${API_OCPN_MIN_VERSION})
 
-if (COMMAND late_init)
-  late_init()
+if (aisRX_USE_SVG)
+  add_definitions(-DaisRX_USE_SVG)
 endif ()
 
-# Configure the flatpak manifest
-file(
-  GLOB manifest ${PROJECT_SOURCE_DIR}/flatpak/org.opencpn.OpenCPN.Plugin.*.yaml
-)
-include(ConfigureManifest)
-configure_manifest(${manifest} _new_manifest)
-
-# Set up targets. Targets sets up new targets with BUILD_TYPE set to
-# 'flatpak', 'android' or 'tarball'. The initial call without BUILD_TYPE ends
+# Set up targets. Targets sets up a recursive call with BUILD_TYPE set to
+# 'flatpak', 'pkg' or 'tarball'. The initial call without BUILD_TYPE ends
 # here.
 #
 include(Targets)
-create_targets(${_new_manifest})
-
+create_targets(
+  ${PROJECT_SOURCE_DIR}/flatpak/org.opencpn.OpenCPN.Plugin.aisRX.yaml
+)
 if ("${BUILD_TYPE}" STREQUAL "")
   return ()
 endif ()
@@ -75,9 +156,11 @@ endif ()
 if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
   # Build package as required (flatpak already dealt with).
   #
+  include(PluginCompiler)
   include(PluginInstall)
+  include(PluginPackage)
   if (QT_ANDROID)
-    include(AndroidLibs)
+    include(libs/AndroidLibs.cmake)
   else ()
     include(PluginLibs)
   endif ()
@@ -85,9 +168,17 @@ if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
 
   include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
 
-  if (COMMAND add_plugin_libraries)
-    add_plugin_libraries()
-  endif ()
+  add_subdirectory("libs/jsoncpp")
+  target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
+  
+  add_subdirectory("libs/tinyxml")
+  target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
+  
+  add_subdirectory("libs/wxJSON")
+  target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
+
+  add_subdirectory("libs/sqlite")
+  target_link_libraries(${PACKAGE_NAME} sqlite::sqlite)
 
 endif ()
 
@@ -106,6 +197,7 @@ configure_file(
   ${CMAKE_SOURCE_DIR}/ci/upload.bat.in ${CMAKE_BINARY_DIR}/upload.bat
   @ONLY
 )
+
 
 set(checksum "@checksum@")
 configure_file(

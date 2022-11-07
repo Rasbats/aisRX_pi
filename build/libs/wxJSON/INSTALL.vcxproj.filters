@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Mike\Documents\GitHub\aisRX_pi\build\CMakeFiles\8ff9ba6e22fadf31c959dc62dc67ae1a\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{E6C6E0CB-C28D-3038-A470-4551ED3CE535}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

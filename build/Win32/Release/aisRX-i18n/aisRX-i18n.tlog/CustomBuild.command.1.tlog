@@ -1,0 +1,426 @@
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\AR_SA.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/ar_SA.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/ar_SA.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/ar_SA.mo Resources/ar_SA.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\BG_BG.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/bg_BG.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/bg_BG.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/bg_BG.mo Resources/bg_BG.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\CA_ES.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/ca_ES.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/ca_ES.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/ca_ES.mo Resources/ca_ES.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\CS_CZ.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/cs_CZ.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/cs_CZ.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/cs_CZ.mo Resources/cs_CZ.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\DA_DK.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/da_DK.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/da_DK.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/da_DK.mo Resources/da_DK.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\DE_DE.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/de_DE.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/de_DE.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/de_DE.mo Resources/de_DE.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\EL_GR.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/el_GR.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/el_GR.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/el_GR.mo Resources/el_GR.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\ES_ES.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/es_ES.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/es_ES.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/es_ES.mo Resources/es_ES.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\ET_EE.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/et_EE.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/et_EE.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/et_EE.mo Resources/et_EE.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\FI_FI.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/fi_FI.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/fi_FI.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/fi_FI.mo Resources/fi_FI.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\FIL_PH.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/fil_PH.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/fil_PH.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/fil_PH.mo Resources/fil_PH.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\FR_FR.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/fr_FR.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/fr_FR.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/fr_FR.mo Resources/fr_FR.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\GL_ES.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/gl_ES.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/gl_ES.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/gl_ES.mo Resources/gl_ES.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\HI_IN.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/hi_IN.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/hi_IN.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/hi_IN.mo Resources/hi_IN.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\HU_HU.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/hu_HU.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/hu_HU.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/hu_HU.mo Resources/hu_HU.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\ID_ID.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/id_ID.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/id_ID.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/id_ID.mo Resources/id_ID.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\IS_IS.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/is_IS.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/is_IS.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/is_IS.mo Resources/is_IS.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\IT_IT.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/it_IT.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/it_IT.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/it_IT.mo Resources/it_IT.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\JA_JP.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/ja_JP.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/ja_JP.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/ja_JP.mo Resources/ja_JP.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\KO_KR.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/ko_KR.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/ko_KR.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/ko_KR.mo Resources/ko_KR.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\MR_IN.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/mr_IN.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/mr_IN.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/mr_IN.mo Resources/mr_IN.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\NB_NO.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/nb_NO.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/nb_NO.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/nb_NO.mo Resources/nb_NO.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\NL_NL.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/nl_NL.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/nl_NL.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/nl_NL.mo Resources/nl_NL.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\PL_PL.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/pl_PL.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/pl_PL.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/pl_PL.mo Resources/pl_PL.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\PT_BR.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/pt_BR.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/pt_BR.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/pt_BR.mo Resources/pt_BR.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\PT_PT.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/pt_PT.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/pt_PT.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/pt_PT.mo Resources/pt_PT.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\RO_RO.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/ro_RO.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/ro_RO.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/ro_RO.mo Resources/ro_RO.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\RU_RU.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/ru_RU.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/ru_RU.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/ru_RU.mo Resources/ru_RU.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\SV_SE.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/sv_SE.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/sv_SE.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/sv_SE.mo Resources/sv_SE.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\TH_TH.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/th_TH.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/th_TH.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/th_TH.mo Resources/th_TH.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\TR_TR.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/tr_TR.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/tr_TR.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/tr_TR.mo Resources/tr_TR.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\VI_VN.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/vi_VN.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/vi_VN.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/vi_VN.mo Resources/vi_VN.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\ZH_CN.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/zh_CN.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/zh_CN.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/zh_CN.mo Resources/zh_CN.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\89788BA134D73A479C61CDC925B58C5F\ZH_TW.MO.RULE
+setlocal
+"C:\Program Files (x86)\Poedit\GettextTools\bin\msgfmt.exe" --check -o C:/Users/Mike/Documents/GitHub/aisRX_pi/build/zh_TW.mo C:/Users/Mike/Documents/GitHub/aisRX_pi/po/zh_TW.po
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy C:/Users/Mike/Documents/GitHub/aisRX_pi/build/zh_TW.mo Resources/zh_TW.lproj/opencpn-aisRX_pi.mo
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\BUILD\CMAKEFILES\C8A54EE0EC13D79EFD935A682CE01CB9\AISRX-I18N.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\MIKE\DOCUMENTS\GITHUB\AISRX_PI\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/Mike/Documents/GitHub/aisRX_pi -BC:/Users/Mike/Documents/GitHub/aisRX_pi/build --check-stamp-file C:/Users/Mike/Documents/GitHub/aisRX_pi/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
