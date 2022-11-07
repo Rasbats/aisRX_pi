@@ -36,8 +36,6 @@
 #include "ocpn_plugin.h"
 #include "tinyxml.h"
 #include "wx/process.h"
-#include "json/reader.h"
-#include "json/writer.h"
 #include <cmath>
 #include <sstream>
 #include <wx/filedlg.h>
@@ -99,7 +97,6 @@ public:
 WX_DECLARE_HASH_MAP(string, AIS_Text_Data*, wxStringHash, wxStringEqual, AIS_Text_Hash);
 WX_DECLARE_HASH_MAP(string, wxString, wxStringHash, wxStringEqual, AIS_Text_Name_Hash);
 
-class aisRXOverlayFactory;
 class PlugIn_ViewPort;
 class asmMessages;
 

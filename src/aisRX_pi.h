@@ -41,13 +41,8 @@
 
 #include "config.h"
 
-#include "json/reader.h"
-#include "json/writer.h"
-
 #include "ocpn_plugin.h" //Required for OCPN plugin functions
 #include "aisRXgui_impl.h"
-
-#include "aisRXOverlayFactory.h"
 
 #include <sqlite3.h>
 #include <wx/thread.h>
@@ -131,14 +126,7 @@ public:
 	void    dbGetTable(wxString sql, char ***results, int &n_rows, int &n_columns);
 	void    dbFreeResults(char **results);
 	
-	aisRXOverlayFactory *GetaisRXOverlayFactory(){ return m_paisRXOverlayFactory; }
-
-	aisRXOverlayFactory *m_paisRXOverlayFactory;
-	//aisRXOverlayFactory *aisRXUIDialog;
-
 	//The override PlugIn Methods
-    bool RenderOverlay(wxDC &dc, PlugIn_ViewPort *vp);
-	bool RenderGLOverlay(wxGLContext *pcontext, PlugIn_ViewPort *vp);
 
 	// ******** Database stuff ******************************************
 	

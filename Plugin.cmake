@@ -71,15 +71,13 @@ set(SRC
 	src/widget.h
 	src/bbox.cpp
     src/bbox.h	
-	src/aisRXOverlayFactory.cpp
-    src/aisRXOverlayFactory.h
 	src/AISdisplay.cpp
 	src/AISdisplay.h
 	src/ASMmessages.cpp
 	src/ASMmessages.h
 )
 
-set(PKG_API_LIB api-17)  #  A directory in libs/ e. g., api-17 or api-16
+set(PKG_API_LIB api-16)  #  A directory in libs/ e. g., api-17 or api-16
 
 macro(late_init)
   # Perform initialization after the PACKAGE_NAME library, compilers
@@ -91,14 +89,8 @@ macro(add_plugin_libraries)
   add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/tinyxml")
   target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 
-  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/wxJSON")
-  target_link_libraries(${PACKAGE_NAME} ocpn::wxjson)
-
   add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/plugingl")
   target_link_libraries(${PACKAGE_NAME} ocpn::plugingl)
-
-  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/jsoncpp")
-  target_link_libraries(${PACKAGE_NAME} ocpn::jsoncpp)
   
   add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/sqlite")
   target_link_libraries(${PACKAGE_NAME} ocpn::sqlite)  
