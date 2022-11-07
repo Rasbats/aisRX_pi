@@ -11,7 +11,7 @@
 
 # -------- Cmake setup ---------
 #
-cmake_minimum_required(VERSION 3.25.0)
+cmake_minimum_required(VERSION 3.24.3)
 include(${CMAKE_SOURCE_DIR}/cmake/CmakeSetup.cmake NO_POLICY_SCOPE)
 message(STATUS "Cmake version: ${CMAKE_VERSION}.")
 
