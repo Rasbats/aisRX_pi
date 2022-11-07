@@ -14,6 +14,7 @@ installer available from OpenCPN 5.2.0 is built using:
 
     $ cmake ..
     $ make tarball
+    
 
 To build the flatpak tarball:
 
