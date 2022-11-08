@@ -110,6 +110,8 @@ Dlg::Dlg(wxWindow* parent, wxWindowID id, const wxString& title,
 	m_bHaveMessageList = false;
 	m_bHaveDisplay = false;
 	m_bUpdateTarget = false; 
+	m_bUsingTest = false;
+        m_iCountMessages = 0;
 	// for the green pins
 	wxFileName fn;
 
@@ -212,23 +214,29 @@ void Dlg::OnLogging(wxCommandEvent& event) {
 
 void Dlg::SetAISMessage(wxString &msg)
 {
-	m_message = msg;
+   m_iCountMessages++;
 
-	if (m_bHaveDisplay) {
-		if (myAISdisplay->m_tbAISPause->GetValue()) {
+	if (m_iCountMessages == 9) {
 
-			int mm = 0;
-			int ms = 0;
+        m_message = msg;
 
-			myAISdisplay->m_tcAIS->AppendText(msg);
-		}				
+        if (m_bHaveDisplay) {
+            if (myAISdisplay->m_tbAISPause->GetValue()) {
+
+                int mm = 0;
+                int ms = 0;
+
+                myAISdisplay->m_tcAIS->AppendText(msg);
+            }
+        }
+
+        Decode(msg);
+        m_iCountMessages = 0;
 	}
-
-	Decode(msg);
 }
 
 void Dlg::SetNMEAMessage(wxString &msg) {
-
+    return;
   wxString token[40];
   wxString s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11;
   token[0] = "";
@@ -603,6 +611,8 @@ void Dlg::getAis8_200_44(string rawPayload) {
             m_textObjectCode1->SetValue(myObj);
             m_textHectometre1->SetValue(outhect);
             m_textText1->SetValue(myText);
+
+			m_bUsingTest = false;
 
             GetParent()->Refresh();
         }

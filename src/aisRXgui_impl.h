@@ -139,6 +139,7 @@ public:
         vector<AIS_Text_Data> myTextDataCollection;
 
 	int              m_n_targets;
+        int m_iCountMessages;
 
 	wxString testing;
 	
