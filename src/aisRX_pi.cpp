@@ -413,10 +413,12 @@ void aisRX_pi::SetNMEASentence(wxString& sentence)
 
 void aisRX_pi::dbGetTable(wxString sql, char ***results, int &n_rows, int &n_columns)
 {
-      ret = sqlite3_get_table (m_database, sql.mb_str(), results, &n_rows, &n_columns, &err_msg);
+    ret = sqlite3_get_table(m_database, sql.mb_str(wxConvUTF8), results,
+        &n_rows, &n_columns, &err_msg);
+
       if (ret != SQLITE_OK)
-      {
-            wxLogMessage (_T("Database error: %s in query: %s\n"), *err_msg, sql.c_str());
+      {        
+          wxLogMessage (_T("Database error: %s in query: %s\n"), *err_msg, sql.c_str());
 	      sqlite3_free (err_msg);
             b_dbUsable = false;
       }

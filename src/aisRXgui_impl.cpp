@@ -195,7 +195,6 @@ void Dlg::OnLocate(wxString risindex, wxString text, wxString location) {
         AddSingleWaypoint(wayPoint, false);
         GetParent()->Refresh();
 
-//	wxMessageBox(tempData.Text); 
 }
 
 void Dlg::OnLogging(wxCommandEvent& event) {
@@ -523,6 +522,16 @@ void Dlg::UpdateAISTargetList(void)
 	}		
 }
 
+// trim from end (in place)
+static inline void rtrim(std::string& s)
+{
+    s.erase(std::find_if(s.rbegin(), s.rend(),
+                [](unsigned char ch) { return !std::isspace(ch); })
+                .base(),
+        s.end());
+}
+
+
 //  ***** Text Message *******************
 void Dlg::getAis8_200_44(string rawPayload) {
     bool bnewtarget = false;
@@ -547,7 +556,14 @@ void Dlg::getAis8_200_44(string rawPayload) {
 	//wxMessageBox(outsect);
 
 	string myObj = myRIS.object;
-        wxMessageBox(myObj, "myObject");
+
+	rtrim(myObj);
+
+	int l = myObj.length();
+        wxString out = wxString::Format("%i", l);
+       // wxMessageBox(out);
+
+        //wxMessageBox(myObj, "myObject");
 
 	int myHect = myRIS.hectometre;
 	wxString xouthect = wxString::Format("%i", myHect);
@@ -569,7 +585,7 @@ void Dlg::getAis8_200_44(string rawPayload) {
             pTextData->ObjCode = myObj;
             pTextData->Hect = outhect;
             pTextData->RISindex = NewTextData.RISindex;
-            wxMessageBox(pTextData->RISindex);
+            //wxMessageBox(pTextData->RISindex);
             pTextData->lat = NewTextData.lat;
             pTextData->lon = NewTextData.lon;   
 			pTextData->wwname = NewTextData.wwname;
@@ -577,7 +593,7 @@ void Dlg::getAis8_200_44(string rawPayload) {
             pTextData->location = NewTextData.location;
             pTextData->Text = myText;
 
-			wxMessageBox(NewTextData.wwname);
+			//wxMessageBox(NewTextData.wwname);
 
             bdecode_result = true;
 
@@ -660,6 +676,7 @@ AIS_Text_Data Dlg::FindLatLonObjectRISindex(wxString risindex, wxString text, wx
     return myFoundData;
 }
 
+
 AIS_Text_Data Dlg::FindObjectRISindex(
     int sect, string objcode, int hectomt)
 {
@@ -674,14 +691,13 @@ AIS_Text_Data Dlg::FindObjectRISindex(
     wxString shect = wxString::Format("%i", hectomt);
     wxString andhect = " and hectomt = ";
 
-    wxString sql = "SELECT DISTINCT lat, lon, risindex, wwname, locname FROM "
-                   "RIS where wwsectcode = "
+
+	rtrim(objcode);
+
+    wxString sql = "SELECT DISTINCT lat, lon, risindex, wwname, locname FROM RIS where wwsectcode = "
         + sSect + andobjcode + quote + objcode + quote + andhect + shect;
 
-	//wxMessageBox(sql);
-
     plugin->dbGetTable(sql, &result, n_rows, n_columns);
-    wxArrayString objects;
 
     for (int i = 1; i <= n_rows; i++) {
         char* lat = result[(i * n_columns) + 0];
@@ -689,8 +705,6 @@ AIS_Text_Data Dlg::FindObjectRISindex(
         string risindex = result[(i * n_columns) + 2];
         string wwname = result[(i * n_columns) + 3];
         string locname = result[(i * n_columns) + 4];
-
-		wxMessageBox(risindex);
 
         wxString object_lat(lat, wxConvUTF8);
         wxString object_lon(lon, wxConvUTF8);
@@ -702,7 +716,6 @@ AIS_Text_Data Dlg::FindObjectRISindex(
         myTextData.lon = value;
         myTextData.RISindex = risindex;
         myTextData.wwname = wwname;
-        wxMessageBox(wwname);
         myTextData.location = locname;
         
     }
@@ -807,11 +820,11 @@ void Dlg::OnTimer(wxTimerEvent& event)
 
 			// Refresh AIS target list every 5 seconds to avoid blinking
 		if (m_pASMmessages1->m_pListCtrlAISTargets && (0 == (g_tick % (5)))) {
-			//if (m_bUpdateTarget) {
+			if (m_bUpdateTarget) {
 				UpdateAISTargetList();
-				//m_bUpdateTarget = false;
-				//GetParent()->Refresh();
-			//}
+				m_bUpdateTarget = false;
+				GetParent()->Refresh();
+			}
 		}
 			g_tick++;
 	}	
