@@ -547,7 +547,7 @@ void Dlg::getAis8_200_44(string rawPayload) {
 	//wxMessageBox(outsect);
 
 	string myObj = myRIS.object;
-	//wxMessageBox(myObj);
+        wxMessageBox(myObj, "myObject");
 
 	int myHect = myRIS.hectometre;
 	wxString xouthect = wxString::Format("%i", myHect);
@@ -558,8 +558,7 @@ void Dlg::getAis8_200_44(string rawPayload) {
 
 	AIS_Text_Data NewTextData;
     NewTextData = FindObjectRISindex(sect, myObj, myHect);
-        //wxMessageBox(NewTextData.at(0).RISindex);
-		//
+	//
     // Search the current AISTextList for an RISindex match
     AIS_Text_Hash::iterator it = AISTextList->find(NewTextData.RISindex);
 
@@ -570,6 +569,7 @@ void Dlg::getAis8_200_44(string rawPayload) {
             pTextData->ObjCode = myObj;
             pTextData->Hect = outhect;
             pTextData->RISindex = NewTextData.RISindex;
+            wxMessageBox(pTextData->RISindex);
             pTextData->lat = NewTextData.lat;
             pTextData->lon = NewTextData.lon;   
 			pTextData->wwname = NewTextData.wwname;
@@ -577,7 +577,7 @@ void Dlg::getAis8_200_44(string rawPayload) {
             pTextData->location = NewTextData.location;
             pTextData->Text = myText;
 
-			//wxMessageBox(NewTextData.at(0).RISindex);
+			wxMessageBox(NewTextData.wwname);
 
             bdecode_result = true;
 
@@ -666,7 +666,7 @@ AIS_Text_Data Dlg::FindObjectRISindex(
     AIS_Text_Data myTextData;
     char** result;
     int n_rows;
-    int n_columns;
+    int n_columns = 0;
 
     wxString quote = "\"";
     wxString sSect = wxString::Format("%i", sect);
@@ -678,6 +678,8 @@ AIS_Text_Data Dlg::FindObjectRISindex(
                    "RIS where wwsectcode = "
         + sSect + andobjcode + quote + objcode + quote + andhect + shect;
 
+	//wxMessageBox(sql);
+
     plugin->dbGetTable(sql, &result, n_rows, n_columns);
     wxArrayString objects;
 
@@ -687,6 +689,8 @@ AIS_Text_Data Dlg::FindObjectRISindex(
         string risindex = result[(i * n_columns) + 2];
         string wwname = result[(i * n_columns) + 3];
         string locname = result[(i * n_columns) + 4];
+
+		wxMessageBox(risindex);
 
         wxString object_lat(lat, wxConvUTF8);
         wxString object_lon(lon, wxConvUTF8);
@@ -698,6 +702,7 @@ AIS_Text_Data Dlg::FindObjectRISindex(
         myTextData.lon = value;
         myTextData.RISindex = risindex;
         myTextData.wwname = wwname;
+        wxMessageBox(wwname);
         myTextData.location = locname;
         
     }
