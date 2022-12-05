@@ -61,6 +61,7 @@
 #include "AISdisplay.h"
 #include "ASMmessages.h"
 #include <wx/textfile.h>
+#include <locale>
 
 
 #ifdef __WXOSX__
