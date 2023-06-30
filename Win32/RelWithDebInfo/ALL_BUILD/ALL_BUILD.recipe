@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>D:\Documents\MyRIS\aisRX_pi\RelWithDebInfo\ZERO_CHECK</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\Documents\MyRIS\aisRX_pi\RelWithDebInfo\aisRX-i18n</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\Documents\MyRIS\aisRX_pi\RelWithDebInfo\tarball-build</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\Documents\MyRIS\aisRX_pi\RelWithDebInfo\tarball-install</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\Documents\MyRIS\aisRX_pi\RelWithDebInfo\tarball-finish</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\Documents\MyRIS\aisRX_pi\RelWithDebInfo\tarball</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\Documents\MyRIS\aisRX_pi\RelWithDebInfo\default</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>D:\Documents\MyRIS\aisRX_pi\RelWithDebInfo\ALL_BUILD</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles />
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

@@ -555,6 +555,7 @@ void Dlg::getAis8_200_44(string rawPayload) {
 
 	//wxMessageBox(outsect);
 
+	
 	string myObj = myRIS.object;
 
 	rtrim(myObj);

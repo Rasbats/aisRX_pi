@@ -1,0 +1,35 @@
+﻿  Building Custom Rule D:/Documents/MyRIS/aisRX_pi/CMakeLists.txt
+  MSBuild version 17.5.0+6f08c67f3 for .NET Framework
+  
+    aisRX_pi-i18n: Done.
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(703,5): error MSB6003: The specified task executable "CL.exe" could not be run. System.IO.IOException: The process cannot access the file 'D:\DOCUMENTS\MYRIS\AISRX_PI\OPENCPN-LIBS\SQLITE\SQLITE3.DIR\RELWITHDEBINFO\SQLITE3.OBJ' because it is being used by another process. [D:\Documents\MyRIS\aisRX_pi\opencpn-libs\sqlite\SQLITE3.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(703,5): error MSB6003: at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath) [D:\Documents\MyRIS\aisRX_pi\opencpn-libs\sqlite\SQLITE3.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(703,5): error MSB6003: at System.IO.FileInfo.Delete() [D:\Documents\MyRIS\aisRX_pi\opencpn-libs\sqlite\SQLITE3.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(703,5): error MSB6003: at Microsoft.Build.CPPTasks.TrackedVCToolTask.DeleteFiles(ITaskItem[] filesToDelete) [D:\Documents\MyRIS\aisRX_pi\opencpn-libs\sqlite\SQLITE3.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(703,5): error MSB6003: at Microsoft.Build.CPPTasks.CL.ComputeOutOfDateSources() [D:\Documents\MyRIS\aisRX_pi\opencpn-libs\sqlite\SQLITE3.vcxproj]
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(703,5): error MSB6003: at Microsoft.Build.Utilities.ToolTask.Execute() [D:\Documents\MyRIS\aisRX_pi\opencpn-libs\sqlite\SQLITE3.vcxproj]
+    pi_shaders.cpp
+D:\Documents\MyRIS\aisRX_pi\opencpn-libs\plugingl\src\pi_shaders.cpp : fatal error C1041: cannot open program database 'D:\Documents\MyRIS\aisRX_pi\opencpn-libs\plugingl\RelWithDebInfo\PLUGINGL.pdb'; if multiple CL.EXE write to the same .PDB file, please use /FS [D:\Documents\MyRIS\aisRX_pi\opencpn-libs\plugingl\PLUGINGL.vcxproj]
+    qtstylesheet.cpp
+D:\Documents\MyRIS\aisRX_pi\opencpn-libs\plugingl\src\qtstylesheet.cpp : fatal error C1041: cannot open program database 'D:\Documents\MyRIS\aisRX_pi\opencpn-libs\plugingl\RelWithDebInfo\PLUGINGL.pdb'; if multiple CL.EXE write to the same .PDB file, please use /FS [D:\Documents\MyRIS\aisRX_pi\opencpn-libs\plugingl\PLUGINGL.vcxproj]
+    TexFont.cpp
+D:\Documents\MyRIS\aisRX_pi\opencpn-libs\plugingl\src\TexFont.cpp : fatal error C1041: cannot open program database 'D:\Documents\MyRIS\aisRX_pi\opencpn-libs\plugingl\RelWithDebInfo\PLUGINGL.pdb'; if multiple CL.EXE write to the same .PDB file, please use /FS [D:\Documents\MyRIS\aisRX_pi\opencpn-libs\plugingl\PLUGINGL.vcxproj]
+    pidc.cpp
+D:\Documents\MyRIS\aisRX_pi\opencpn-libs\plugingl\src\pidc.cpp : fatal error C1041: cannot open program database 'D:\Documents\MyRIS\aisRX_pi\opencpn-libs\plugingl\RelWithDebInfo\PLUGINGL.pdb'; if multiple CL.EXE write to the same .PDB file, please use /FS [D:\Documents\MyRIS\aisRX_pi\opencpn-libs\plugingl\PLUGINGL.vcxproj]
+    Generating Code...
+    tinyxml.cpp
+D:\Documents\MyRIS\aisRX_pi\opencpn-libs\tinyxml\src\tinyxml.cpp : fatal error C1041: cannot open program database 'D:\Documents\MyRIS\aisRX_pi\opencpn-libs\tinyxml\RelWithDebInfo\TINYXML.pdb'; if multiple CL.EXE write to the same .PDB file, please use /FS [D:\Documents\MyRIS\aisRX_pi\opencpn-libs\tinyxml\TINYXML.vcxproj]
+    tinyxmlerror.cpp
+D:\Documents\MyRIS\aisRX_pi\opencpn-libs\tinyxml\src\tinyxmlerror.cpp : fatal error C1041: cannot open program database 'D:\Documents\MyRIS\aisRX_pi\opencpn-libs\tinyxml\RelWithDebInfo\TINYXML.pdb'; if multiple CL.EXE write to the same .PDB file, please use /FS [D:\Documents\MyRIS\aisRX_pi\opencpn-libs\tinyxml\TINYXML.vcxproj]
+    tinyxmlparser.cpp
+    Generating Code...
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(159,5): error MSB3073: The command "setlocal
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(159,5): error MSB3073: cmake --build D:/Documents/MyRIS/aisRX_pi --parallel 12 --config RelWithDebInfo --target aisRX_pi
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(159,5): error MSB3073: if %errorlevel% neq 0 goto :cmEnd
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(159,5): error MSB3073: :cmEnd
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(159,5): error MSB3073: endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(159,5): error MSB3073: :cmErrorLevel
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(159,5): error MSB3073: exit /b %1
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(159,5): error MSB3073: :cmDone
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(159,5): error MSB3073: if %errorlevel% neq 0 goto :VCEnd
+C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppCommon.targets(159,5): error MSB3073: :VCEnd" exited with code 1.

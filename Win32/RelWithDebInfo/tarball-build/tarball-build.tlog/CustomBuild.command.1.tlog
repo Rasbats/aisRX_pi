@@ -1,0 +1,30 @@
+^D:\DOCUMENTS\MYRIS\AISRX_PI\CMAKEFILES\3DFB3FEFE8643F0894DA3DCC42442B7A\TARBALL-CONF-STAMP.RULE
+setlocal
+cmake -E touch tarball-conf-stamp
+if %errorlevel% neq 0 goto :cmEnd
+cmake -DCMAKE_INSTALL_PREFIX=D:/Documents/MyRIS/aisRX_pi/app/files -DBUILD_TYPE:STRING=tarball D:/Documents/MyRIS/aisRX_pi
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\DOCUMENTS\MYRIS\AISRX_PI\CMAKEFILES\A8D1469F7EF419D4B62F6CF58EE2CF4F\TARBALL-BUILD.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\DOCUMENTS\MYRIS\AISRX_PI\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Documents/MyRIS/aisRX_pi -BD:/Documents/MyRIS/aisRX_pi --check-stamp-file D:/Documents/MyRIS/aisRX_pi/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

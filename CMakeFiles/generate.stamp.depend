@@ -1,0 +1,46 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeCInformation.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeCXXInformation.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeCommonLanguageInclude.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeGenericSystem.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeInitializeConfigs.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeLanguageInformation.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeRCInformation.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeSystemSpecificInformation.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeSystemSpecificInitialize.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Compiler/CMakeCommonCompilerMacros.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Compiler/MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Compiler/MSVC-CXX.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Compiler/MSVC.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/FindGettext.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/FindOpenGL.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/FindPackageMessage.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/FindwxWidgets.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Platform/Windows-MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Platform/Windows-MSVC-CXX.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Platform/Windows-MSVC.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Platform/Windows.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Platform/WindowsPaths.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/UsewxWidgets.cmake
+D:/Documents/MyRIS/aisRX_pi/CMakeFiles/3.25.1/CMakeCCompiler.cmake
+D:/Documents/MyRIS/aisRX_pi/CMakeFiles/3.25.1/CMakeCXXCompiler.cmake
+D:/Documents/MyRIS/aisRX_pi/CMakeFiles/3.25.1/CMakeRCCompiler.cmake
+D:/Documents/MyRIS/aisRX_pi/CMakeFiles/3.25.1/CMakeSystem.cmake
+D:/Documents/MyRIS/aisRX_pi/CMakeLists.txt
+D:/Documents/MyRIS/aisRX_pi/Plugin.cmake
+D:/Documents/MyRIS/aisRX_pi/ci/upload.bat.in
+D:/Documents/MyRIS/aisRX_pi/ci/upload.sh.in
+D:/Documents/MyRIS/aisRX_pi/cmake/CmakeSetup.cmake
+D:/Documents/MyRIS/aisRX_pi/cmake/ConfigureManifest.cmake
+D:/Documents/MyRIS/aisRX_pi/cmake/GetArch.cmake
+D:/Documents/MyRIS/aisRX_pi/cmake/Metadata.cmake
+D:/Documents/MyRIS/aisRX_pi/cmake/PluginCompiler.cmake
+D:/Documents/MyRIS/aisRX_pi/cmake/PluginInstall.cmake
+D:/Documents/MyRIS/aisRX_pi/cmake/PluginLibs.cmake
+D:/Documents/MyRIS/aisRX_pi/cmake/PluginLocalization.cmake
+D:/Documents/MyRIS/aisRX_pi/cmake/PluginOptions.cmake
+D:/Documents/MyRIS/aisRX_pi/cmake/PluginSetup.cmake
+D:/Documents/MyRIS/aisRX_pi/cmake/Targets.cmake
+D:/Documents/MyRIS/aisRX_pi/config.h.in
+D:/Documents/MyRIS/aisRX_pi/plugin.xml.in
