@@ -244,7 +244,7 @@ void Dlg::SetNMEAMessage(wxString &msg) {
   token[0] = tokenizer.GetNextToken().Trim();  // !AIVDM or !xxBMM
 
 
-  if (m_bHaveDisplay && token[0] == "!xxBBM") {
+  if (m_bHaveDisplay && token[0] == "!AIVDM") {
     if (myAISdisplay->m_tbAISPause->GetValue()) {
       int mm = 0;
       int ms = 0;
@@ -613,7 +613,7 @@ void Dlg::getAis8_200_44(string rawPayload) {
             (*AISTextList)[pTextData->RISindex]
                 = pTextData; // update the hash table entry
 
-            // wxMessageBox(pTextData->RISindex);
+            wxMessageBox(pTextData->RISindex);
 
             myTextDataCollection.push_back(*pTextData);
 
@@ -696,7 +696,9 @@ AIS_Text_Data Dlg::FindObjectRISindex(
 	rtrim(objcode);
 
     wxString sql = "SELECT DISTINCT lat, lon, risindex, wwname, locname FROM RIS where wwsectcode = "
-        + sSect + andobjcode + quote + objcode + quote + andhect + shect;
+        + sSect + andobjcode + objcode + andhect + shect;
+
+	//wxMessageBox(sql);
 
     plugin->dbGetTable(sql, &result, n_rows, n_columns);
 
