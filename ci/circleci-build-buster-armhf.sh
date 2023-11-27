@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Build for Ubuntu armhf in a docker container
+# Build for Debian armhf in a docker container
 #
 # Copyright (c) 2021 Alec Leamas
 #
@@ -10,6 +10,14 @@
 # (at your option) any later version.
 
 set -xe
+
+# Read configuration and check if we should really build this
+here=$(cd $(dirname $0); pwd -P)
+source $here/../build-conf.rc
+if [ "$oldstable_build_rate" -eq 0 ]; then exit 0; fi
+if [ $((CIRCLE_BUILD_NUM % oldstable_build_rate)) -ne 0 ]; then
+    exit 0
+fi
 
 # Create build script
 #
@@ -26,29 +34,29 @@ git submodule update --init opencpn-libs
 
 cat > $ci_source/build.sh << "EOF"
 
-# The  docker images are updated and have installed devscripts and equivs
-# i. e., what is required for mk-build-deps.
+set -x
 
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 6AF7F09730B3F0A4
-export DEBIAN_FRONTEND=noninteractive
-apt -q update
-mk-build-deps  /ci-source/build-deps/control
-apt -y install ./opencpn-build-deps_1.0_all.deb
-sudo apt-get -q --allow-unauthenticated install -f
+apt -y update
+apt -y install devscripts equivs wget git lsb-release
 
-# cmake 3.20/3.22 is installed in the docker images before uploading to
-# dockerhub. Alternatively, cmake could be installed at configure time
-# as described in  https://apt.kitware.com/
+mk-build-deps /ci-source/build-deps/control
+apt install -q -y ./opencpn-build-deps*deb
+apt-get -q --allow-unauthenticated install -f
+
+url='https://dl.cloudsmith.io/public/alec-leamas/opencpn-plugins-stable'
+wget --no-verbose \
+    $url/deb/debian/pool/buster/main/c/cm/cmake-data_3.19.3-0.1_all.deb
+wget --no-verbose \
+    $url/deb/debian/pool/buster/main/c/cm/cmake_3.19.3-0.1_armhf.deb
+apt install -y ./cmake_3.19.3-0.1_armhf.deb ./cmake-data_3.19.3-0.1_all.deb
 
 cd /ci-source
-rm -rf build-ubuntu; mkdir build-ubuntu; cd build-ubuntu
-cmake -DCMAKE_BUILD_TYPE=Release -DOCPN_TARGET_TUPLE="@TARGET_TUPLE@" ..
+rm -rf build-debian; mkdir build-debian; cd build-debian
+cmake "-DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE:-Release}" -DOCPN_TARGET_TUPLE="debian;10;armhf" ..
 make -j $(nproc) VERBOSE=1 tarball
 ldd  app/*/lib/opencpn/*.so
-sudo chown --reference=.. .
+chown --reference=.. .
 EOF
-
-sed -i "s/@TARGET_TUPLE@/$TARGET_TUPLE/" $ci_source/build.sh
 
 
 # Run script in docker image
@@ -65,7 +73,8 @@ docker run --platform linux/arm/v7 --privileged \
     -e "CIRCLE_BUILD_NUM=$CIRCLE_BUILD_NUM" \
     -e "TRAVIS_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER" \
     -v "$ci_source:/ci-source:rw" \
-    ${DOCKER_IMAGE:-opencpn/ubuntu-focal-armhf:v1} /bin/bash -xe /ci-source/build.sh
+    -v /usr/bin/qemu-arm-static:/usr/bin/qemu-arm-static \
+    arm32v7/debian:buster /bin/bash -xe /ci-source/build.sh
 rm -f $ci_source/build.sh
 
 
