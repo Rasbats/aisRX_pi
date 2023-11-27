@@ -43,6 +43,10 @@ target_link_libraries(${CMAKE_PROJECT_NAME} ocpn::api)
 set(VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 set(VERSION_MINOR ${PROJECT_VERSION_MINOR})
 set(VERSION_PATCH ${PROJECT_VERSION_PATCH})
+if (PROJECT_VERSION_TWEAK STREQUAL "")
+  set(PROJECT_VERSION_TWEAK 0)
+endif ()
+
 
 set(PACKAGE_NAME ${CMAKE_PROJECT_NAME})
 
@@ -72,9 +76,13 @@ if ("${BUILD_TYPE}" STREQUAL "")
   return ()
 endif ()
 
+ 
 if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
   # Build package as required (flatpak already dealt with).
   #
+  if (APPLE)
+    include(MacosWxwidgets)
+  endif ()
   include(PluginInstall)
   if (QT_ANDROID)
     include(AndroidLibs)
@@ -84,7 +92,7 @@ if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
   include(PluginLocalization)
 
   include_directories(BEFORE ${CMAKE_BINARY_DIR}/include)
-
+ 
   if (COMMAND add_plugin_libraries)
     add_plugin_libraries()
   endif ()
@@ -92,7 +100,7 @@ if (NOT ${BUILD_TYPE} STREQUAL "flatpak")
 endif ()
 
 configure_file(
-  ${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/include//config.h
+  ${CMAKE_SOURCE_DIR}/config.h.in ${CMAKE_BINARY_DIR}/include/config.h
   @ONLY
 )
 
