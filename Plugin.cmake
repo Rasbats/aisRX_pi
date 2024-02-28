@@ -19,12 +19,12 @@ set(OCPN_TEST_REPO
 )
 set(OCPN_BETA_REPO
     "mike-rossiter/aisrx-beta"
-    CACHE STRING 
+    CACHE STRING
     "Default repository for tagged builds matching 'beta'"
 )
 set(OCPN_RELEASE_REPO
     "mike-rossiter/aisrx-prod"
-    CACHE STRING 
+    CACHE STRING
     "Default repository for tagged builds not matching 'beta'"
 )
 option(aisRX_USE_SVG "Use SVG graphics" ON)
@@ -50,13 +50,13 @@ set(PKG_HOMEPAGE https://github.com/Rasbats/aisRX_pi)
 set(PKG_INFO_URL https://opencpn.org/OpenCPN/plugins/aisRX.html)
 
 set(SRC
-	src/ais.h
-	src/ais8_200.cpp
-	src/ais8.cpp
-	src/ais_bitset.cpp
-	src/AIS_Bitstring.cpp
-	src/AIS_Bitstring.h
-	src/ais.cpp
+    src/ais.h
+    src/ais8_200.cpp
+    src/ais8.cpp
+    src/ais_bitset.cpp
+    src/AIS_Bitstring.cpp
+    src/AIS_Bitstring.h
+    src/ais.cpp
     src/aisRXgui.cpp
     src/aisRXgui.h
     src/aisRXgui_impl.cpp
@@ -65,16 +65,16 @@ set(SRC
     src/aisRX_pi.h
     src/icons.cpp
     src/icons.h
-	src/signal.cpp
-	src/signal.h
-	src/widget.cpp
-	src/widget.h
-	src/bbox.cpp
-    src/bbox.h	
-	src/AISdisplay.cpp
-	src/AISdisplay.h
-	src/ASMmessages.cpp
-	src/ASMmessages.h
+    src/signal.cpp
+    src/signal.h
+    src/widget.cpp
+    src/widget.h
+    src/bbox.cpp
+    src/bbox.h
+    src/AISdisplay.cpp
+    src/AISdisplay.h
+    src/ASMmessages.cpp
+    src/ASMmessages.h
 )
 
 set(PKG_API_LIB api-16)  #  A directory in libs/ e. g., api-17 or api-16
@@ -89,11 +89,11 @@ macro(add_plugin_libraries)
   add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/tinyxml")
   target_link_libraries(${PACKAGE_NAME} ocpn::tinyxml)
 
-  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/plugingl")
-  target_link_libraries(${PACKAGE_NAME} ocpn::plugingl)
-  
+  add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/plugin_dc")
+  target_link_libraries(${PACKAGE_NAME} ocpn::plugin-dc)
+
   add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/sqlite")
-  target_link_libraries(${PACKAGE_NAME} ocpn::sqlite)  
+  target_link_libraries(${PACKAGE_NAME} ocpn::sqlite)
 
   # The wxsvg library enables SVG overall in the plugin
   add_subdirectory("${CMAKE_SOURCE_DIR}/opencpn-libs/wxsvg")
